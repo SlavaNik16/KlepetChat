@@ -2,4 +2,7 @@
     <string name="app_name">KlepetChat</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_authorization">AuthorizationActivity</string>
+
+    <string name="AUTH">Авторизация</string>
 </resources>
