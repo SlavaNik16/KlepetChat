@@ -1,4 +1,4 @@
-package Activities
+package KlepetChat.Activities
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="Activities.AuthorizationActivity">
+    tools:context="KlepetChat.Activities.AuthorizationActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewProfile"

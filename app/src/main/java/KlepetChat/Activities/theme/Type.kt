@@ -1,4 +1,4 @@
-package Activities.theme
+package KlepetChat.Activities.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

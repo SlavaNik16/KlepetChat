@@ -1,4 +1,4 @@
-package Activities.theme
+package KlepetChat.Activities.theme
 
 import androidx.compose.ui.graphics.Color
 

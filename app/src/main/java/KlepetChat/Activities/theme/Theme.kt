@@ -1,4 +1,4 @@
-package Activities.theme
+package KlepetChat.Activities.theme
 
 import android.app.Activity
 import android.os.Build
