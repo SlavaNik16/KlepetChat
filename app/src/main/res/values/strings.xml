@@ -4,5 +4,14 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_authorization">AuthorizationActivity</string>
 
-    <string name="AUTH">Авторизация</string>
+    <string name="Auth">Авторизация</string>
+    <string name="Phone">Телефон</string>
+    <string name="Password">Пароль</string>
+    <string name="Enter">Войти</string>
+    <string name="Required">Обязательно</string>
+    <string name="NotAccount">Нет аккаунта</string>
+    <string name="Register">Зарегистрируйтесь</string>
+    <string name="I_forgot_My_Password">Я забыл пароль</string>
+
+    <string name="Empty"> </string>
 </resources>
