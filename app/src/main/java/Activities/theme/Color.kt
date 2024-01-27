@@ -1,4 +1,4 @@
-package com.example.klepetchat.Activities.ui.theme
+package Activities.theme
 
 import androidx.compose.ui.graphics.Color
 
