@@ -1,4 +1,4 @@
-package KlepetChat.Api.Models.Request
+package KlepetChat.WebApi.Models.Request
 
 import com.google.gson.annotations.SerializedName
 

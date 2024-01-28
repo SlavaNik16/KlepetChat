@@ -1,14 +1,14 @@
-package KlepetChat.Api.Models.Interface
+package KlepetChat.WebApi.Interfaces
 
-import KlepetChat.Api.Models.Request.Auth
-import KlepetChat.Api.Models.Response.Token
+import KlepetChat.WebApi.Models.Request.Auth
+import KlepetChat.WebApi.Models.Response.Token
 import retrofit2.http.Body
 import retrofit2.http.POST
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 
-interface IAuthService {
+interface IAuthService : IApiService {
     @POST("auth/login")
     suspend fun postLogin(@Body auth: Auth): Response<Token>
 }
