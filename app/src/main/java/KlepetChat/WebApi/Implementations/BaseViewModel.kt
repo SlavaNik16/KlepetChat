@@ -2,6 +2,7 @@ package KlepetChat.WebApi.Implementations
 
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -21,14 +22,15 @@ open class BaseViewModel : ViewModel(){
 
     protected fun<T> BaseRequest
     (
-        liveData: MediatorLiveData<T>,
+        liveData: MutableLiveData<T>,
         errorHandler: ICoroutinesErrorHandler,
         request: () -> Flow<T>
     )
     {
         job = viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler {
             _, error -> viewModelScope.launch(Dispatchers.Main) {
-                errorHandler.onError(error.localizedMessage ?: "Произошла ошибка! Пожалуйста повторите снова.")
+                errorHandler.onError(error.localizedMessage ?:
+                "Произошла ошибка! Пожалуйста повторите снова.")
             }
         }) {
             request().collect(){

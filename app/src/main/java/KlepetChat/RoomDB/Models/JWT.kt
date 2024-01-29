@@ -13,6 +13,8 @@ data class JWT (
     val id: UUID = UUID.randomUUID(),
     @ColumnInfo("phone")
     val phone: String,
+    @ColumnInfo("accessToken")
+    val accessToken: String,
     @ColumnInfo("refreshToken")
     val refreshToken: String,
 )

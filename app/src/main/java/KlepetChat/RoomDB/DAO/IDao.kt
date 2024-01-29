@@ -7,12 +7,12 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface IDaoToken {
+interface IDao{
 
     @Query("SELECT refreshToken FROM LocalToken WHERE phone= :phone")
     fun getToken(phone: String): Flow<String>
     @Insert
-    fun insertToken(localToken: JWT)
+    fun saveToken(localToken: JWT)
 
     @Query("UPDATE LocalToken SET refreshToken = :refreshToken WHERE phone = :phone")
     fun updateToken(phone: String, refreshToken: String)

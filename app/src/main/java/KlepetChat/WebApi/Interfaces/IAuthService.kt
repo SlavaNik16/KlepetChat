@@ -8,7 +8,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 
-interface IAuthService : IApiService {
+interface IAuthService {
     @POST("auth/login")
     suspend fun postLogin(@Body auth: Auth): Response<Token>
 }
