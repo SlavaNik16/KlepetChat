@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.map
 import java.io.IOException
 
 class DataStoreManager(private val context: Context): PrefsDataStore(
-    context,
     FILE_NAME
 ), IUserDataStore {
     override val userDataFlow: Flow<UserData> = context.dataStore.data.catch { exception ->
