@@ -1,6 +1,5 @@
 package KlepetChat.Activities
 
-import KlepetChat.RoomDB.Context.KlepetDB
 import KlepetChat.RoomDB.Models.JWT
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.AuthViewModel
