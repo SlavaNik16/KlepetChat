@@ -3,25 +3,16 @@ package KlepetChat.Activities
 import KlepetChat.DataSore.Context.DataStoreManager
 import KlepetChat.DataSore.Models.UserData
 import KlepetChat.WebApi.Implementations.ApiResponse
-import KlepetChat.WebApi.Implementations.Repositories.AuthRepository
 import KlepetChat.WebApi.Implementations.ViewModels.AuthViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Interfaces.IAuthService
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Request.Auth
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.example.klepetchat.databinding.AuthorizationBinding
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.internal.Contexts
-import javax.inject.Inject
-
 @AndroidEntryPoint
 class AuthorizationActivity : ComponentActivity(){
 
@@ -32,9 +23,10 @@ class AuthorizationActivity : ComponentActivity(){
         super.onCreate(savedInstanceState)
         binding = AuthorizationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        authViewModel = AuthViewModel()
+        userDataViewModel = UserDataViewModel(DataStoreManager(this))
         userDataViewModel.userData.observe(this){
-            if(it != null){
+            if(it?.accessToken.toString().isNotBlank()){
                 var intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
