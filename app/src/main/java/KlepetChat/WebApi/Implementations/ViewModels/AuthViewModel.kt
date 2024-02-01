@@ -7,14 +7,13 @@ import KlepetChat.WebApi.Interfaces.IAuthService
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Request.Auth
 import KlepetChat.WebApi.Models.Response.Token
-import KlepetChat.WebApi.Retrofit.ApiRetrofit
-import androidx.lifecycle.MutableLiveData
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
+import KlepetChat.WebApi.Retrofit.ApiViewModel.AuthApi
+import androidx.lifecycle.MutableLiveData
+
+
 class AuthViewModel : BaseViewModel() {
-    private var authService: IAuthService = ApiRetrofit().GetService<IAuthService>()
+    private var authService: IAuthService = AuthApi().GetAuth()
     private val tokenResponse = MutableLiveData<ApiResponse<Token>>()
     fun GetToken() : MutableLiveData<ApiResponse<Token>>
     {

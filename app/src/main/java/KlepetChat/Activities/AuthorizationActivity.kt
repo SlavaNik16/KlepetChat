@@ -11,20 +11,19 @@ import KlepetChat.WebApi.Models.Request.Auth
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
 import com.example.klepetchat.databinding.AuthorizationBinding
-import dagger.hilt.android.AndroidEntryPoint
-@AndroidEntryPoint
+
 class AuthorizationActivity : ComponentActivity(){
 
     private lateinit var binding : AuthorizationBinding
-    private lateinit var authViewModel: AuthViewModel
-    private lateinit var userDataViewModel: UserDataViewModel
+    private val authViewModel: AuthViewModel = AuthViewModel()
+    private val userDataViewModel: UserDataViewModel = UserDataViewModel(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = AuthorizationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        authViewModel = AuthViewModel()
-        userDataViewModel = UserDataViewModel(DataStoreManager(this))
+
         userDataViewModel.userData.observe(this){
             if(it?.accessToken.toString().isNotBlank()){
                 var intent = Intent(this, MainActivity::class.java)

@@ -55,7 +55,7 @@ android {
 
 dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
-    implementation("com.google.dagger:hilt-android:2.44")
+    //implementation("com.google.dagger:hilt-android:2.44")
     implementation("javax.inject:javax.inject:1")
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
