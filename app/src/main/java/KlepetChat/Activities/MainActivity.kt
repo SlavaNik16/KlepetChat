@@ -5,10 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.example.klepetchat.databinding.MainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+
 class MainActivity : ComponentActivity() {
     private lateinit var binding: MainBinding
     //private val viewModel: AuthViewModel by viewModels()
@@ -17,10 +18,10 @@ class MainActivity : ComponentActivity() {
         binding = MainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        binding.button.setOnClickListener{
-//            var intent = Intent(this, AuthorizationActivity::class.java)
-//            startActivity(intent)
-//        }
+        binding.button.setOnClickListener{
+            var intent = Intent(this, AuthorizationActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }

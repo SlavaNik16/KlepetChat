@@ -24,7 +24,7 @@ class AuthAuthenticator @Inject constructor(
         }
         return runBlocking {
             val token = Token(userData.accessToken, userData.refreshToken)
-            val newToken = postRefreshToken(token)
+            val newToken = PostRefreshToken(token)
 
             if (!newToken.isSuccessful || newToken.body() == null) {
                 dataStoreManager.UpdateTokens("","")
@@ -38,7 +38,7 @@ class AuthAuthenticator @Inject constructor(
         }
 
     }
-    private suspend fun postRefreshToken(token: Token): retrofit2.Response<Token> {
+    private suspend fun PostRefreshToken(token: Token): retrofit2.Response<Token> {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         val okHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
