@@ -11,6 +11,7 @@ class AuthInterceptor @Inject  constructor(
     private val dataStoreManager: DataStoreManager
 ):Interceptor{
     override fun intercept(chain: Interceptor.Chain): Response {
+
         val userData = runBlocking {
             dataStoreManager.userDataFlow.first()
         }

@@ -1,23 +1,18 @@
 package KlepetChat.Activities
 
-import KlepetChat.DataSore.Context.DataStoreManager
 import KlepetChat.DataSore.Models.UserData
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.AuthViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
-import KlepetChat.WebApi.Interfaces.IAuthService
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
-import KlepetChat.WebApi.Models.Request.Auth
+import KlepetChat.WebApi.Models.Request.Login
 import android.content.Intent
-import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.example.klepetchat.databinding.AuthorizationBinding
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class AuthorizationActivity : ComponentActivity() {
@@ -57,7 +52,7 @@ class AuthorizationActivity : ComponentActivity() {
         binding.butEnter.setOnClickListener {
 
             authViewModel.login(
-                Auth(
+                Login(
                     binding.phoneField.text.toString(),
                     binding.passField.text.toString()
                 ),

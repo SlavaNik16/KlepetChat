@@ -5,7 +5,7 @@ import KlepetChat.WebApi.Implementations.BaseViewModel
 import KlepetChat.WebApi.Implementations.Repositories.AuthRepository
 
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
-import KlepetChat.WebApi.Models.Request.Auth
+import KlepetChat.WebApi.Models.Request.Login
 import KlepetChat.WebApi.Models.Response.Token
 
 import androidx.lifecycle.MutableLiveData
@@ -22,10 +22,10 @@ class AuthViewModel @Inject constructor(
     {
         return tokenResponse
     }
-    fun login(auth: Auth, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+    fun login(login: Login, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         GetToken(),
         coroutineErrorHandler
     ){
-        authRepository.login(auth)
+        authRepository.login(login)
     }
 }

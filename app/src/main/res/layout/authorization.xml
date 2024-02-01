@@ -15,6 +15,7 @@
         android:scrollbarSize="5dp"
         app:cardBackgroundColor="#314267"
         app:cardCornerRadius="60dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutЗPhone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
