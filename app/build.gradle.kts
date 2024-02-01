@@ -1,6 +1,10 @@
+import org.jetbrains.kotlin.ir.backend.js.compile
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -51,17 +55,25 @@ android {
     buildFeatures{
         viewBinding = true
     }
+    defaultConfig {
+        multiDexEnabled = true
+    }
 }
 
 dependencies {
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
-    //implementation("com.google.dagger:hilt-android:2.44")
-    implementation("javax.inject:javax.inject:1")
 
+    implementation("com.android.support:multidex:1.0.3")
+
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    //implementation("javax.inject:javax.inject:1")
+    implementation("com.google.dagger:hilt-android:2.44")
+    annotationProcessor("com.google.dagger:hilt-compiler:2.44")
+    annotationProcessor("com.google.dagger:dagger-compiler:2.44")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.7.2")
-    implementation("com.squareup.okhttp3:okhttp:4.7.2")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
 
     //implementation("androidx.room:room-ktx:2.6.1")
 

@@ -9,37 +9,46 @@ import KlepetChat.WebApi.Interfaces.IAuthService
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Request.Auth
 import android.content.Intent
+import android.nfc.Tag
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.example.klepetchat.databinding.AuthorizationBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class AuthorizationActivity : ComponentActivity(){
+@AndroidEntryPoint
+class AuthorizationActivity : ComponentActivity() {
 
-    private lateinit var binding : AuthorizationBinding
-    private val authViewModel: AuthViewModel = AuthViewModel()
-    private val userDataViewModel: UserDataViewModel = UserDataViewModel(this)
+    private lateinit var binding: AuthorizationBinding
+    private val authViewModel: AuthViewModel by viewModels()
+    private val userDataViewModel: UserDataViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = AuthorizationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        userDataViewModel.userData.observe(this){
-            if(it?.accessToken.toString().isNotBlank()){
+        Log.d("Test", "AuthViewModel = ${authViewModel}")
+        Log.d("Test", "UserDataViewModel = ${userDataViewModel}")
+        userDataViewModel.userData.observe(this) {
+            if (it?.accessToken.toString().isNotBlank()) {
                 var intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
         }
 
         authViewModel.GetToken().observe(this) {
-            when(it) {
+            when (it) {
                 is ApiResponse.Failure -> binding.loginTest.text = it.message
                 ApiResponse.Loading -> binding.loginTest.text = "Loading"
                 is ApiResponse.Success -> {
                     userDataViewModel.SaveUserData(
-                        UserData(binding.phoneField.text.toString(),
+                        UserData(
+                            binding.phoneField.text.toString(),
                             it.data.accessToken,
-                            it.data.refreshToken)
+                            it.data.refreshToken
+                        )
                     )
                 }
             }
@@ -48,9 +57,11 @@ class AuthorizationActivity : ComponentActivity(){
         binding.butEnter.setOnClickListener {
 
             authViewModel.login(
-                Auth(binding.phoneField.text.toString(),
-                    binding.passField.text.toString()),
-                object: ICoroutinesErrorHandler {
+                Auth(
+                    binding.phoneField.text.toString(),
+                    binding.passField.text.toString()
+                ),
+                object : ICoroutinesErrorHandler {
                     override fun onError(message: String) {
                         binding.loginTest.text = "Error! $message"
                     }

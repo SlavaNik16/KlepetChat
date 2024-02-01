@@ -1,4 +1,4 @@
-package KlepetChat.WebApi.Authentificator
+package KlepetChat.WebApi.Implementations.Authentificator
 
 import KlepetChat.DataSore.Context.DataStoreManager
 import KlepetChat.WebApi.Interfaces.ITokenService
@@ -27,7 +27,7 @@ class AuthAuthenticator @Inject constructor(
             val newToken = postRefreshToken(token)
 
             if (!newToken.isSuccessful || newToken.body() == null) {
-                dataStoreManager.UpdateTokens()
+                dataStoreManager.UpdateTokens("","")
             }
             newToken.body()?.let {
                 dataStoreManager.UpdateTokens(it.accessToken, it.refreshToken)
@@ -44,7 +44,7 @@ class AuthAuthenticator @Inject constructor(
         val okHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://localhost:7055/api/")
+            .baseUrl("http://klepetapi.somee.com/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

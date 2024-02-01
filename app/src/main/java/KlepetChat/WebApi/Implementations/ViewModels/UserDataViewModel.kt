@@ -2,20 +2,19 @@ package KlepetChat.WebApi.Implementations.ViewModels
 
 import KlepetChat.DataSore.Context.DataStoreManager
 import KlepetChat.DataSore.Models.UserData
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@HiltViewModel
 class UserDataViewModel @Inject constructor(
-    private val context: Context
+    private val dataStoreManager: DataStoreManager
 ): ViewModel() {
-
-    private val dataStoreManager = DataStoreManager(context)
     val userData = MutableLiveData<UserData?>()
 
     init {

@@ -1,4 +1,4 @@
-package KlepetChat.WebApi.Interceptor
+package KlepetChat.WebApi.Implementations.Interceptor
 
 import KlepetChat.DataSore.Context.DataStoreManager
 import kotlinx.coroutines.flow.first
