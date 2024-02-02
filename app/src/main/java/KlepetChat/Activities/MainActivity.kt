@@ -1,13 +1,9 @@
 package KlepetChat.Activities
 
-import KlepetChat.WebApi.Implementations.ViewModels.AuthViewModel
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.example.klepetchat.databinding.MainBinding
-import dagger.hilt.android.AndroidEntryPoint
 
 
 class MainActivity : ComponentActivity() {
