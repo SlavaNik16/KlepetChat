@@ -1,6 +1,7 @@
 package KlepetChat.Hilts
 
 import KlepetChat.WebApi.Implementations.Repositories.AuthRepository
+import KlepetChat.WebApi.Implementations.Repositories.AuthRepositoryTest
 import KlepetChat.WebApi.Interfaces.IAuthService
 import dagger.Module
 import dagger.Provides
@@ -13,5 +14,8 @@ class HiltModule {
 
     @Provides
     fun providesAuthRepository(authApiService: IAuthService) = AuthRepository(authApiService)
+
+    @Provides
+    fun providesAuthRepositoryTest(authApiService: IAuthService) = AuthRepositoryTest(authApiService)
 
 }

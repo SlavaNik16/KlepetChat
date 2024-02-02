@@ -25,26 +25,15 @@ class AuthRepository @Inject constructor(
     private val authService: IAuthService
 ):AuthViewModel() {
     fun Login(login: Login) {
-        CoroutineScope(Dispatchers.IO).launch {
-            var response = authService.postLogin(login)
-            if (response.isExecuted) {
-                ErrorResponse.value =
-                    KlepetChat.WebApi.Models.Exceptions.Error(400, "Плохая авторизация");
-                return@launch
+        CoroutineScope(Dispatchers.Unconfined).launch {
+            var response = authService.postLogin(login.phone, login.password)
+            if(response.isSuccessful) {
+                response.body()?.let { data ->
+                    LoginResponse.value = data
+                }
             }
-            response.enqueue(object : Callback<Token> {
-                override fun onFailure(call: Call<Token>, t: Throwable) {
-                    ErrorResponse.value =
-                        KlepetChat.WebApi.Models.Exceptions.Error(400, "Плохая авторизация");
-                }
-
-                override fun onResponse(call: Call<Token>, response: Response<Token>) {
-                    if (response.isSuccessful) {
-                        LoginResponse.value = response.body();
-                    }
-                }
-            })
 
         }
+
     }
 }

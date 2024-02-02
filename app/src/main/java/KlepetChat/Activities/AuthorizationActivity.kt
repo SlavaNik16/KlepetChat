@@ -1,10 +1,14 @@
 package KlepetChat.Activities
 
 import KlepetChat.DataSore.Models.UserData
+import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.Repositories.AuthRepository
 import KlepetChat.WebApi.Implementations.ViewModels.AuthViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.AuthViewModelTest
 import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
+import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Request.Login
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -23,8 +27,8 @@ import javax.inject.Inject
 class AuthorizationActivity : ComponentActivity() {
 
     private lateinit var binding: AuthorizationBinding
-    //private val authViewModelTest: AuthViewModelTest by viewModels()
-    private val authRepository: AuthRepository by viewModels()
+    private val authViewModelTest: AuthViewModelTest by viewModels()
+   // private val authRepository: AuthRepository by viewModels()
     private val userDataViewModel: UserDataViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,56 +44,52 @@ class AuthorizationActivity : ComponentActivity() {
             }
         }
 
-        authRepository.getLoginObserve().observe(this) {
-            if (it == null) {
-                binding.loginTest.text = "Еrror"
-                return@observe
-            }
-            userDataViewModel.SaveUserData(
-                UserData(
-                    binding.phoneField.text.toString(),
-                    it.accessToken,
-                    it.refreshToken
-                )
-            )
-        }
-        authRepository.getErrorObserve().observe(this) {
-            Toast.makeText(this, "Код ${it.code} - ${it.message}",Toast.LENGTH_SHORT).show()
-        }
-//        authViewModelTest.token.observe(this) {
-//            when (it) {
-//                is ApiResponse.Failure -> binding.loginTest.text = it.message
-//                ApiResponse.Loading -> binding.loginTest.text = "Loading"
-//                is ApiResponse.Success -> {
-//                    userDataViewModel.SaveUserData(
-//                        UserData(
-//                            binding.phoneField.text.toString(),
-//                            it.data.accessToken ?: "",
-//                            it.data.refreshToken ?: ""
-//                        )
-//                    )
-//                }
+//        authRepository.getLoginObserve().observe(this) {
+//            if (it == null) {
+//                binding.loginTest.text = "Еrror"
+//                return@observe
 //            }
+//            userDataViewModel.SaveUserData(
+//                UserData(
+//                    binding.phoneField.text.toString(),
+//                    it.accessToken ?: "",
+//                    it.refreshToken ?: ""
+//                )
+//            )
 //        }
+//        authRepository.getErrorObserve().observe(this) {
+//            Toast.makeText(this, "Код ${it.code} - ${it.message}",Toast.LENGTH_SHORT).show()
+//        }
+        authViewModelTest.token.observe(this) {
+            when (it) {
+                is ApiResponse.Failure -> binding.loginTest.text = it.message
+                ApiResponse.Loading -> binding.loginTest.text = "Loading"
+                is ApiResponse.Success -> {
+                    userDataViewModel.SaveUserData(
+                        UserData(
+                            binding.phoneField.text.toString(),
+                            it.data.accessToken ?: "",
+                            it.data.refreshToken ?: ""
+                        )
+                    )
+                }
+            }
+        }
 
         binding.butEnter.setOnClickListener {
-                authRepository.Login(
+                authViewModelTest.login(
                     Login(
                         binding.phoneField.text.toString(),
                         binding.passField.text.toString()
-                    )
+                    ),
+                    object : ICoroutinesErrorHandler {
+                        @SuppressLint("SetTextI18n")
+                        override fun onError(message: String) {
+                            binding.loginTest.text = "Error! $message"
+                        }
+                    }
                 )
-//            authViewModelTest.loginTest(
-//                Login(
-//                    binding.phoneField.text.toString(),
-//                    binding.passField.text.toString()
-//                ),
-//                object : ICoroutinesErrorHandler {
-//                    override fun onError(message: String) {
-//                        binding.loginTest.text = "Error! $message"
-//                    }
-//                }
-//            )
+
         }
     }
 }
