@@ -41,8 +41,8 @@ class AuthorizationActivity : ComponentActivity() {
                     userDataViewModel.SaveUserData(
                         UserData(
                             binding.phoneField.text.toString(),
-                            it.data.accessToken,
-                            it.data.refreshToken
+                            it.data.accessToken ?: "",
+                            it.data.refreshToken ?: ""
                         )
                     )
                 }

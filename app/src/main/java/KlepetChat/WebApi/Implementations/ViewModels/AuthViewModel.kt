@@ -10,6 +10,9 @@ import KlepetChat.WebApi.Models.Response.Token
 
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -28,4 +31,8 @@ class AuthViewModel @Inject constructor(
     ){
         authRepository.login(login)
     }
+
+//    fun login(login: Login){
+//        authRepository.login(login)
+//    }
 }
