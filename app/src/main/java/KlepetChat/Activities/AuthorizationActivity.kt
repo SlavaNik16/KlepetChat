@@ -33,7 +33,7 @@ class AuthorizationActivity : ComponentActivity() {
             }
         }
 
-        authViewModel.GetToken().observe(this) {
+        authViewModel.token.observe(this) {
             when (it) {
                 is ApiResponse.Failure -> binding.loginTest.text = it.message
                 ApiResponse.Loading -> binding.loginTest.text = "Loading"
@@ -51,7 +51,7 @@ class AuthorizationActivity : ComponentActivity() {
 
         binding.butEnter.setOnClickListener {
 
-            authViewModel.login(
+            authViewModel.loginTest(
                 Login(
                     binding.phoneField.text.toString(),
                     binding.passField.text.toString()
