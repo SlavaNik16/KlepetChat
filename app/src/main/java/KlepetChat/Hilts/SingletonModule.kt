@@ -24,6 +24,10 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "us
 @Module
 @InstallIn(SingletonComponent::class)
 class SingletonModule {
+
+    companion object{
+        private val URL_BASE = "http://klepetapi.somee.com/api/"
+    }
     @Singleton
     @Provides
     fun providesDataStoreManager(@ApplicationContext context: Context): DataStoreManager = DataStoreManager(context)
@@ -58,8 +62,16 @@ class SingletonModule {
     @Provides
     fun providesRetrofitBuilder(): Retrofit.Builder =
         Retrofit.Builder()
-            .baseUrl("http://klepetapi.somee.com/api/")
+            .baseUrl(URL_BASE)
             .addConverterFactory(GsonConverterFactory.create())
+
+    @Singleton
+    @Provides
+    fun providesRetrofit(): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(URL_BASE)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
     @Singleton
     @Provides
