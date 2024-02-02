@@ -7,6 +7,4 @@ data class Token(
     val accessToken: String,
     @SerializedName("RefreshToken")
     val refreshToken: String,
-    @SerializedName("Code")
-    val code: Int = 200,
 )

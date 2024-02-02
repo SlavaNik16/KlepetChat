@@ -32,7 +32,4 @@ class AuthViewModel @Inject constructor(
         authRepository.login(login)
     }
 
-//    fun login(login: Login){
-//        authRepository.login(login)
-//    }
 }
