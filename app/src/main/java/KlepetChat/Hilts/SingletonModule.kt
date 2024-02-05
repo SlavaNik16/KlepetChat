@@ -60,18 +60,17 @@ class SingletonModule {
 
     @Singleton
     @Provides
-    fun providesRetrofitBuilder(): Retrofit.Builder =
-        Retrofit.Builder()
-            .baseUrl(URL_BASE)
-            .addConverterFactory(GsonConverterFactory.create())
-
-    @Singleton
-    @Provides
-    fun providesRetrofit(): Retrofit =
-        Retrofit.Builder()
-            .baseUrl(URL_BASE)
-            .addConverterFactory(GsonConverterFactory.create())
+    fun providesRetrofitBuilder():Retrofit.Builder {
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        var client = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
             .build()
+        return Retrofit.Builder()
+                .baseUrl(URL_BASE)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+    }
 
     @Singleton
     @Provides

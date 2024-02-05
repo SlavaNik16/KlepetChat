@@ -2,6 +2,7 @@ package KlepetChat.WebApi.Implementations
 
 import KlepetChat.WebApi.Models.Exceptions.Error
 import KlepetChat.WebApi.Models.Response.Token
+import android.util.Log
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +31,9 @@ import retrofit2.Response
             val response = call()
 
             try{
+                Log.d("POST","ResponseTry: ${response.isSuccessful}")
                 if(response.isSuccessful){
+                    Log.d("POST","Response: ${response.body()}")
                     response.body()?.let {
                             data-> emit(ApiResponse.Success(data))
                     }
