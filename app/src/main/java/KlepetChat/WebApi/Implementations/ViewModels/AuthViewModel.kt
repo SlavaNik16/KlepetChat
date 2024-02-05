@@ -25,6 +25,4 @@ class AuthViewModel @Inject constructor(
     ){
         authRepository.login(login)
     }
-
-
 }
