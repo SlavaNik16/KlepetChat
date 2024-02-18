@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private  val userRepository: UserRepository
+    private val userRepository: UserRepository
 ):BaseViewModel() {
     private val userResponse = MutableLiveData<ApiResponse<User>>()
     val user = userResponse

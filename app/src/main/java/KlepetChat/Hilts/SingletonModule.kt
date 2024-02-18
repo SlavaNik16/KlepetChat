@@ -80,6 +80,7 @@ class SingletonModule {
             .build()
             .create(IAuthService::class.java)
 
+
     @Singleton
     @Provides
     fun providesIUserService(retrofit: Retrofit.Builder): IUserService =
