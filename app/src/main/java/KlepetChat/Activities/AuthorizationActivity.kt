@@ -22,22 +22,18 @@ class AuthorizationActivity : ComponentActivity() {
     private lateinit var binding: AuthorizationBinding
     private val authViewModel: AuthViewModel by viewModels()
 
-    // private val authRepository: AuthRepository by viewModels()
-    //private var authApiExit =  AuthApiExit()
     private val userDataViewModel: UserDataViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = AuthorizationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        // Log.d("Test", "AuthViewModel = ${authViewModelTest}")
-        Log.d("Test", "UserDataViewModel = ${userDataViewModel}")
 
         userDataViewModel.userData.observe(this) {
 
             if (it?.accessToken.toString().isNotBlank()) {
                 Log.d("POST", "AccessToken = ${it?.accessToken} и refreshToken = ${it?.refreshToken}")
-//                var intent = Intent(this, MainActivity::class.java)
-//                startActivity(intent)
+                var intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
             }
         }
 
@@ -58,6 +54,11 @@ class AuthorizationActivity : ComponentActivity() {
         }
 
        binding.butEnter.setOnClickListener {
+           var passwrod = binding.passField
+           if(passwrod.length() < 8){
+               Toast.makeText(it.context, "Слишком маленький пароль (не меньше 8)", Toast.LENGTH_SHORT).show()
+               return@setOnClickListener
+           }
            authViewModel.login(
                Login(
                    binding.phoneField.text.toString(),

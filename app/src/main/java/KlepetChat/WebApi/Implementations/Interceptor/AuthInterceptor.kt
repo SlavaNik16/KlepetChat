@@ -1,6 +1,7 @@
 package KlepetChat.WebApi.Implementations.Interceptor
 
 import KlepetChat.DataSore.Context.DataStoreManager
+import android.util.Log
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -15,6 +16,8 @@ class AuthInterceptor @Inject  constructor(
         val userData = runBlocking {
             dataStoreManager.userDataFlow.first()
         }
+        Log.d("Debug","Перехватчик сработал")
+        Log.d("Intercept","Перехватчик сработал")
         val request = chain.request().newBuilder()
         request.addHeader("Authorization", "Bearer ${userData.accessToken}")
         return chain.proceed(request.build())

@@ -4,6 +4,7 @@ import KlepetChat.DataSore.Context.DataStoreManager
 import KlepetChat.WebApi.Implementations.Authentificator.AuthAuthenticator
 import KlepetChat.WebApi.Implementations.Interceptor.AuthInterceptor
 import KlepetChat.WebApi.Interfaces.IAuthService
+import KlepetChat.WebApi.Interfaces.User.IUserService
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -78,5 +79,12 @@ class SingletonModule {
         retrofit
             .build()
             .create(IAuthService::class.java)
+
+    @Singleton
+    @Provides
+    fun providesIUserService(retrofit: Retrofit.Builder): IUserService =
+        retrofit
+            .build()
+            .create(IUserService::class.java)
 
 }

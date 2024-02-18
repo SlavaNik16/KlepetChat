@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/Phone"
             android:inputType="text"
-            android:maxLength="10"
+            android:maxLength="11"
             android:text=""
             android:textSize="24sp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -88,7 +88,6 @@
             android:hint="@string/Password"
             android:inputType="textPassword"
             android:maxLength="15"
-
             android:text=""
             android:textSize="24sp" />
     </com.google.android.material.textfield.TextInputLayout>

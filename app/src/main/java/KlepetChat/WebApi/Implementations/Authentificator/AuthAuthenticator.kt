@@ -3,6 +3,7 @@ package KlepetChat.WebApi.Implementations.Authentificator
 import KlepetChat.DataSore.Context.DataStoreManager
 import KlepetChat.WebApi.Interfaces.ITokenService
 import KlepetChat.WebApi.Models.Response.Token
+import android.util.Log
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
@@ -19,23 +20,26 @@ class AuthAuthenticator @Inject constructor(
     private val dataStoreManager: DataStoreManager
 ) : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
-            val userData = runBlocking {
-                dataStoreManager.userDataFlow.first()
-            }
-            return runBlocking {
-                val token = Token(userData.accessToken, userData.refreshToken)
-                val newToken = PostRefreshToken(token)
+        val userData = runBlocking {
+            dataStoreManager.userDataFlow.first()
+        }
+        Log.d("Debug", "tokeRefresh")
+        return runBlocking {
 
-                if (!newToken.isSuccessful || newToken.body() == null) {
-                    dataStoreManager.UpdateTokens("", "")
-                }
-                newToken.body()?.let {
-                    dataStoreManager.UpdateTokens(it.accessToken, it.refreshToken)
-                    response.request.newBuilder()
-                        .header("Authorization", "Bearer ${it.accessToken}")
-                        .build()
-                }
+            Log.d("Auth", "tokeRefresh")
+            val token = Token(userData.accessToken, userData.refreshToken)
+            val newToken = PostRefreshToken(token)
+
+            if (!newToken.isSuccessful || newToken.body() == null) {
+                dataStoreManager.UpdateTokens("", "")
             }
+            newToken.body()?.let {
+                dataStoreManager.UpdateTokens(it.accessToken, it.refreshToken)
+                response.request.newBuilder()
+                    .header("Authorization", "Bearer ${it.accessToken}")
+                    .build()
+            }
+        }
     }
     private suspend fun PostRefreshToken(token: Token): retrofit2.Response<Token> {
         val loggingInterceptor = HttpLoggingInterceptor()
