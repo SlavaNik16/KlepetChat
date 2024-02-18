@@ -1,20 +1,18 @@
 package KlepetChat.WebApi.Implementations
 
+import KlepetChat.WebApi.Models.Exceptions.ApiValidationExceptionDetail
 import KlepetChat.WebApi.Models.Exceptions.Error
-import KlepetChat.WebApi.Models.Response.Token
+import KlepetChat.WebApi.Models.Exceptions.InvalidateItemModel
 import android.util.Log
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
+import com.google.gson.JsonArray
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
+import org.json.JSONObject
 import retrofit2.Response
 
     /**
@@ -40,9 +38,22 @@ import retrofit2.Response
                 }else{
                     response.errorBody()?.let { error ->
                         error.close()
-                        val parsedError: Error =
-                            Gson().fromJson(error.charStream(), Error::class.java)
-                        emit(ApiResponse.Failure(parsedError.code ,parsedError.message))
+                        when (response.code()) {
+                            409 -> {
+                                var invalidate = Gson().fromJson(
+                                    error.charStream(),
+                                    ApiValidationExceptionDetail::class.java)
+                                for(index:Int in 0 until invalidate.errors.size){
+                                    emit(ApiResponse.Failure(409, invalidate.errors[index].message))
+                                }
+                            }
+                            else -> {
+                                val parsedError: Error =Gson().fromJson(
+                                    error.charStream(),
+                                    Error::class.java)
+                                emit(ApiResponse.Failure(parsedError.code, parsedError.message))
+                            }
+                        }
                     }
                 }
             }catch (e:Exception){
@@ -51,34 +62,3 @@ import retrofit2.Response
         } ?:  emit(ApiResponse.Failure(408,"Время вышло! Пожалуйста повторите попытку снова."))
     }.flowOn(Dispatchers.IO)
 
-
-//    /**
-//     * Функция выполняет вызовы API,
-//     * в потоке ввода/ввывода,
-//     * @param flow - создание асинхронного потока в функции flow
-//     * @param withTimeoutOrNull - Тайм-аут(20 сек) остановки
-//     * @param emit - имитируется получение объектов из бд
-//     */
-//    fun<T> ApiRequestFlowCall(call: suspend () -> Call<T>): Flow<ApiResponse<T>> = flow {
-//        emit(ApiResponse.Loading)
-//
-//        withTimeoutOrNull(20000L){
-//            try{
-//                call.enqueue(object : Callback<T>{
-//                    override fun onResponse(call: Call<T>, response: Response<T>) {
-//                        response.body()?.let {
-//                            data -> ApiResponse.Success(data)
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<T>, t: Throwable) {
-//                        val parsedError: Error =
-//                            Gson().fromJson(t.localizedMessage, Error::class.java)
-//                        ApiResponse.Failure(parsedError.code ,parsedError.message)
-//                    }
-//                })
-//            }catch (e:Exception){
-//                emit(ApiResponse.Failure(400, e.message ?: e.toString()))
-//            }
-//        } ?:  emit(ApiResponse.Failure(408,"Время вышло! Пожалуйста повторите попытку снова."))
-//    }.flowOn(Dispatchers.IO)

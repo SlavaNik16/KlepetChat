@@ -11,5 +11,5 @@ import retrofit2.http.Query
 
 interface IAuthService {
     @POST("auth/login")
-    suspend fun postLogin(@Query("phone") phone: String, @Query("password") password: String): Response<Token>
+    suspend fun postLogin(@Body() login:Login): Response<Token>
 }

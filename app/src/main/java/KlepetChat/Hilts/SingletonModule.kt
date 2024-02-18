@@ -26,7 +26,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "us
 class SingletonModule {
 
     companion object{
-        private val URL_BASE = "http://klepetapi.somee.com/api/"
+        private val URL_BASE = "http://klepetapi.somee.com/"
     }
     @Singleton
     @Provides

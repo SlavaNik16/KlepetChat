@@ -9,7 +9,7 @@ class AuthRepository @Inject constructor(
     private val authApiService: IAuthService,
 ) {
     fun login(login: Login) = ApiRequestFlowResponse {
-        authApiService.postLogin(login.phone, login.password)
+        authApiService.postLogin(login)
     }
 
 }

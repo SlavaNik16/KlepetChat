@@ -15,7 +15,6 @@
         android:scrollbarSize="5dp"
         app:cardBackgroundColor="#314267"
         app:cardCornerRadius="60dp"
-        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutЗPhone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +42,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         app:counterEnabled="true"
-        app:counterMaxLength="10"
+        app:counterMaxLength="11"
         app:counterOverflowTextAppearance="@style/TextAppearance.AppCompat.Body1"
         app:counterTextAppearance="@style/TextAppearance.AppCompat.Body1"
         app:endIconMode="clear_text"
@@ -51,8 +50,7 @@
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardViewProfile"
-        app:prefixText="+7">
+        app:layout_constraintTop_toBottomOf="@+id/cardViewProfile">
 
 
         <com.google.android.material.textfield.TextInputEditText
@@ -90,6 +88,7 @@
             android:hint="@string/Password"
             android:inputType="textPassword"
             android:maxLength="15"
+
             android:text=""
             android:textSize="24sp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -157,14 +156,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-    <TextView
-        android:id="@+id/loginTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/butEnter"
-        tools:layout_editor_absoluteY="479dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

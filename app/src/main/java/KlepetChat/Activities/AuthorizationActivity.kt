@@ -36,15 +36,15 @@ class AuthorizationActivity : ComponentActivity() {
 
             if (it?.accessToken.toString().isNotBlank()) {
                 Log.d("POST", "AccessToken = ${it?.accessToken} и refreshToken = ${it?.refreshToken}")
-                var intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+//                var intent = Intent(this, MainActivity::class.java)
+//                startActivity(intent)
             }
         }
 
         authViewModel.token.observe(this) {
             when (it) {
-                is ApiResponse.Failure -> binding.loginTest.text = it.message
-                ApiResponse.Loading -> binding.loginTest.text = "Loading"
+                is ApiResponse.Failure -> Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                ApiResponse.Loading -> Toast.makeText(this, "Пожалуйста подождите!", Toast.LENGTH_SHORT).show()
                 is ApiResponse.Success -> {
                     userDataViewModel.SaveUserData(
                         UserData(
@@ -65,7 +65,7 @@ class AuthorizationActivity : ComponentActivity() {
                ),
                object : ICoroutinesErrorHandler {
                    override fun onError(message: String) {
-                       Toast.makeText(it.context, "Пользователь не найден!", Toast.LENGTH_SHORT).show()
+                       Toast.makeText(it.context, message, Toast.LENGTH_SHORT).show()
                    }
                }
            )
