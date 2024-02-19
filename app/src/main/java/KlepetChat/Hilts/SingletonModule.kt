@@ -27,7 +27,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "us
 class SingletonModule {
 
     companion object{
-        private val URL_BASE = "http://klepetapi.somee.com/"
+        val URL_BASE = "http://klepetapi.somee.com/"
     }
     @Singleton
     @Provides
@@ -83,8 +83,9 @@ class SingletonModule {
 
     @Singleton
     @Provides
-    fun providesIUserService(retrofit: Retrofit.Builder): IUserService =
+    fun providesIUserService(okHttpClient: OkHttpClient, retrofit: Retrofit.Builder): IUserService =
         retrofit
+            .client(okHttpClient)
             .build()
             .create(IUserService::class.java)
 

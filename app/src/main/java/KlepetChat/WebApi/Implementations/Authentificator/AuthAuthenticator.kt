@@ -1,6 +1,7 @@
 package KlepetChat.WebApi.Implementations.Authentificator
 
 import KlepetChat.DataSore.Context.DataStoreManager
+import KlepetChat.Hilts.SingletonModule
 import KlepetChat.WebApi.Interfaces.ITokenService
 import KlepetChat.WebApi.Models.Response.Token
 import android.util.Log
@@ -47,7 +48,7 @@ class AuthAuthenticator @Inject constructor(
         val okHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://klepetapi.somee.com/api/")
+            .baseUrl(SingletonModule.URL_BASE)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

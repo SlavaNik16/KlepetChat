@@ -26,18 +26,35 @@ class MainActivity : ComponentActivity() {
         setContentView(binding.root)
 
         userViewModel.user.observe(this){
-            if(it is ApiResponse.Success) {
-                Toast.makeText(this, "Добро пожаловать!\n" +
-                        "${it.data.surname} ${it.data.name}", Toast.LENGTH_SHORT).show()
+            when(it) {
+                is ApiResponse.Success -> {
+                    Toast.makeText(
+                        this, "Добро пожаловать!\n" +
+                                "${it.data.surname} ${it.data.name}", Toast.LENGTH_SHORT
+                    ).show()
+                }
+                is ApiResponse.Failure -> {
+                    Toast.makeText(
+                        this@MainActivity, "Проверка! Войдите еще раз в аккаунт", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                is ApiResponse.Loading -> {
+
+                }
             }
         }
 
         userDataViewModel.userData.observe(this){
             if(it == null) return@observe
+            if(it.accessToken == ""){
+                var intent = Intent(this@MainActivity, AuthorizationActivity::class.java)
+                startActivity(intent)
+            }
             userViewModel.getByPhone(it.phone, object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
-                    var intent = Intent(this@MainActivity, AuthorizationActivity::class.java)
-                    startActivity(intent)
+                    Toast.makeText(
+                        this@MainActivity, "Error! ${message}\n", Toast.LENGTH_SHORT)
+                        .show()
                 }
             })
         }
