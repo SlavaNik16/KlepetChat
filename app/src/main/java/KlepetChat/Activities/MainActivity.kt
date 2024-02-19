@@ -45,8 +45,7 @@ class MainActivity : ComponentActivity() {
         }
 
         userDataViewModel.userData.observe(this){
-            if(it == null) return@observe
-            if(it.accessToken == ""){
+            if((it!!.accessToken ?: "") == ""){
                 var intent = Intent(this@MainActivity, AuthorizationActivity::class.java)
                 startActivity(intent)
             }

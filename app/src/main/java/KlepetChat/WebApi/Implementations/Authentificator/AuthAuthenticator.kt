@@ -27,10 +27,12 @@ class AuthAuthenticator @Inject constructor(
         Log.d("Debug", "tokeRefresh")
         return runBlocking {
 
-            Log.d("Auth", "tokeRefresh")
+            Log.d("Auth", "tokeRefresh, ${userData.accessToken} ${userData.refreshToken}")
             val token = Token(userData.accessToken, userData.refreshToken)
             val newToken = PostRefreshToken(token)
 
+            Log.d("Auth", "newToken, ${newToken.isSuccessful}")
+            Log.d("Auth", "newTokenBody, ${newToken.body()}")
             if (!newToken.isSuccessful || newToken.body() == null) {
                 dataStoreManager.UpdateTokens("", "")
             }
