@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
+        android:name="KlepetChat.HiltApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -11,16 +12,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KlepetChat"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".Activities.RegisterActivity"
+            android:name="KlepetChat.Activities.MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.KlepetChat" />
+        <activity
+            android:name="KlepetChat.Activities.RegisterActivity"
             android:exported="false"
             android:label="@string/title_activity_register"
             android:theme="@style/Theme.KlepetChat" />
         <activity
-            android:name=".Activities.MainActivity"
+            android:name="KlepetChat.Activities.AuthorizationActivity"
+            android:label="@string/title_activity_authorization"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.KlepetChat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
