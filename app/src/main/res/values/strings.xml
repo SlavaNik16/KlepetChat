@@ -7,10 +7,13 @@
     <string name="Auth">Авторизация</string>
     <string name="Phone">Телефон</string>
     <string name="Password">Пароль</string>
+    <string name="Surname">Фамилия</string>
+    <string name="Name">Имя</string>
     <string name="Enter">Войти</string>
     <string name="Required">Обязательно</string>
     <string name="NotAccount">Нет аккаунта</string>
     <string name="Register">Зарегистрируйтесь</string>
+    <string name="RegisterMe">Зарегистрироваться</string>
     <string name="I_forgot_My_Password">Я забыл пароль</string>
 
     <string name="Empty"> </string>

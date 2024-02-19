@@ -52,10 +52,13 @@ class AuthorizationActivity : ComponentActivity() {
                 }
             }
         }
-
+        binding.txtButRegister.setOnClickListener {
+            var intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
        binding.butEnter.setOnClickListener {
-           var passwrod = binding.passField
-           if(passwrod.length() < 8){
+           var password = binding.passField
+           if(password.length() < 8){
                Toast.makeText(it.context, "Слишком маленький пароль (не меньше 8)", Toast.LENGTH_SHORT).show()
                return@setOnClickListener
            }

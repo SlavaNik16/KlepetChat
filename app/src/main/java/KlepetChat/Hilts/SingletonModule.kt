@@ -4,7 +4,7 @@ import KlepetChat.DataSore.Context.DataStoreManager
 import KlepetChat.WebApi.Implementations.Authentificator.AuthAuthenticator
 import KlepetChat.WebApi.Implementations.Interceptor.AuthInterceptor
 import KlepetChat.WebApi.Interfaces.IAuthService
-import KlepetChat.WebApi.Interfaces.User.IUserService
+import KlepetChat.WebApi.Interfaces.IUserService
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

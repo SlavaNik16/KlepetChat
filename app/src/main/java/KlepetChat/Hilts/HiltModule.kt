@@ -3,7 +3,7 @@ package KlepetChat.Hilts
 import KlepetChat.WebApi.Implementations.Repositories.AuthRepository
 import KlepetChat.WebApi.Implementations.Repositories.UserRepository
 import KlepetChat.WebApi.Interfaces.IAuthService
-import KlepetChat.WebApi.Interfaces.User.IUserService
+import KlepetChat.WebApi.Interfaces.IUserService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
