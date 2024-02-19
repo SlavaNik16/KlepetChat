@@ -96,7 +96,6 @@
         android:id="@+id/butEnter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="butEnterClick"
         android:text="@string/Enter"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -111,7 +110,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/txtForgetPas"
+        app:layout_constraintBottom_toTopOf="@+id/txtButForgetPas"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/butEnter">
@@ -128,14 +127,13 @@
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/txtRegister"
+            android:id="@+id/txtButRegister"
             android:layout_width="112dp"
             android:layout_height="55dp"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:ems="1"
             android:gravity="center"
-            android:onClick="txtRegisterClick"
             android:text="@string/Register"
             android:textColor="#2196F3"
             android:textSize="24sp"
@@ -144,7 +142,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/txtForgetPas"
+        android:id="@+id/txtButForgetPas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/I_forgot_My_Password"

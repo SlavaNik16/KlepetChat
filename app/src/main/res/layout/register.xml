@@ -1,20 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="KlepetChat.Activities.RegisterActivity">
 
-    <EditText
-        android:id="@+id/textRegister"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView10"
+        android:layout_width="310dp"
+        android:layout_height="92dp"
+        android:layout_marginTop="30dp"
+        android:rotation="0"
+        android:scrollbarSize="5dp"
+        app:cardBackgroundColor="#243E77"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:rotation="0"
+            android:text="@string/Register"
+            android:textColor="#C0C1C5"
+            android:textSize="24sp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:fontFamily="sans-serif"
-        android:gravity="center"
-        android:inputType="phone"
-        android:text="Регистрация"
-        android:autofillHints="Регистрация"
-        android:textSize="24sp" />
-</LinearLayout>
+        android:layout_marginBottom="80dp"
+        android:orientation="vertical"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView10">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutEmail"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="60"
+            app:helperText="Обязательно*"
+            app:helperTextTextColor="@color/red"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+
+                android:id="@+id/surnameField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/Surname"
+                android:inputType="textEmailAddress"
+                android:maxLength="60"
+                android:text="" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="60"
+            app:endIconMode="clear_text"
+
+            app:helperText="Обязательно*"
+            app:helperTextTextColor="@color/red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/Name"
+                android:inputType="text"
+                android:maxLength="60"
+                android:text="" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutPhone"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="11"
+
+            app:endIconMode="custom"
+            app:helperText="Обязательно*"
+            app:helperTextTextColor="@color/red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:startIconDrawable="@drawable/ic_phone">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phoneField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/Phone"
+                android:inputType="phone"
+                android:maxLength="11"
+                android:text="" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutPassword"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="15"
+            app:endIconMode="password_toggle"
+
+            app:helperText="Обязательно*"
+            app:helperTextTextColor="@color/red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:startIconDrawable="@drawable/ic_lock">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/Password"
+                android:inputType="textPassword"
+                android:maxLength="15"
+                android:text="" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/butReg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="@string/RegisterMe"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
