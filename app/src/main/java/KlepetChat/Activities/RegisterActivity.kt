@@ -1,6 +1,5 @@
 package KlepetChat.Activities
 
-import KlepetChat.DataSore.Models.UserData
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
@@ -10,7 +9,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.example.klepetchat.databinding.RegisterBinding
 import dagger.hilt.android.AndroidEntryPoint
 
