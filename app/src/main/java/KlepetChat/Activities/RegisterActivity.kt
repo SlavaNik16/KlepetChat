@@ -1,6 +1,7 @@
 package KlepetChat.Activities
 
 import KlepetChat.WebApi.Implementations.ApiResponse
+import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Request.UserRegister
@@ -16,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class RegisterActivity : ComponentActivity() {
     private lateinit var binding : RegisterBinding
     private val  userViewModel: UserViewModel by viewModels()
+    private val  chatViewModel: ChatViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = RegisterBinding.inflate(layoutInflater)
@@ -32,6 +34,13 @@ class RegisterActivity : ComponentActivity() {
                 is ApiResponse.Success -> {
                     Toast.makeText(this,
                         "Регистрация прошла успешно!", Toast.LENGTH_SHORT).show()
+                    chatViewModel.postFavorites(it.data.id,
+                        object : ICoroutinesErrorHandler {
+                            override fun onError(message: String) {
+                                Toast.makeText(applicationContext,
+                                    "Ошибка! ${message}", Toast.LENGTH_SHORT).show()
+                            }
+                        })
                     var intent = Intent(this, AuthorizationActivity::class.java)
                     startActivity(intent)
                 }
