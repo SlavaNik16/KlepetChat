@@ -6,13 +6,18 @@ import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
+import KlepetChat.WebApi.Models.Response.Chat
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnChildAttachStateChangeListener
+import com.example.klepetchat.R
 import com.example.klepetchat.databinding.MainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,31 +30,35 @@ class MainActivity : ComponentActivity() {
     private val userDataViewModel: UserDataViewModel by viewModels()
     private val chatViewModel: ChatViewModel by viewModels()
     private lateinit var adapter: RecyclerView.Adapter<ChatViewItemAdapter.ChatViewItemHolder>
+    private lateinit var chats: MutableList<Chat>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        chatViewModel.chats.observe(this){
-            when(it) {
+        chatViewModel.chats.observe(this) {
+            when (it) {
                 is ApiResponse.Success -> {
-                    var  layoutManager:RecyclerView.LayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL,false)
+                    var layoutManager: RecyclerView.LayoutManager =
+                        LinearLayoutManager(this, RecyclerView.VERTICAL, false)
                     binding.recyclerChat.layoutManager = layoutManager
-                    adapter = ChatViewItemAdapter(this, it.data)
+                    this.chats = it.data
+                    adapter = ChatViewItemAdapter(this, chats)
                     binding.recyclerChat.adapter = adapter
                 }
+
                 is ApiResponse.Failure -> {
                     Toast.makeText(
-                        this@MainActivity, "Ошибка! ${it.message}", Toast.LENGTH_SHORT)
+                        this@MainActivity, "Ошибка! ${it.message}", Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
+
                 is ApiResponse.Loading -> {
-                    Toast.makeText(applicationContext,
-                        "Идет загрузка данных, пожалуйста подождите! ", Toast.LENGTH_SHORT)
-                        .show()
-                    }
+
                 }
             }
+        }
 
         userViewModel.user.observe(this){
             when(it) {
@@ -89,5 +98,18 @@ class MainActivity : ComponentActivity() {
                 }
             })
         }
+        binding.recyclerChat.addOnChildAttachStateChangeListener(
+            object : OnChildAttachStateChangeListener {
+                override fun onChildViewAttachedToWindow(view: View) {
+                    var position = binding.recyclerChat.findContainingViewHolder(view)!!.adapterPosition
+                    view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener{
+                        Toast.makeText(view.context, "ToWindow ${position}",Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onChildViewDetachedFromWindow(view: View) {
+                    Toast.makeText(view.context, "FromWindow",Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 }
