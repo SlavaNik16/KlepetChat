@@ -1,30 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/imageProfile"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/baseline_account_circle_24"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@id/textMessage"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/textMessage"
         android:layout_width="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/back_send_message"
+        android:background="@drawable/back_received_message"
         android:padding="12dp"
         android:textColor="@color/white"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imageProfile"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintWidth_percent="0.75" />
 
     <TextView
         android:id="@+id/textDateTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
+        android:layout_marginTop="10dp"
         android:textSize="10sp"
-        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/textMessage"
         app:layout_constraintTop_toBottomOf="@id/textMessage"
         />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
