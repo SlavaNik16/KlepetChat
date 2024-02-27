@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="KlepetChat.Activities.ChatActivity">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -25,7 +26,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout3"
+            android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -42,12 +43,12 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imageChat"
             android:layout_width="54dp"
             android:layout_height="54dp"
             android:background="@drawable/baseline_account_circle_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout3"
+            app:layout_constraintStart_toEndOf="@+id/back"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
@@ -56,12 +57,12 @@
             android:layout_margin="10dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView4"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
+            app:layout_constraintEnd_toStartOf="@+id/butMenu"
+            app:layout_constraintStart_toEndOf="@+id/imageChat"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -69,7 +70,7 @@
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/txtCountPerson"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -79,7 +80,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/butMenu"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginEnd="10dp"
@@ -114,22 +115,22 @@
             android:textAlignment="gravity"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView6"
+            app:layout_constraintEnd_toStartOf="@+id/sendMessage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/sendMessage"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="5dp"
             android:background="@drawable/ic_round_send"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView5"
+            app:layout_constraintEnd_toStartOf="@+id/sendEmoticon"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/sendEmoticon"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="5dp"
@@ -145,7 +146,7 @@
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/backChatFon"
+        android:background="@drawable/back_chat_fon"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:overScrollMode="never"

@@ -1,5 +1,6 @@
 package KlepetChat.Activities
 
+import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.ChatViewItemAdapter
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
@@ -103,7 +104,11 @@ class MainActivity : ComponentActivity() {
                 override fun onChildViewAttachedToWindow(view: View) {
                     var position = binding.recyclerChat.findContainingViewHolder(view)!!.adapterPosition
                     view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener{
-                        Toast.makeText(view.context, "ToWindow ${position}",Toast.LENGTH_SHORT).show()
+                        var chat = this@MainActivity.chats[position]
+                        val intent = Intent(this@MainActivity, ChatActivity::class.java)
+                        intent.putExtra(Constants.KEY_CHAT_ID, chat.id)
+                        intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
+                        startActivity(intent)
                     }
                 }
 
