@@ -14,4 +14,7 @@ interface IChatService {
 
     @POST("chat/favorites")
     suspend fun postFavorites(@Query("userId") userId: UUID):Response<Boolean>
+
+    @POST("chat/contact")
+    suspend fun postContact(@Query("phoneOther") phoneOther: String):Response<Chat>
 }

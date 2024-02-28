@@ -6,15 +6,7 @@
     android:layout_height="match_parent"
     tools:context="KlepetChat.Activities.ChatActivity">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/scrollView2"
-        app:layout_constraintStart_toStartOf="@+id/scrollView2"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
@@ -158,5 +150,15 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
         >
     </androidx.recyclerview.widget.RecyclerView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/scrollView2"
+        app:layout_constraintStart_toStartOf="@+id/scrollView2"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

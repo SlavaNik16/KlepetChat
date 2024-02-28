@@ -10,17 +10,17 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
-import com.example.klepetchat.databinding.RegisterBinding
+import com.example.klepetchat.databinding.ActivityRegisterBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RegisterActivity : ComponentActivity() {
-    private lateinit var binding : RegisterBinding
+    private lateinit var binding : ActivityRegisterBinding
     private val  userViewModel: UserViewModel by viewModels()
     private val  chatViewModel: ChatViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = RegisterBinding.inflate(layoutInflater)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         userViewModel.user.observe(this) {

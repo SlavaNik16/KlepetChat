@@ -102,15 +102,35 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerChat"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout3"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerChat"
+        app:layout_constraintStart_toStartOf="@+id/recyclerChat"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+    <ImageView
+        android:id="@+id/butAddChat"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/ic_baseline_add_circle"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerChat"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

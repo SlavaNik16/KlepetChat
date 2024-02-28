@@ -2,7 +2,6 @@ package KlepetChat.Activities
 
 import KlepetChat.DataSore.Models.UserData
 import KlepetChat.WebApi.Implementations.ApiResponse
-
 import KlepetChat.WebApi.Implementations.ViewModels.AuthViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler

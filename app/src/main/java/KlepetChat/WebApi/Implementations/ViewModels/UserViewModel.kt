@@ -15,15 +15,25 @@ class UserViewModel @Inject constructor(
     private val userRepository: UserRepository
 ):BaseViewModel() {
     private val userResponse = MutableLiveData<ApiResponse<User>>()
+    private val usersResponse = MutableLiveData<ApiResponse<MutableList<User>>>()
     val user = userResponse
+    val users = usersResponse
     fun getByPhone(phone:String, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
-        user,
+        userResponse,
         coroutineErrorHandler
     ){
         userRepository.getByPhone(phone)
     }
+
+    fun getContactsOther( coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+        usersResponse,
+        coroutineErrorHandler
+    ){
+        userRepository.getContactsOther()
+    }
+
     fun postCreate(userRegister:UserRegister, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
-        user,
+        userResponse,
         coroutineErrorHandler
     ){
         userRepository.postCreate(userRegister)

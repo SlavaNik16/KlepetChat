@@ -18,4 +18,5 @@
 
     <string name="Empty"> </string>
     <string name="sendMessage">Написать сообщение...</string>
+    <string name="add_group">Создать группу</string>
 </resources>

@@ -17,19 +17,29 @@ class ChatViewModel @Inject constructor(
 ): BaseViewModel() {
     private val chatsResponse = MutableLiveData<ApiResponse<MutableList<Chat>>>()
     private val chatExists = MutableLiveData<ApiResponse<Boolean>>()
+    private val chatResponse = MutableLiveData<ApiResponse<Chat>>()
     val chats = chatsResponse
     val exists = chatExists
+    val chat = chatResponse
 
     fun getChats( coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
-        chats,
+        chatsResponse,
         coroutineErrorHandler
     ){
         chatRepository.getChats()
     }
+
     fun postFavorites(userId: UUID, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         chatExists,
         coroutineErrorHandler
     ){
         chatRepository.postFavorites(userId)
+    }
+
+    fun postContact(phoneOther: String, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+        chatResponse,
+        coroutineErrorHandler
+    ){
+        chatRepository.postContact(phoneOther)
     }
 }
