@@ -7,6 +7,7 @@ import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
@@ -21,11 +22,29 @@ class ChatActivity : ComponentActivity() {
     private var isPrev: Boolean = false;
     private val chatViewModel: ChatViewModel by viewModels()
     private val messageViewModel: MessageViewModel by viewModels()
+    private lateinit var chatId:UUID
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        messageViewModel.messages.observe(this){
+            when (it) {
+                is ApiResponse.Success -> {
+                    Log.d("Message", "${it.data}")
+                }
+
+                is ApiResponse.Failure -> {
+                    Toast.makeText(
+                        this@ChatActivity, "Ошибка! ${it.message}", Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                is ApiResponse.Loading -> {
+                    return@observe
+                }
+            }
+        }
         loadDetails()
         chatViewModel.chat.observe(this) {
             when (it) {
@@ -50,8 +69,6 @@ class ChatActivity : ComponentActivity() {
             }
             if (!isPrev) {
                 try {
-                    var chatIdStr = intent.extras?.getString(Constants.KEY_CHAT_ID)
-                    var chatId = UUID.fromString(chatIdStr)
                     sendMessage(chatId)
                 }catch (ex:Exception){
                     Toast.makeText(
@@ -81,12 +98,26 @@ class ChatActivity : ComponentActivity() {
         var argument = intent.extras
         var txtName = argument?.getString(Constants.KEY_CHAT_NAME)
         isPrev = argument?.getBoolean(Constants.KEY_IS_PREV) == true
+        if(!isPrev){
+            var chatIdStr = argument?.getString(Constants.KEY_CHAT_ID).toString()
+            chatId = UUID.fromString(chatIdStr)
+            getMessages(chatId)
+        }
         binding.txtName.text = txtName
     }
-
     private fun sendMessage(chatId:UUID){
         messageViewModel.createMessage(chatId,
             binding.inputMessage.text.toString(),
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    Toast.makeText(
+                        this@ChatActivity, "Ошибка! $message", Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+    private fun getMessages(chatId:UUID){
+        messageViewModel.getMessagesWithChatId(chatId,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
                     Toast.makeText(

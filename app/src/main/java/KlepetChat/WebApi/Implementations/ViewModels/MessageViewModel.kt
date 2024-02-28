@@ -15,8 +15,17 @@ class MessageViewModel @Inject constructor(
     private val messageRepository: MessageRepository,
 ): BaseViewModel() {
     private val messageResponse = MutableLiveData<ApiResponse<Message>>()
+    private val messagesResponse = MutableLiveData<ApiResponse<MutableList<Message>>>()
     val message = messageResponse
+    val messages= messagesResponse
 
+
+    fun getMessagesWithChatId(chatId: UUID, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+        messagesResponse,
+        coroutineErrorHandler
+    ) {
+        messageRepository.getMessagesWithChatId(chatId)
+    }
 
     fun createMessage(chatId: UUID, message: String, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         messageResponse,

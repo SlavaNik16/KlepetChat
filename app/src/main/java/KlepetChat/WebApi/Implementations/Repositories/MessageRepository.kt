@@ -8,6 +8,10 @@ import javax.inject.Inject
 class MessageRepository @Inject constructor(
     private val messageService: IMessageService,
 ) {
+
+    fun getMessagesWithChatId(chatId: UUID) = ApiRequestFlowResponse {
+        messageService.getMessagesWithChatId(chatId)
+    }
     fun createMessage(chatId: UUID, message:String) = ApiRequestFlowResponse {
         messageService.createMessage(chatId, message)
     }
