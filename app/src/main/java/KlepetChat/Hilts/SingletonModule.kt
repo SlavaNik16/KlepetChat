@@ -4,6 +4,8 @@ import KlepetChat.DataSore.Context.DataStoreManager
 import KlepetChat.WebApi.Implementations.Authentificator.AuthAuthenticator
 import KlepetChat.WebApi.Implementations.Interceptor.AuthInterceptor
 import KlepetChat.WebApi.Interfaces.IAuthService
+import KlepetChat.WebApi.Interfaces.IChatService
+import KlepetChat.WebApi.Interfaces.IMessageService
 import KlepetChat.WebApi.Interfaces.IUserService
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -88,5 +90,21 @@ class SingletonModule {
             .client(okHttpClient)
             .build()
             .create(IUserService::class.java)
+
+    @Singleton
+    @Provides
+    fun providesIChatService(okHttpClient: OkHttpClient, retrofit: Retrofit.Builder): IChatService =
+        retrofit
+            .client(okHttpClient)
+            .build()
+            .create(IChatService::class.java)
+
+    @Singleton
+    @Provides
+    fun providesIMessageService(okHttpClient: OkHttpClient, retrofit: Retrofit.Builder): IMessageService =
+        retrofit
+            .client(okHttpClient)
+            .build()
+            .create(IMessageService::class.java)
 
 }

@@ -1,8 +1,12 @@
 package KlepetChat.Hilts
 
 import KlepetChat.WebApi.Implementations.Repositories.AuthRepository
+import KlepetChat.WebApi.Implementations.Repositories.ChatRepository
+import KlepetChat.WebApi.Implementations.Repositories.MessageRepository
 import KlepetChat.WebApi.Implementations.Repositories.UserRepository
 import KlepetChat.WebApi.Interfaces.IAuthService
+import KlepetChat.WebApi.Interfaces.IChatService
+import KlepetChat.WebApi.Interfaces.IMessageService
 import KlepetChat.WebApi.Interfaces.IUserService
 import dagger.Module
 import dagger.Provides
@@ -17,4 +21,10 @@ class HiltModule {
 
     @Provides
     fun providesUserRepository(userService: IUserService) = UserRepository(userService)
+
+    @Provides
+    fun providesChatRepository(chatService: IChatService) = ChatRepository(chatService)
+
+    @Provides
+    fun providesMessageRepository(messageService: IMessageService) = MessageRepository(messageService)
 }

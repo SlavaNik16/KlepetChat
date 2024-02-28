@@ -6,6 +6,7 @@ data class User (
     val id: UUID,
     val surname: String,
     val name: String,
+    val phone: String,
     val nickname: String?,
     val photo: String?,
     val aboutMe: String?,
