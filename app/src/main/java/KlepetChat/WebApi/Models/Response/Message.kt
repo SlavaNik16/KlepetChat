@@ -15,5 +15,4 @@ data class Message (
     val createdAt: Date,
     @SerializedName("chatId")
     val chatId: UUID,
-
 )
