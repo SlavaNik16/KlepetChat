@@ -8,6 +8,7 @@ import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
+import KlepetChat.WebApi.Models.Response.User
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnChildAttachStateChangeListener
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityMainBinding
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -64,6 +66,7 @@ class MainActivity : ComponentActivity() {
             when (it) {
                 is ApiResponse.Success -> {
                     phone = it.data.phone
+                    init(it.data)
                     chatViewModel.getChats(
                         object : ICoroutinesErrorHandler {
                             override fun onError(message: String) {
@@ -130,6 +133,16 @@ class MainActivity : ComponentActivity() {
                     return
                 }
             })
+    }
+
+    private fun init(user: User) {
+        if(!user.photo.toString().isBlank()){
+            Picasso.get()
+                .load(user.photo)
+                .placeholder(R.drawable.baseline_account_circle_24)
+                .error(R.drawable.baseline_account_circle_24)
+                .into(binding.imageUser)
+        }
     }
 
     private fun loading(isLoading: Boolean) {
