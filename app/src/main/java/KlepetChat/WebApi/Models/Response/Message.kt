@@ -9,6 +9,10 @@ data class Message (
     val id: UUID,
     @SerializedName("nameBy")
     val nameBy:String,
+    @SerializedName("phone")
+    val phone:String,
+    @SerializedName("photo")
+    val photo:String?,
     @SerializedName("text")
     val text: String,
     @SerializedName("createdAt")

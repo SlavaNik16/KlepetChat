@@ -135,21 +135,20 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/scrollView2"
-        android:layout_width="0dp"
+        android:id="@+id/recyclerChat"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/back_chat_fon"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:overScrollMode="never"
         android:padding="10dp"
+        app:stackFromEnd="true"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
-        >
-    </androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -157,8 +156,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/scrollView2"
-        app:layout_constraintStart_toStartOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerChat"
+        app:layout_constraintStart_toStartOf="@+id/recyclerChat"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

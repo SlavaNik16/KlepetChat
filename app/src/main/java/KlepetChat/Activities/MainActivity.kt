@@ -31,6 +31,7 @@ class MainActivity : ComponentActivity() {
     private val chatViewModel: ChatViewModel by viewModels()
     private lateinit var adapter: RecyclerView.Adapter<ChatViewItemAdapter.ChatViewItemHolder>
     private lateinit var chats: MutableList<Chat>
+    private lateinit var phone:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -50,6 +51,7 @@ class MainActivity : ComponentActivity() {
                         this@MainActivity, "Ошибка! ${it.message}", Toast.LENGTH_SHORT
                     )
                         .show()
+                    exitAuth()
                 }
 
                 is ApiResponse.Loading -> {
@@ -61,6 +63,7 @@ class MainActivity : ComponentActivity() {
         userViewModel.user.observe(this) {
             when (it) {
                 is ApiResponse.Success -> {
+                    phone = it.data.phone
                     chatViewModel.getChats(
                         object : ICoroutinesErrorHandler {
                             override fun onError(message: String) {
@@ -77,6 +80,7 @@ class MainActivity : ComponentActivity() {
                         this@MainActivity, "Ошибка! ${it.message}", Toast.LENGTH_SHORT
                     )
                         .show()
+                    exitAuth()
                 }
 
                 is ApiResponse.Loading -> {
@@ -96,6 +100,7 @@ class MainActivity : ComponentActivity() {
                         this@MainActivity, "Error! ${message}\n", Toast.LENGTH_SHORT
                     )
                         .show()
+                    exitAuth()
                 }
             })
         }
@@ -115,6 +120,7 @@ class MainActivity : ComponentActivity() {
                         intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
                         intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
                         intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
+                        intent.putExtra(Constants.KEY_USER_PHONE, phone)
                         intent.putExtra(Constants.KEY_IS_PREV, false)
                         startActivity(intent)
                     }
@@ -132,5 +138,9 @@ class MainActivity : ComponentActivity() {
         } else {
             binding.progressBar.visibility = View.INVISIBLE
         }
+    }
+
+    private fun exitAuth(){
+        userDataViewModel.ClearUserData()
     }
 }
