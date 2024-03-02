@@ -5,6 +5,7 @@ import KlepetChat.Adapters.UserViewItemAdapter
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
+import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.User
 import android.content.Intent
 import android.os.Bundle
@@ -69,6 +70,7 @@ class ChooseActivity : ComponentActivity() {
                         intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
                         intent.putExtra(Constants.KEY_CHAT_NAME, user.name)
                         intent.putExtra(Constants.KEY_IMAGE_URL, user.photo)
+                        intent.putExtra(Constants.KEY_CHAT_TYPE, ChatTypes.Contact)
                         intent.putExtra(Constants.KEY_IS_PREV, true)
                         startActivity(intent)
                     }

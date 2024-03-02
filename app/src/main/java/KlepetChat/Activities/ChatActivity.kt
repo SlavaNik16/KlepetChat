@@ -6,6 +6,7 @@ import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
+import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.Message
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -14,7 +15,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
+import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityChatBinding
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.UUID
 
@@ -78,7 +81,8 @@ class ChatActivity : ComponentActivity() {
             when (it) {
                 is ApiResponse.Success -> {
                     chatId = it.data.id
-                    sendMessage(it.data.id)
+                    sendMessage(chatId)
+                    EventUpdateMessages()
                 }
 
                 is ApiResponse.Failure -> {
@@ -104,13 +108,32 @@ class ChatActivity : ComponentActivity() {
         binding.recyclerChat.adapter = chatAdapter
         EventUpdateMessages()
         var txtName = argument?.getString(Constants.KEY_CHAT_NAME)
+        binding.txtName.text = txtName
+
+        var imageChat = argument?.getString(Constants.KEY_IMAGE_URL)
+        if(!imageChat.isNullOrBlank()){
+            Picasso.get()
+                .load(imageChat)
+                .placeholder(R.drawable.baseline_account_circle_24)
+                .error(R.drawable.baseline_account_circle_24)
+                .into(binding.imageChat)
+        }
+
+        var chatType = argument?.getString(Constants.KEY_CHAT_TYPE).toString()
+        when(chatType){
+            ChatTypes.Contact.name ->binding.textDesc.text = "В сети"
+            ChatTypes.Group.name -> binding.textDesc.text = "20 подписчиков"
+            ChatTypes.Favorites.name -> {
+                binding.textDesc.visibility = View.GONE
+                binding.imageChat.setImageResource(R.drawable.favorites_icon)
+            }
+        }
         isPrev = argument?.getBoolean(Constants.KEY_IS_PREV) == true
         if(!isPrev){
             var chatIdStr = argument?.getString(Constants.KEY_CHAT_ID).toString()
             chatId = UUID.fromString(chatIdStr)
             getMessages(chatId)
         }
-        binding.txtName.text = txtName
 
     }
 
@@ -123,7 +146,7 @@ class ChatActivity : ComponentActivity() {
         startActivity(intent)
     }
     private fun onSendMessage(){
-        if (binding.inputMessage.text.isBlank()) {
+        if (binding.inputMessage.text.isNullOrBlank()) {
             return
         }
         if (!isPrev) {

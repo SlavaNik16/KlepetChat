@@ -120,10 +120,12 @@ class MainActivity : ComponentActivity() {
                     view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
                         var chat = this@MainActivity.chats[position]
                         val intent = Intent(this@MainActivity, ChatActivity::class.java)
+
                         intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
                         intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
                         intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
                         intent.putExtra(Constants.KEY_USER_PHONE, phone)
+                        intent.putExtra(Constants.KEY_CHAT_TYPE, chat.chatType.name)
                         intent.putExtra(Constants.KEY_IS_PREV, false)
                         startActivity(intent)
                     }

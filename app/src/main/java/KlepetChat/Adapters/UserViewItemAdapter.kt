@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klepetchat.R
-import com.example.klepetchat.databinding.ChatViewItemBinding
+import com.example.klepetchat.databinding.UserViewItemBinding
 import com.squareup.picasso.Picasso
 class UserViewItemAdapter() : RecyclerView.Adapter<UserViewItemAdapter.UserViewItemHolder>() {
 
@@ -20,7 +20,7 @@ class UserViewItemAdapter() : RecyclerView.Adapter<UserViewItemAdapter.UserViewI
         this.chatViewItems = chatViewItems;
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewItemHolder {
-        var chatView: View = LayoutInflater.from(context).inflate(R.layout.chat_view_item, parent, false)
+        var chatView: View = LayoutInflater.from(context).inflate(R.layout.user_view_item, parent, false)
         return  UserViewItemHolder(chatView)
     }
 
@@ -30,13 +30,15 @@ class UserViewItemAdapter() : RecyclerView.Adapter<UserViewItemAdapter.UserViewI
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: UserViewItemHolder, position: Int) {
-        holder.binding.DataUserId.text = chatViewItems[position].id.toString()
-        holder.binding.textNameChat.text =
+        holder.binding.textName.text =
             "${chatViewItems[position].surname} ${chatViewItems[position].name}"
-        holder.binding.textDesc.text = chatViewItems[position].aboutMe
-        holder.binding.imageTypeChat.visibility = View.INVISIBLE
+        holder.binding.textDesc.text = String()
+        if(!chatViewItems[position].phone.isNullOrBlank()) {
+            holder.binding.textDesc.text = chatViewItems[position].phone
+        }
+
         var picasso =  Picasso.get()
-        if(chatViewItems[position].photo.toString().isBlank()){
+        if(chatViewItems[position].photo.isNullOrBlank()){
             picasso
                 .load(R.drawable.baseline_account_circle_24)
                 .into(holder.binding.imageUser)
@@ -50,9 +52,9 @@ class UserViewItemAdapter() : RecyclerView.Adapter<UserViewItemAdapter.UserViewI
     }
 
     class UserViewItemHolder : RecyclerView.ViewHolder{
-        lateinit var binding: ChatViewItemBinding
+        var binding: UserViewItemBinding
         constructor(itemView: View):super(itemView){
-            binding = ChatViewItemBinding.bind(itemView)
+            binding = UserViewItemBinding.bind(itemView)
         }
     }
 }
