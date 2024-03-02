@@ -88,7 +88,7 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun setData(message:Message){
             binding.textMessage.text = message.text
             binding.textDateTime.text = getReadableDateTime(message.createdAt)
-            if(message.photo.toString().isBlank()){
+            if(message.photo.isNullOrBlank()){
                 binding.imageProfile.setBackgroundResource(R.drawable.baseline_account_circle_24)
                 return
             }

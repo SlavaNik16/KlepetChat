@@ -30,6 +30,7 @@ class SingletonModule {
 
     companion object{
         val URL_BASE = "http://klepetapi.somee.com/"
+        val URL_IMG = "http://upload-soft.photolab.me/"
     }
     @Singleton
     @Provides
@@ -107,4 +108,19 @@ class SingletonModule {
             .build()
             .create(IMessageService::class.java)
 
+//    @Singleton
+//    @Provides
+//    fun providesIImageService(): IImageService {
+//        val loggingInterceptor = HttpLoggingInterceptor()
+//        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+//        var client = OkHttpClient.Builder()
+//            .addInterceptor(loggingInterceptor)
+//            .build()
+//        return Retrofit.Builder()
+//            .baseUrl(URL_IMG)
+//            .client(client)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//            .create(IImageService::class.java)
+//    }
 }

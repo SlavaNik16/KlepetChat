@@ -17,6 +17,10 @@ class ChatRepository @Inject constructor(
         chatService.postContact(phoneOther)
     }
 
+    fun postGroup(name:String) = ApiRequestFlowResponse {
+        chatService.postGroup(name)
+    }
+
     fun getChats() = ApiRequestFlowResponse {
         chatService.getChats()
     }

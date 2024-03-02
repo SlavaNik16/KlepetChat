@@ -27,4 +27,7 @@ class HiltModule {
 
     @Provides
     fun providesMessageRepository(messageService: IMessageService) = MessageRepository(messageService)
+
+//    @Provides
+//    fun providesImageRepository(imageService: IImageService) = ImageRepository(imageService)
 }
