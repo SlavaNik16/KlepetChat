@@ -19,5 +19,5 @@ interface IChatService {
     suspend fun postContact(@Query("phoneOther") phoneOther: String):Response<Chat>
 
     @POST("chat/group")
-    suspend fun postGroup(@Query("name") name: String, photo:String? = null):Response<Chat>
+    suspend fun postGroup(@Query("name") name: String, @Query("photo") photo:String? = null):Response<Chat>
 }

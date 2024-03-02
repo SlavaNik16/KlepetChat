@@ -84,6 +84,7 @@ class ChooseActivity : ComponentActivity() {
         imageViewModel.img.observe(this){
             when (it) {
                 is ApiResponse.Success -> {
+                    dialogBinding.textHelpLoadImage.text = "Фото загружено!"
                   var imageHttp = it.data.string()
                     iamgeURL = imageHttp
                 }
@@ -169,6 +170,7 @@ class ChooseActivity : ComponentActivity() {
     private val getAction = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         var bitmap: Bitmap? = null
         if (it.resultCode == RESULT_OK) {
+            dialogBinding.textHelpLoadImage.text = "Идет загрузка фото..."
             val selectedImage = it?.data?.data
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
