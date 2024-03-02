@@ -9,11 +9,14 @@ import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.User
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.MediaStore.Images
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 
@@ -44,6 +48,7 @@ class ChooseActivity : ComponentActivity() {
     private val imageViewModel: ImageViewModel by viewModels()
     private lateinit var adapter: RecyclerView.Adapter<UserViewItemAdapter.UserViewItemHolder>
     private lateinit var users: MutableList<User>
+    private var iamgeURL:String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChooseBinding.inflate(layoutInflater)
@@ -80,7 +85,7 @@ class ChooseActivity : ComponentActivity() {
             when (it) {
                 is ApiResponse.Success -> {
                   var imageHttp = it.data.string()
-                    Log.d("Image", imageHttp)
+                    iamgeURL = imageHttp
                 }
 
                 is ApiResponse.Failure -> {
@@ -140,7 +145,11 @@ class ChooseActivity : ComponentActivity() {
                 if(dialogBinding.groupField.text.isNullOrBlank()){
                     return@OnClickListener
                 }
-                chatViewModel.postGroup(dialogBinding.groupField.text.toString(),
+                Log.d("Post", dialogBinding.groupField.text.toString())
+                Log.d("Post", "$iamgeURL")
+                chatViewModel.postGroup(
+                    dialogBinding.groupField.text.toString(),
+                    iamgeURL,
                     object : ICoroutinesErrorHandler {
                         override fun onError(message: String) {
                             Toast.makeText(this@ChooseActivity,"Ошибка! $message",
@@ -150,7 +159,7 @@ class ChooseActivity : ComponentActivity() {
             })
 
         dialogBinding.imageChat.setOnClickListener {
-            var photoPickerIntent = Intent(Intent.ACTION_PICK);
+            var photoPickerIntent = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             photoPickerIntent.setType("image/*")
             getAction.launch(photoPickerIntent)
         }
@@ -167,7 +176,9 @@ class ChooseActivity : ComponentActivity() {
                 e.printStackTrace()
             }
             dialogBinding.imageChat.setImageBitmap(bitmap)
-            var file = File(selectedImage?.path.toString())
+
+            val tempUri: Uri = getImageUri(applicationContext, bitmap!!)
+            val file: File = File(getRealPathFromURI(tempUri))
             val requestFile =
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
             val filePart =
@@ -182,5 +193,24 @@ class ChooseActivity : ComponentActivity() {
                     }
                 })
         }
+    }
+    fun getImageUri(inContext: Context, inImage: Bitmap): Uri{
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        return Uri.parse(path)
+    }
+
+    fun getRealPathFromURI(uri: Uri?): String {
+        val cursor = contentResolver.query(uri!!, null, null, null, null)
+        var largeImagePath = ""
+        try {
+            cursor!!.moveToFirst()
+            val idx = cursor.getColumnIndex(Images.ImageColumns.DATA)
+            largeImagePath = cursor.getString(idx)
+        }finally {
+            cursor?.close()
+        }
+        return largeImagePath
     }
 }

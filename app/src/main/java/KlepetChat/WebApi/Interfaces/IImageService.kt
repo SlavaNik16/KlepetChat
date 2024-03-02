@@ -10,5 +10,5 @@ import retrofit2.http.Part
 interface IImageService {
     @Multipart
     @POST("upload.php")
-    fun postImg(@Part file1: MultipartBody.Part): Response<ResponseBody>
+    suspend fun postImg(@Part file1: MultipartBody.Part): Response<ResponseBody>
 }

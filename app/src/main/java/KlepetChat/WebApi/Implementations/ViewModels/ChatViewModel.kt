@@ -43,10 +43,10 @@ class ChatViewModel @Inject constructor(
         chatRepository.postContact(phoneOther)
     }
 
-    fun postGroup(name: String, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+    fun postGroup(name: String, photo:String? = null, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         chatResponse,
         coroutineErrorHandler
     ){
-        chatRepository.postGroup(name)
+        chatRepository.postGroup(name,photo)
     }
 }
