@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name="KlepetChat.Activities.ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name="KlepetChat.Activities.ChooseActivity"
             android:exported="false" />
         <activity
