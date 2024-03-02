@@ -1,7 +1,14 @@
 package KlepetChat.WebApi.Interfaces
 
-//interface IImageService {
-//    @Multipart
-//    @POST("upload.php")
-//    fun postImg(@Part file1: MultipartBody.Part): Response<ResponseBody>
-//}
+import okhttp3.MultipartBody
+import okhttp3.ResponseBody
+import retrofit2.Response
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
+
+interface IImageService {
+    @Multipart
+    @POST("upload.php")
+    fun postImg(@Part file1: MultipartBody.Part): Response<ResponseBody>
+}

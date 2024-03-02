@@ -5,6 +5,7 @@ import KlepetChat.WebApi.Implementations.Authentificator.AuthAuthenticator
 import KlepetChat.WebApi.Implementations.Interceptor.AuthInterceptor
 import KlepetChat.WebApi.Interfaces.IAuthService
 import KlepetChat.WebApi.Interfaces.IChatService
+import KlepetChat.WebApi.Interfaces.IImageService
 import KlepetChat.WebApi.Interfaces.IMessageService
 import KlepetChat.WebApi.Interfaces.IUserService
 import android.content.Context
@@ -108,19 +109,13 @@ class SingletonModule {
             .build()
             .create(IMessageService::class.java)
 
-//    @Singleton
-//    @Provides
-//    fun providesIImageService(): IImageService {
-//        val loggingInterceptor = HttpLoggingInterceptor()
-//        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-//        var client = OkHttpClient.Builder()
-//            .addInterceptor(loggingInterceptor)
-//            .build()
-//        return Retrofit.Builder()
-//            .baseUrl(URL_IMG)
-//            .client(client)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//            .create(IImageService::class.java)
-//    }
+    @Singleton
+    @Provides
+    fun providesIImageService(): IImageService {
+        return Retrofit.Builder()
+            .baseUrl(URL_IMG)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(IImageService::class.java)
+    }
 }

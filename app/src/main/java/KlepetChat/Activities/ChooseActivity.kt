@@ -4,14 +4,14 @@ import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.UserViewItemAdapter
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.ImageViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.User
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.net.Uri
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -32,6 +32,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.io.IOException
 
 
 @AndroidEntryPoint
@@ -40,7 +41,7 @@ class ChooseActivity : ComponentActivity() {
     private lateinit var dialogBinding: AlertDialogCreateGroupBinding
     private val userViewModel: UserViewModel by viewModels()
     private val chatViewModel: ChatViewModel by viewModels()
-    //private val imageViewModel: ImageViewModel by viewModels()
+    private val imageViewModel: ImageViewModel by viewModels()
     private lateinit var adapter: RecyclerView.Adapter<UserViewItemAdapter.UserViewItemHolder>
     private lateinit var users: MutableList<User>
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,24 +76,24 @@ class ChooseActivity : ComponentActivity() {
                 ).show()
             }
         })
-//        imageViewModel.img.observe(this){
-//            when (it) {
-//                is ApiResponse.Success -> {
-//                  var imageHttp = it.data.string()
-//                    Log.d("Image", imageHttp)
-//                }
-//
-//                is ApiResponse.Failure -> {
-//                    Toast.makeText(
-//                        this@ChooseActivity, "Ошибка! ${it.message}", Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//
-//                is ApiResponse.Loading -> {
-//                    return@observe
-//                }
-//            }
-//        }
+        imageViewModel.img.observe(this){
+            when (it) {
+                is ApiResponse.Success -> {
+                  var imageHttp = it.data.string()
+                    Log.d("Image", imageHttp)
+                }
+
+                is ApiResponse.Failure -> {
+                    Toast.makeText(
+                        this@ChooseActivity, "Ошибка! ${it.message}", Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                is ApiResponse.Loading -> {
+                    return@observe
+                }
+            }
+        }
         binding.contactRecycler.addOnChildAttachStateChangeListener(
             object : RecyclerView.OnChildAttachStateChangeListener {
                 override fun onChildViewAttachedToWindow(view: View) {
@@ -149,43 +150,37 @@ class ChooseActivity : ComponentActivity() {
             })
 
         dialogBinding.imageChat.setOnClickListener {
-            var photoPickerIntent = Intent(MediaStore.ACTION_PICK_IMAGES);
+            var photoPickerIntent = Intent(Intent.ACTION_PICK);
+            photoPickerIntent.setType("image/*")
             getAction.launch(photoPickerIntent)
         }
         dialog.show()
     }
 
     private val getAction = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        if(it.resultCode == RESULT_OK){
-            var chosenImageUri: Uri? = it.data?.data;
-            Log.d("Image", chosenImageUri.toString())
-            var file = File(chosenImageUri.toString())
-            val requestFile=
+        var bitmap: Bitmap? = null
+        if (it.resultCode == RESULT_OK) {
+            val selectedImage = it?.data?.data
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            dialogBinding.imageChat.setImageBitmap(bitmap)
+            var file = File(selectedImage?.path.toString())
+            val requestFile =
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
             val filePart =
                 MultipartBody.Part.createFormData("file", file.name, requestFile)
-            dialogBinding.imageChat.setImageBitmap(
-                BitmapFactory.decodeFile(file.absolutePath + file.name)
-            )
-//            imageViewModel.postImg(filePart,
-//                object : ICoroutinesErrorHandler {
-//                    override fun onError(message: String) {
-//                        Toast.makeText(this@ChooseActivity, "Ошибка $message",
-//                            Toast.LENGTH_SHORT).show()
-//                    }
-//                })
+            imageViewModel.postImg(filePart,
+                object : ICoroutinesErrorHandler {
+                    override fun onError(message: String) {
+                        Toast.makeText(
+                            this@ChooseActivity, "Ошибка $message",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
         }
     }
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (resultCode == RESULT_OK)
-//        {
-//            var chosenImageUri: Uri? = data?.data;
-//            Log.d("Image", chosenImageUri.toString())
-//            var file = File(chosenImageUri?.path.toString())
-//            val requestFile= RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
-//            val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
-//
-//        }
-//    }
 }
