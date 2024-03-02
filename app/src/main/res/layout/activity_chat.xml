@@ -34,14 +34,16 @@
                 android:background="@drawable/ic_arrow_back" />
         </LinearLayout>
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageChat"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
-            android:background="@drawable/baseline_account_circle_24"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/baseline_account_circle_24"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/back"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -57,12 +59,13 @@
                 android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="TextView"
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/txtCountPerson"
+                android:id="@+id/textDesc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -135,21 +138,20 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/scrollView2"
-        android:layout_width="0dp"
+        android:id="@+id/recyclerChat"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/back_chat_fon"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:overScrollMode="never"
         android:padding="10dp"
+        app:stackFromEnd="true"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
-        >
-    </androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -157,8 +159,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/scrollView2"
-        app:layout_constraintStart_toStartOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerChat"
+        app:layout_constraintStart_toStartOf="@+id/recyclerChat"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="KlepetChat.Activities.AuthorizationActivity">
 
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewProfile"
         android:layout_width="200dp"
@@ -58,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/Phone"
-            android:inputType="text"
+            android:inputType="phone"
             android:maxLength="11"
             android:text=""
             android:textSize="24sp" />

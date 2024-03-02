@@ -5,6 +5,7 @@ import KlepetChat.WebApi.Implementations.Authentificator.AuthAuthenticator
 import KlepetChat.WebApi.Implementations.Interceptor.AuthInterceptor
 import KlepetChat.WebApi.Interfaces.IAuthService
 import KlepetChat.WebApi.Interfaces.IChatService
+import KlepetChat.WebApi.Interfaces.IImageService
 import KlepetChat.WebApi.Interfaces.IMessageService
 import KlepetChat.WebApi.Interfaces.IUserService
 import android.content.Context
@@ -30,6 +31,7 @@ class SingletonModule {
 
     companion object{
         val URL_BASE = "http://klepetapi.somee.com/"
+        val URL_IMG = "http://upload-soft.photolab.me/"
     }
     @Singleton
     @Provides
@@ -107,4 +109,13 @@ class SingletonModule {
             .build()
             .create(IMessageService::class.java)
 
+    @Singleton
+    @Provides
+    fun providesIImageService(): IImageService {
+        return Retrofit.Builder()
+            .baseUrl(URL_IMG)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(IImageService::class.java)
+    }
 }

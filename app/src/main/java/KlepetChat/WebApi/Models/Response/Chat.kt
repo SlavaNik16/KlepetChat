@@ -9,8 +9,8 @@ data class Chat (
     val id: UUID,
     @SerializedName("name")
     val name: String,
-    @SerializedName("messages")
-    val messages: MutableList<Message>,
+    @SerializedName("lastMessage")
+    val lastMessage: String?,
     @SerializedName("chatType")
     val chatType: ChatTypes,
     @SerializedName("photo")
