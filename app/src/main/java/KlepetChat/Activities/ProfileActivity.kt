@@ -32,14 +32,16 @@ class ProfileActivity : ComponentActivity() {
     }
 
     private fun setObserve() {
-        userViewModel.user.observe(this){getUserApi(it)}
+        userViewModel.user.observe(this) { getUserApi(it) }
     }
-    private fun getUserApi(api:ApiResponse<User>){
+
+    private fun getUserApi(api: ApiResponse<User>) {
         when (api) {
             is ApiResponse.Success -> {
                 user = api.data
                 initProfile(user)
             }
+
             is ApiResponse.Failure -> {
                 Toast.makeText(
                     this, "Ошибка! $api.message", Toast.LENGTH_SHORT
@@ -90,20 +92,22 @@ class ProfileActivity : ComponentActivity() {
         startActivity(intent)
         finish()
     }
+
     private fun exitAuth() {
         userDataViewModel.ClearUserData()
         var intent = Intent(this, AuthorizationActivity::class.java)
         startActivity(intent)
         finish()
     }
-    private fun initProfile(user:User){
+
+    private fun initProfile(user: User) {
         var fio = "${user.surname} ${user.name}"
         binding?.textFIO?.text = fio
         binding?.textFIOEdit?.text = fio
         binding?.textPhone?.text = user.phone
         binding?.textNickname?.text = user.nickname
         binding?.inputMessageAboutMe?.setText(user.aboutMe)
-        if(user.photo.isNullOrBlank()){
+        if (user.photo.isNullOrBlank()) {
             return
         }
         Picasso.get()

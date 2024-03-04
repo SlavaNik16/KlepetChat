@@ -154,15 +154,15 @@ class MainActivity : AppCompatActivity() {
         binding?.butAddChat?.setOnClickListener { onAddChat() }
         binding?.recyclerChat?.addOnChildAttachStateChangeListener(onRecyclerAttachState())
         binding?.navigationView?.setNavigationItemSelectedListener { setMenuItem(it) }
-        bindingHeader?.imageMode?.setOnClickListener{setMode()}
+        bindingHeader?.imageMode?.setOnClickListener { setMode() }
     }
 
     private fun setMode() {
         var modeTag = bindingHeader?.imageMode?.tag.toString()
-        if(modeTag == Constants.KEY_TAG_MOON){
+        if (modeTag == Constants.KEY_TAG_MOON) {
             bindingHeader?.imageMode?.setImageResource(R.drawable.ic_sun)
             bindingHeader?.imageMode?.tag = Constants.KEY_TAG_SUN
-        }else{
+        } else {
             bindingHeader?.imageMode?.setImageResource(R.drawable.ic_moon)
             bindingHeader?.imageMode?.tag = Constants.KEY_TAG_MOON
         }

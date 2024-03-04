@@ -17,9 +17,9 @@ import java.util.UUID
 
 @AndroidEntryPoint
 class RegisterActivity : ComponentActivity() {
-    private var binding : ActivityRegisterBinding? = null
-    private val  userViewModel: UserViewModel by viewModels()
-    private val  chatViewModel: ChatViewModel by viewModels()
+    private var binding: ActivityRegisterBinding? = null
+    private val userViewModel: UserViewModel by viewModels()
+    private val chatViewModel: ChatViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -33,36 +33,48 @@ class RegisterActivity : ComponentActivity() {
         removeListeners()
         binding = null
     }
-    private fun setListeners(){
+
+    private fun setListeners() {
         binding?.butReg?.setOnClickListener { onRegister() }
     }
-    private fun removeListeners(){
+
+    private fun removeListeners() {
         binding?.butReg?.setOnClickListener(null)
     }
-    private fun setObserve(){
-        userViewModel.user.observe(this) {  createUser(it) }
+
+    private fun setObserve() {
+        userViewModel.user.observe(this) { createUser(it) }
     }
-    private fun createUser(api:ApiResponse<User>){
+
+    private fun createUser(api: ApiResponse<User>) {
         when (api) {
             is ApiResponse.Failure ->
                 Toast.makeText(this, api.message, Toast.LENGTH_SHORT).show()
 
             ApiResponse.Loading ->
-                Toast.makeText(this,
-                    "Пожалуйста подождите!",Toast.LENGTH_SHORT ).show()
+                Toast.makeText(
+                    this,
+                    "Пожалуйста подождите!", Toast.LENGTH_SHORT
+                ).show()
+
             is ApiResponse.Success -> {
-                Toast.makeText(this,
-                    "Регистрация прошла успешно!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Регистрация прошла успешно!", Toast.LENGTH_SHORT
+                ).show()
                 postFavorites(api.data.id)
                 navigateToAuthorization()
             }
         }
     }
-    private fun onRegister(){
+
+    private fun onRegister() {
         var password = binding!!.passwordField
-        if(password.length() < 8){
-            Toast.makeText(applicationContext, "Слишком маленький пароль (не меньше 8)",
-                Toast.LENGTH_SHORT).show()
+        if (password.length() < 8) {
+            Toast.makeText(
+                applicationContext, "Слишком маленький пароль (не меньше 8)",
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
         userViewModel.postCreate(
@@ -74,22 +86,28 @@ class RegisterActivity : ComponentActivity() {
             ),
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
-                    Toast.makeText(applicationContext, "Ошибка! $message",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        applicationContext, "Ошибка! $message",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         )
     }
-    private fun postFavorites(userId: UUID){
+
+    private fun postFavorites(userId: UUID) {
         chatViewModel.postFavorites(userId,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
-                    Toast.makeText(applicationContext,
-                        "Ошибка! $message", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        applicationContext,
+                        "Ошибка! $message", Toast.LENGTH_SHORT
+                    ).show()
                 }
             })
     }
-    private fun navigateToAuthorization(){
+
+    private fun navigateToAuthorization() {
         var intent = Intent(this, AuthorizationActivity::class.java)
         startActivity(intent)
         finish()

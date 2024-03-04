@@ -179,7 +179,7 @@ class ChatActivity : ComponentActivity() {
 
     private fun initChat() {
         var phone = intent.extras?.getString(Constants.KEY_USER_PHONE)
-        if(phone.isNullOrBlank()){
+        if (phone.isNullOrBlank()) {
             return
         }
         chatViewModel.postContact(phone,

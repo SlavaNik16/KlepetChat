@@ -29,17 +29,19 @@ class AuthorizationActivity : ComponentActivity() {
         setObserve()
 
 
-
     }
 
-    private fun setObserve(){
-        userDataViewModel.userData.observe(this) {navigateToMain(it)  }
-        authViewModel.token.observe(this) {saveUserData(it)}
+    private fun setObserve() {
+        userDataViewModel.userData.observe(this) { navigateToMain(it) }
+        authViewModel.token.observe(this) { saveUserData(it) }
     }
-    private fun saveUserData(api:ApiResponse<Token>){
+
+    private fun saveUserData(api: ApiResponse<Token>) {
         when (api) {
             is ApiResponse.Failure -> Toast.makeText(this, api.message, Toast.LENGTH_SHORT).show()
-            ApiResponse.Loading -> Toast.makeText(this, "Пожалуйста подождите!", Toast.LENGTH_SHORT).show()
+            ApiResponse.Loading -> Toast.makeText(this, "Пожалуйста подождите!", Toast.LENGTH_SHORT)
+                .show()
+
             is ApiResponse.Success -> {
                 userDataViewModel.SaveUserData(
                     UserData(
@@ -58,14 +60,20 @@ class AuthorizationActivity : ComponentActivity() {
         binding?.butEnter?.setOnClickListener(null)
         binding = null
     }
-    private fun setListeners(){
-        binding?.txtButRegister?.setOnClickListener {navigateToRegister() }
-        binding?.butEnter?.setOnClickListener {login()}
+
+    private fun setListeners() {
+        binding?.txtButRegister?.setOnClickListener { navigateToRegister() }
+        binding?.butEnter?.setOnClickListener { login() }
     }
-    private fun login(){
+
+    private fun login() {
         var password = binding!!.passField
-        if(password.length() < 8){
-            Toast.makeText(applicationContext, "Слишком маленький пароль (не меньше 8)", Toast.LENGTH_SHORT).show()
+        if (password.length() < 8) {
+            Toast.makeText(
+                applicationContext,
+                "Слишком маленький пароль (не меньше 8)",
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
         authViewModel.login(
@@ -80,12 +88,14 @@ class AuthorizationActivity : ComponentActivity() {
             }
         )
     }
-    private fun navigateToRegister(){
+
+    private fun navigateToRegister() {
         var intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
         finish()
     }
-    private fun navigateToMain(userData: UserData?){
+
+    private fun navigateToMain(userData: UserData?) {
         if (!userData?.accessToken.isNullOrBlank()) {
             var intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
