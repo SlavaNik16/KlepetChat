@@ -24,4 +24,10 @@
     <string name="Nickname">Имя пользователя</string>
     <string name="example_about_me">Любые подробности, например возраст, род занятий или город.\nПример: 20 лет, программист из Санкт-Петербурга.</string>
     <string name="example_nickname">С помощью имени пользователя другие люди смогут связаться с Вами в KlepetChat, не зная Вашего телефона.</string>
+    <string name="setting">Настройки</string>
+    <string name="add_contact">Контакты</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="help">Поддержка</string>
+    <string name="exit">Выйти</string>
 </resources>

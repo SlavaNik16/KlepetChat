@@ -8,38 +8,42 @@ import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
+import KlepetChat.WebApi.Models.Response.User
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityMainBinding
-import com.example.klepetchat.databinding.ActivityProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var drawLayout: DrawerLayout
 
     private val userViewModel: UserViewModel by viewModels()
     private val userDataViewModel: UserDataViewModel by viewModels()
     private val chatViewModel: ChatViewModel by viewModels()
     private lateinit var adapter: RecyclerView.Adapter<ChatViewItemAdapter.ChatViewItemHolder>
+
     private lateinit var chats: MutableList<Chat>
-    private lateinit var phone:String
+    private lateinit var user: User
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        initDrawLayout()
         setContentView(binding.root)
         loading(true)
         setListeners()
+
         chatViewModel.chats.observe(this) {
             when (it) {
                 is ApiResponse.Success -> {
@@ -66,7 +70,7 @@ class MainActivity : ComponentActivity() {
         userViewModel.user.observe(this) {
             when (it) {
                 is ApiResponse.Success -> {
-                    phone = it.data.phone
+                    user = it.data
                     chatViewModel.getChats(
                         object : ICoroutinesErrorHandler {
                             override fun onError(message: String) {
@@ -111,28 +115,40 @@ class MainActivity : ComponentActivity() {
 
     }
 
-    private fun setListeners(){
-        binding.butAddChat.setOnClickListener {onAddChat()}
-        binding.recyclerChat.addOnChildAttachStateChangeListener(onRecyclerAttachState())
-        //binding.imageProfile.setOnClickListener {onPressProfile()}
+    private fun initDrawLayout() {
+        setSupportActionBar(binding.toolBar)
+        drawLayout = binding.drawerLayout
+        var toggle = ActionBarDrawerToggle(this, drawLayout, binding.toolBar, R.string.open, R.string.close)
+        drawLayout.addDrawerListener(toggle)
+        toggle.syncState()
     }
 
-    private fun onPressProfile(){
-//        val intent = Intent(this@MainActivity, ProfileActivity::class.java)
-//        startActivity(intent)
-        var dialogAlert: AlertDialog.Builder = AlertDialog.Builder(this)
-        var view = LayoutInflater.from(dialogAlert.context).inflate(R.layout.activity_profile, null)
-        var dialogBinding = ActivityProfileBinding.bind(view)
-        dialogAlert.setView(view)
-        dialogAlert.setCancelable(true)
-        var dialog = dialogAlert.show()
-        onPressAlertDialog(dialog, dialogBinding)
-    }
-    private fun onPressAlertDialog(dialog: AlertDialog, dialogBinding:ActivityProfileBinding){
-        dialogBinding.imageButtonClose.setOnClickListener {
-            dialog.dismiss()
+
+    private fun setListeners() {
+        binding.butAddChat.setOnClickListener { onAddChat() }
+        binding.recyclerChat.addOnChildAttachStateChangeListener(onRecyclerAttachState())
+        binding.navigationView.setNavigationItemSelectedListener{
+            when(it.itemId){
+                R.id.nav_add_group -> {
+                    Toast.makeText(this@MainActivity, "nav_add_group", Toast.LENGTH_SHORT).show()
+                }
+                R.id.nav_add_contact -> {
+                    Toast.makeText(this@MainActivity, "nav_add_contact", Toast.LENGTH_SHORT).show()
+                }
+                R.id.nav_settings -> {
+                    Toast.makeText(this@MainActivity, "nav_settings", Toast.LENGTH_SHORT).show()
+                }
+                R.id.nav_help -> {
+                    Toast.makeText(this@MainActivity, "nav_help", Toast.LENGTH_SHORT).show()
+                }
+                R.id.nav_exit -> {
+                    Toast.makeText(this@MainActivity, "nav_exit", Toast.LENGTH_SHORT).show()
+                }
+            }
+            return@setNavigationItemSelectedListener true
         }
     }
+
     private fun onRecyclerAttachState(): RecyclerView.OnChildAttachStateChangeListener {
         return object : RecyclerView.OnChildAttachStateChangeListener {
             override fun onChildViewAttachedToWindow(view: View) {
@@ -145,7 +161,7 @@ class MainActivity : ComponentActivity() {
                     intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
                     intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
                     intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
-                    intent.putExtra(Constants.KEY_USER_PHONE, phone)
+                    intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
                     intent.putExtra(Constants.KEY_CHAT_TYPE, chat.chatType.name)
                     intent.putExtra(Constants.KEY_IS_PREV, false)
                     startActivity(intent)
@@ -157,7 +173,8 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-    private fun onAddChat(){
+
+    private fun onAddChat() {
         val intent = Intent(this@MainActivity, ChooseActivity::class.java)
         startActivity(intent)
     }
@@ -170,7 +187,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun exitAuth(){
+    private fun exitAuth() {
         userDataViewModel.ClearUserData()
     }
 }
