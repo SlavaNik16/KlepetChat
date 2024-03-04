@@ -62,6 +62,4 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
         }
 
     }
-
-
 }

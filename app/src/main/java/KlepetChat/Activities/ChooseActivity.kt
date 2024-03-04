@@ -17,7 +17,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.MediaStore.Images
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -34,6 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
@@ -41,8 +41,8 @@ import java.io.IOException
 
 @AndroidEntryPoint
 class ChooseActivity : ComponentActivity() {
-    private lateinit var binding: ActivityChooseBinding
-    private lateinit var dialogBinding: AlertDialogCreateGroupBinding
+    private var binding: ActivityChooseBinding? = null
+    private var dialogBinding: AlertDialogCreateGroupBinding? = null
     private val userViewModel: UserViewModel by viewModels()
     private val chatViewModel: ChatViewModel by viewModels()
     private val imageViewModel: ImageViewModel by viewModels()
@@ -52,28 +52,54 @@ class ChooseActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChooseBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
         setListeners()
-        userViewModel.users.observe(this){
-            when (it) {
-                is ApiResponse.Success -> {
-                    this.users = it.data
-                    adapter = UserViewItemAdapter(this, users)
-                    binding.contactRecycler.adapter = adapter
-                }
+        setObserve()
+        getContactsOther()
+    }
 
-                is ApiResponse.Failure -> {
-                    Toast.makeText(
-                        this@ChooseActivity, "Ошибка! ${it.message}", Toast.LENGTH_SHORT
-                    ).show()
-                }
+    private fun getUsers(api:ApiResponse<MutableList<User>>){
+        when (api) {
+            is ApiResponse.Success -> {
+                this.users = api.data
+                adapter = UserViewItemAdapter(this, users)
+                binding?.contactRecycler?.adapter = adapter
+            }
 
-                is ApiResponse.Loading -> {
-                    return@observe
-                }
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    this@ChooseActivity, "Ошибка! ${api.message}", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                return
             }
         }
+    }
+    private fun getHttpImage(api:ApiResponse<ResponseBody>){
+        when (api) {
+            is ApiResponse.Success -> {
+                dialogBinding?.textHelpLoadImage?.text = "Фото загружено!"
+                var imageHttp = api.data.string()
+                iamgeURL = imageHttp
+            }
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    this@ChooseActivity, "Ошибка! ${api.message}", Toast.LENGTH_SHORT
+                ).show()
+            }
+            is ApiResponse.Loading -> {
+                return
+            }
+        }
+    }
+    private fun setObserve() {
+        userViewModel.users.observe(this){ getUsers(it) }
+        imageViewModel.img.observe(this){getHttpImage(it)}
+    }
 
+    private fun getContactsOther() {
         userViewModel.getContactsOther(object : ICoroutinesErrorHandler {
             override fun onError(message: String) {
                 Toast.makeText(
@@ -81,56 +107,48 @@ class ChooseActivity : ComponentActivity() {
                 ).show()
             }
         })
-        imageViewModel.img.observe(this){
-            when (it) {
-                is ApiResponse.Success -> {
-                    dialogBinding.textHelpLoadImage.text = "Фото загружено!"
-                  var imageHttp = it.data.string()
-                    iamgeURL = imageHttp
-                }
-
-                is ApiResponse.Failure -> {
-                    Toast.makeText(
-                        this@ChooseActivity, "Ошибка! ${it.message}", Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                is ApiResponse.Loading -> {
-                    return@observe
-                }
-            }
-        }
-        binding.contactRecycler.addOnChildAttachStateChangeListener(
-            object : RecyclerView.OnChildAttachStateChangeListener {
-                override fun onChildViewAttachedToWindow(view: View) {
-                    var position =
-                        binding.contactRecycler.findContainingViewHolder(view)!!.adapterPosition
-                    view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
-                        var user = this@ChooseActivity.users[position]
-                        val intent = Intent(this@ChooseActivity, ChatActivity::class.java)
-                        intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
-                        intent.putExtra(Constants.KEY_CHAT_NAME, user.name)
-                        intent.putExtra(Constants.KEY_IMAGE_URL, user.photo)
-                        intent.putExtra(Constants.KEY_CHAT_TYPE, ChatTypes.Contact)
-                        intent.putExtra(Constants.KEY_IS_PREV, true)
-                        startActivity(intent)
-                    }
-                }
-
-                override fun onChildViewDetachedFromWindow(view: View) {
-                    return
-                }
-            })
-
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding?.back?.setOnClickListener(null)
+        binding?.addGroup?.setOnClickListener(null)
+        users.clear()
+        binding?.contactRecycler?.adapter?.notifyDataSetChanged()
+        binding = null
+        dialogBinding = null
+    }
     private fun setListeners() {
-        binding.back.setOnClickListener { onBackPress() }
-        binding.addGroup.setOnClickListener{onAddGroup()}
+        binding?.back?.setOnClickListener { onBackPress() }
+        binding?.addGroup?.setOnClickListener{onAddGroup()}
+        binding?.contactRecycler?.addOnChildAttachStateChangeListener(onContactRecyclerAttach())
+    }
+    private fun onContactRecyclerAttach(): RecyclerView.OnChildAttachStateChangeListener {
+        return object : RecyclerView.OnChildAttachStateChangeListener {
+            override fun onChildViewAttachedToWindow(view: View) {
+                var position =
+                    binding?.contactRecycler?.findContainingViewHolder(view)!!.adapterPosition
+                view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
+                    var user = this@ChooseActivity.users[position]
+                    val intent = Intent(this@ChooseActivity, ChatActivity::class.java)
+                    intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
+                    intent.putExtra(Constants.KEY_CHAT_NAME, user.name)
+                    intent.putExtra(Constants.KEY_IMAGE_URL, user.photo)
+                    intent.putExtra(Constants.KEY_CHAT_TYPE, ChatTypes.Contact)
+                    intent.putExtra(Constants.KEY_IS_PREV, true)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+            override fun onChildViewDetachedFromWindow(view: View) {
+                return
+            }
+        }
     }
     private fun onBackPress(){
         var intent = Intent(this@ChooseActivity, MainActivity::class.java)
         startActivity(intent)
+        finish()
     }
     private fun onAddGroup(){
         var dialog: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -143,13 +161,11 @@ class ChooseActivity : ComponentActivity() {
             })
         dialog.setPositiveButton("Создать",
             DialogInterface.OnClickListener { dialog:DialogInterface?, _ ->
-                if(dialogBinding.groupField.text.isNullOrBlank()){
+                if(dialogBinding?.groupField?.text.isNullOrBlank()){
                     return@OnClickListener
                 }
-                Log.d("Post", dialogBinding.groupField.text.toString())
-                Log.d("Post", "$iamgeURL")
                 chatViewModel.postGroup(
-                    dialogBinding.groupField.text.toString(),
+                    dialogBinding?.groupField?.text.toString(),
                     iamgeURL,
                     object : ICoroutinesErrorHandler {
                         override fun onError(message: String) {
@@ -159,7 +175,7 @@ class ChooseActivity : ComponentActivity() {
                     })
             })
 
-        dialogBinding.imageChat.setOnClickListener {
+        dialogBinding?.imageChat?.setOnClickListener {
             var photoPickerIntent = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             photoPickerIntent.setType("image/*")
             getAction.launch(photoPickerIntent)
@@ -170,14 +186,14 @@ class ChooseActivity : ComponentActivity() {
     private val getAction = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         var bitmap: Bitmap? = null
         if (it.resultCode == RESULT_OK) {
-            dialogBinding.textHelpLoadImage.text = "Идет загрузка фото..."
+            dialogBinding?.textHelpLoadImage?.text = "Идет загрузка фото..."
             val selectedImage = it?.data?.data
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-            dialogBinding.imageChat.setImageBitmap(bitmap)
+            dialogBinding?.imageChat?.setImageBitmap(bitmap)
 
             val tempUri: Uri = getImageUri(applicationContext, bitmap!!)
             val file: File = File(getRealPathFromURI(tempUri))
@@ -185,16 +201,19 @@ class ChooseActivity : ComponentActivity() {
                 RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
             val filePart =
                 MultipartBody.Part.createFormData("file", file.name, requestFile)
-            imageViewModel.postImg(filePart,
-                object : ICoroutinesErrorHandler {
-                    override fun onError(message: String) {
-                        Toast.makeText(
-                            this@ChooseActivity, "Ошибка $message",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                })
+            postImg(filePart)
         }
+    }
+    private fun postImg(file:MultipartBody.Part){
+        imageViewModel.postImg(file,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    Toast.makeText(
+                        this@ChooseActivity, "Ошибка $message",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
     }
     fun getImageUri(inContext: Context, inImage: Bitmap): Uri{
         val bytes = ByteArrayOutputStream()

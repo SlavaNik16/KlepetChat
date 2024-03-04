@@ -6,9 +6,9 @@ import KlepetChat.WebApi.Implementations.ViewModels.AuthViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Request.Login
+import KlepetChat.WebApi.Models.Response.Token
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
@@ -18,61 +18,78 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AuthorizationActivity : ComponentActivity() {
 
-    private lateinit var binding: AuthorizationBinding
+    private var binding: AuthorizationBinding? = null
     private val authViewModel: AuthViewModel by viewModels()
-
     private val userDataViewModel: UserDataViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = AuthorizationBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
+        setListeners()
+        setObserve()
 
-        userDataViewModel.userData.observe(this) {
 
-            if (it?.accessToken.toString().isNotBlank()) {
-                Log.d("POST", "AccessToken = ${it?.accessToken} и refreshToken = ${it?.refreshToken}")
-                var intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+
+    }
+
+    private fun setObserve(){
+        userDataViewModel.userData.observe(this) {navigateToMain(it)  }
+        authViewModel.token.observe(this) {saveUserData(it)}
+    }
+    private fun saveUserData(api:ApiResponse<Token>){
+        when (api) {
+            is ApiResponse.Failure -> Toast.makeText(this, api.message, Toast.LENGTH_SHORT).show()
+            ApiResponse.Loading -> Toast.makeText(this, "Пожалуйста подождите!", Toast.LENGTH_SHORT).show()
+            is ApiResponse.Success -> {
+                userDataViewModel.SaveUserData(
+                    UserData(
+                        binding?.phoneField?.text.toString(),
+                        api.data.accessToken ?: "",
+                        api.data.refreshToken ?: ""
+                    )
+                )
             }
         }
+    }
 
-        authViewModel.token.observe(this) {
-            when (it) {
-                is ApiResponse.Failure -> Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-                ApiResponse.Loading -> Toast.makeText(this, "Пожалуйста подождите!", Toast.LENGTH_SHORT).show()
-                is ApiResponse.Success -> {
-                    userDataViewModel.SaveUserData(
-                        UserData(
-                            binding.phoneField.text.toString(),
-                            it.data.accessToken ?: "",
-                            it.data.refreshToken ?: ""
-                        )
-                    )
+    override fun onDestroy() {
+        super.onDestroy()
+        binding?.txtButRegister?.setOnClickListener(null)
+        binding?.butEnter?.setOnClickListener(null)
+        binding = null
+    }
+    private fun setListeners(){
+        binding?.txtButRegister?.setOnClickListener {navigateToRegister() }
+        binding?.butEnter?.setOnClickListener {login()}
+    }
+    private fun login(){
+        var password = binding!!.passField
+        if(password.length() < 8){
+            Toast.makeText(applicationContext, "Слишком маленький пароль (не меньше 8)", Toast.LENGTH_SHORT).show()
+            return
+        }
+        authViewModel.login(
+            Login(
+                binding?.phoneField?.text.toString(),
+                binding?.passField?.text.toString()
+            ),
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
                 }
             }
-        }
-        binding.txtButRegister.setOnClickListener {
-            var intent = Intent(this, RegisterActivity::class.java)
+        )
+    }
+    private fun navigateToRegister(){
+        var intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+    private fun navigateToMain(userData: UserData?){
+        if (!userData?.accessToken.isNullOrBlank()) {
+            var intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
-       binding.butEnter.setOnClickListener {
-           var password = binding.passField
-           if(password.length() < 8){
-               Toast.makeText(it.context, "Слишком маленький пароль (не меньше 8)", Toast.LENGTH_SHORT).show()
-               return@setOnClickListener
-           }
-           authViewModel.login(
-               Login(
-                   binding.phoneField.text.toString(),
-                   binding.passField.text.toString()
-               ),
-               object : ICoroutinesErrorHandler {
-                   override fun onError(message: String) {
-                       Toast.makeText(it.context, message, Toast.LENGTH_SHORT).show()
-                   }
-               }
-           )
-       }
-
     }
 }

@@ -1,11 +1,9 @@
 package KlepetChat.DataSore.Context
 
-import KlepetChat.Activities.AuthorizationActivity
 import KlepetChat.DataSore.Interface.IUserDataStore
 import KlepetChat.DataSore.Models.UserData
 import KlepetChat.Hilts.dataStore
 import android.content.Context
-import android.content.Intent
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -43,8 +41,6 @@ class DataStoreManager @Inject constructor(private val context: Context) : IUser
             preferences[KEY_ACCESS_TOKEN] = ""
             preferences[KEY_REFRESH_TOKEN] = ""
         }
-        var intent = Intent(context, AuthorizationActivity::class.java)
-        context.startActivity(intent)
     }
 
     override suspend fun UpdateTokens(accessToken: String?, refreshToken: String?){
