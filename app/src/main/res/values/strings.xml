@@ -20,4 +20,8 @@
     <string name="sendMessage">Написать сообщение…</string>
     <string name="add_group">Создать группу</string>
     <string name="name_group">Название группы</string>
+    <string name="info">Информация</string>
+    <string name="Nickname">Имя пользователя</string>
+    <string name="example_about_me">Любые подробности, например возраст, род занятий или город.\nПример: 20 лет, программист из Санкт-Петербурга.</string>
+    <string name="example_nickname">С помощью имени пользователя другие люди смогут связаться с Вами в KlepetChat, не зная Вашего телефона.</string>
 </resources>

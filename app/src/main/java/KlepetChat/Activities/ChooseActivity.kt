@@ -17,7 +17,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.MediaStore.Images
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -146,8 +145,6 @@ class ChooseActivity : ComponentActivity() {
                 if(dialogBinding.groupField.text.isNullOrBlank()){
                     return@OnClickListener
                 }
-                Log.d("Post", dialogBinding.groupField.text.toString())
-                Log.d("Post", "$iamgeURL")
                 chatViewModel.postGroup(
                     dialogBinding.groupField.text.toString(),
                     iamgeURL,

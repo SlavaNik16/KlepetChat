@@ -8,19 +8,19 @@ import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
-import KlepetChat.WebApi.Models.Response.User
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.OnChildAttachStateChangeListener
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityMainBinding
-import com.squareup.picasso.Picasso
+import com.example.klepetchat.databinding.ActivityProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -39,6 +39,7 @@ class MainActivity : ComponentActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         loading(true)
+        setListeners()
         chatViewModel.chats.observe(this) {
             when (it) {
                 is ApiResponse.Success -> {
@@ -66,7 +67,6 @@ class MainActivity : ComponentActivity() {
             when (it) {
                 is ApiResponse.Success -> {
                     phone = it.data.phone
-                    init(it.data)
                     chatViewModel.getChats(
                         object : ICoroutinesErrorHandler {
                             override fun onError(message: String) {
@@ -108,43 +108,58 @@ class MainActivity : ComponentActivity() {
             })
         }
 
-        binding.butAddChat.setOnClickListener {
-            val intent = Intent(this@MainActivity, ChooseActivity::class.java)
-            startActivity(intent)
-        }
-        binding.recyclerChat.addOnChildAttachStateChangeListener(
-            object : OnChildAttachStateChangeListener {
-                override fun onChildViewAttachedToWindow(view: View) {
-                    var position =
-                        binding.recyclerChat.findContainingViewHolder(view)!!.adapterPosition
-                    view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
-                        var chat = this@MainActivity.chats[position]
-                        val intent = Intent(this@MainActivity, ChatActivity::class.java)
 
-                        intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
-                        intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
-                        intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
-                        intent.putExtra(Constants.KEY_USER_PHONE, phone)
-                        intent.putExtra(Constants.KEY_CHAT_TYPE, chat.chatType.name)
-                        intent.putExtra(Constants.KEY_IS_PREV, false)
-                        startActivity(intent)
-                    }
-                }
-
-                override fun onChildViewDetachedFromWindow(view: View) {
-                    return
-                }
-            })
     }
 
-    private fun init(user: User) {
-        if(!user.photo.toString().isBlank()){
-            Picasso.get()
-                .load(user.photo)
-                .placeholder(R.drawable.baseline_account_circle_24)
-                .error(R.drawable.baseline_account_circle_24)
-                .into(binding.imageUser)
+    private fun setListeners(){
+        binding.butAddChat.setOnClickListener {onAddChat()}
+        binding.recyclerChat.addOnChildAttachStateChangeListener(onRecyclerAttachState())
+        //binding.imageProfile.setOnClickListener {onPressProfile()}
+    }
+
+    private fun onPressProfile(){
+//        val intent = Intent(this@MainActivity, ProfileActivity::class.java)
+//        startActivity(intent)
+        var dialogAlert: AlertDialog.Builder = AlertDialog.Builder(this)
+        var view = LayoutInflater.from(dialogAlert.context).inflate(R.layout.activity_profile, null)
+        var dialogBinding = ActivityProfileBinding.bind(view)
+        dialogAlert.setView(view)
+        dialogAlert.setCancelable(true)
+        var dialog = dialogAlert.show()
+        onPressAlertDialog(dialog, dialogBinding)
+    }
+    private fun onPressAlertDialog(dialog: AlertDialog, dialogBinding:ActivityProfileBinding){
+        dialogBinding.imageButtonClose.setOnClickListener {
+            dialog.dismiss()
         }
+    }
+    private fun onRecyclerAttachState(): RecyclerView.OnChildAttachStateChangeListener {
+        return object : RecyclerView.OnChildAttachStateChangeListener {
+            override fun onChildViewAttachedToWindow(view: View) {
+                var position =
+                    binding.recyclerChat.findContainingViewHolder(view)!!.adapterPosition
+                view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
+                    var chat = this@MainActivity.chats[position]
+                    val intent = Intent(this@MainActivity, ChatActivity::class.java)
+
+                    intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
+                    intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
+                    intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
+                    intent.putExtra(Constants.KEY_USER_PHONE, phone)
+                    intent.putExtra(Constants.KEY_CHAT_TYPE, chat.chatType.name)
+                    intent.putExtra(Constants.KEY_IS_PREV, false)
+                    startActivity(intent)
+                }
+            }
+
+            override fun onChildViewDetachedFromWindow(view: View) {
+                return
+            }
+        }
+    }
+    private fun onAddChat(){
+        val intent = Intent(this@MainActivity, ChooseActivity::class.java)
+        startActivity(intent)
     }
 
     private fun loading(isLoading: Boolean) {
