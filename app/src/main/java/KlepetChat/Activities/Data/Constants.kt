@@ -11,6 +11,9 @@ class Constants {
         val KEY_IMAGE_URL = "image_url"
         val KEY_NAME = "name"
         val KEY_COUNT = "count"
+
+        val KEY_TAG_MOON = "moon"
+        val KEY_TAG_SUN = "sun"
     }
 
 }

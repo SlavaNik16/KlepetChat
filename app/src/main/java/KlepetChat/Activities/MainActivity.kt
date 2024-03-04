@@ -22,12 +22,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityMainBinding
+import com.example.klepetchat.databinding.NavHeaderBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
+    private var bindingHeader: NavHeaderBinding? = null
 
     private val userViewModel: UserViewModel by viewModels()
     private val userDataViewModel: UserDataViewModel by viewModels()
@@ -40,6 +42,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        var viewHeader = binding?.navigationView!!.inflateHeaderView(R.layout.nav_header)
+        bindingHeader = NavHeaderBinding.bind(viewHeader)
         setContentView(binding?.root)
         setListeners()
         setObserve()
@@ -79,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 user = api.data
+                initNavigationViewHeader(user)
                 chatViewModel.getChats(
                     object : ICoroutinesErrorHandler {
                         override fun onError(message: String) {
@@ -138,14 +143,29 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         binding?.butAddChat?.setOnClickListener(null)
         binding?.navigationView?.setNavigationItemSelectedListener(null)
+        bindingHeader?.imageMode?.setOnClickListener(null)
         chats.clear()
         binding?.recyclerChat?.adapter?.notifyDataSetChanged()
         binding = null
+        bindingHeader = null
     }
+
     private fun setListeners() {
         binding?.butAddChat?.setOnClickListener { onAddChat() }
         binding?.recyclerChat?.addOnChildAttachStateChangeListener(onRecyclerAttachState())
         binding?.navigationView?.setNavigationItemSelectedListener { setMenuItem(it) }
+        bindingHeader?.imageMode?.setOnClickListener{setMode()}
+    }
+
+    private fun setMode() {
+        var modeTag = bindingHeader?.imageMode?.tag.toString()
+        if(modeTag == Constants.KEY_TAG_MOON){
+            bindingHeader?.imageMode?.setImageResource(R.drawable.ic_sun)
+            bindingHeader?.imageMode?.tag = Constants.KEY_TAG_SUN
+        }else{
+            bindingHeader?.imageMode?.setImageResource(R.drawable.ic_moon)
+            bindingHeader?.imageMode?.tag = Constants.KEY_TAG_MOON
+        }
     }
 
     private fun setMenuItem(menuItem: MenuItem): Boolean {
@@ -153,15 +173,18 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_add_group -> {
                 Toast.makeText(this@MainActivity, "nav_add_group", Toast.LENGTH_SHORT).show()
             }
+
             R.id.nav_add_contact -> {
                 Toast.makeText(this@MainActivity, "nav_add_contact", Toast.LENGTH_SHORT).show()
             }
+
             R.id.nav_settings -> navigateToProfile()
             R.id.nav_help -> {
                 Toast.makeText(this@MainActivity, "nav_help", Toast.LENGTH_SHORT).show()
             }
+
             R.id.nav_exit -> {
-               exitAuth()
+                exitAuth()
             }
         }
         return true
@@ -198,10 +221,16 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
     private fun navigateToProfile() {
         val intent = Intent(this@MainActivity, ProfileActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun initNavigationViewHeader(user: User) {
+        bindingHeader?.textFIO?.text = "${user.surname} ${user.name}"
+        bindingHeader?.textPhone?.text = user.phone
     }
 
     private fun loading(isLoading: Boolean) {

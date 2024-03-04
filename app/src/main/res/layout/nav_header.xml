@@ -6,8 +6,7 @@
     android:layout_height="wrap_content"
     android:gravity="bottom"
     android:padding="16dp"
-    android:background="@color/blue_2"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:background="@color/blue_2">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -31,6 +30,7 @@
         android:layout_height="32dp"
         android:layout_margin="10dp"
         android:src="@drawable/ic_moon"
+        android:tag="moon"
         app:civ_border_color="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
