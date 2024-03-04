@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context="KlepetChat.Activities.ProfileActivity">
 
     <LinearLayout
@@ -11,28 +12,27 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:orientation="horizontal"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
+        <ImageView
+            android:id="@+id/imageButtonBack"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:src="@drawable/ic_arrow_back" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:gravity="center_vertical"
             android:text="@string/info"
-            android:layout_marginStart="10dp"
             android:textSize="24dp" />
 
-        <ImageView
-            android:id="@+id/imageButtonClose"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:padding="10dp"
-            android:src="@drawable/ic_close" />
     </LinearLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -83,7 +83,7 @@
     <TextView
         android:id="@+id/textView7"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/back_gray"
         android:gravity="center_vertical"
         android:padding="10dp"
@@ -209,7 +209,7 @@
     <TextView
         android:id="@+id/textView8"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@color/back_gray"
         android:gravity="center_vertical"

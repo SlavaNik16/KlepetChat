@@ -153,21 +153,15 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_add_group -> {
                 Toast.makeText(this@MainActivity, "nav_add_group", Toast.LENGTH_SHORT).show()
             }
-
             R.id.nav_add_contact -> {
                 Toast.makeText(this@MainActivity, "nav_add_contact", Toast.LENGTH_SHORT).show()
             }
-
-            R.id.nav_settings -> {
-                Toast.makeText(this@MainActivity, "nav_settings", Toast.LENGTH_SHORT).show()
-            }
-
+            R.id.nav_settings -> navigateToProfile()
             R.id.nav_help -> {
                 Toast.makeText(this@MainActivity, "nav_help", Toast.LENGTH_SHORT).show()
             }
-
             R.id.nav_exit -> {
-                Toast.makeText(this@MainActivity, "nav_exit", Toast.LENGTH_SHORT).show()
+               exitAuth()
             }
         }
         return true
@@ -204,6 +198,11 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+    private fun navigateToProfile() {
+        val intent = Intent(this@MainActivity, ProfileActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 
     private fun loading(isLoading: Boolean) {
         if (isLoading) {
@@ -215,6 +214,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun exitAuth() {
         userDataViewModel.ClearUserData()
+        var intent = Intent(this, AuthorizationActivity::class.java)
+        startActivity(intent)
         finish()
     }
 }
