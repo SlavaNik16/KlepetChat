@@ -31,4 +31,6 @@
     <string name="help">Поддержка</string>
     <string name="exit">Выйти</string>
     <string name="title_klepet_chat">KlepetChat</string>
+    <string name="NewPhone">Новый телефон</string>
+    <string name="ValidatePassword">Подтвердите паоль</string>
 </resources>

@@ -2,6 +2,7 @@ package KlepetChat.Activities
 
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.TokenViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Request.UserRegister
@@ -19,6 +20,7 @@ import java.util.UUID
 class RegisterActivity : ComponentActivity() {
     private var binding: ActivityRegisterBinding? = null
     private val userViewModel: UserViewModel by viewModels()
+    private val tokenViewModel: TokenViewModel by viewModels()
     private val chatViewModel: ChatViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,17 +64,38 @@ class RegisterActivity : ComponentActivity() {
                     this,
                     "Регистрация прошла успешно!", Toast.LENGTH_SHORT
                 ).show()
+                postToken(api.data.phone)
                 postFavorites(api.data.id)
                 navigateToAuthorization()
             }
         }
     }
 
+    private fun postToken(phone: String) {
+        tokenViewModel.postCreate(phone,
+            object : ICoroutinesErrorHandler {
+            override fun onError(message: String) {
+                Toast.makeText(
+                    applicationContext, "Ошибка! $message",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+    }
+
     private fun onRegister() {
         var password = binding!!.passwordField
+        var phone = binding!!.phoneField;
         if (password.length() < 8) {
             Toast.makeText(
                 applicationContext, "Слишком маленький пароль (не меньше 8)",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+        if(phone.text!!.length < 11){
+            Toast.makeText(
+                applicationContext, "Такого номера телефона не существует!",
                 Toast.LENGTH_SHORT
             ).show()
             return

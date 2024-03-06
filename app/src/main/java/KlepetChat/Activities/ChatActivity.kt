@@ -149,13 +149,17 @@ class ChatActivity : ComponentActivity() {
         binding?.back?.setOnClickListener { onBackPress() }
         binding?.sendMessage?.setOnClickListener { onSendMessage() }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
+    private fun removeListeners(){
         binding?.back?.setOnClickListener(null)
         binding?.sendMessage?.setOnClickListener(null)
         messages.clear()
         binding?.recyclerChat?.adapter?.notifyDataSetChanged()
+        binding?.recyclerChat?.recycledViewPool?.clear()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        removeListeners()
         binding = null
     }
 

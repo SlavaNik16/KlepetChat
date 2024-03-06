@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityMainBinding
 import com.example.klepetchat.databinding.NavHeaderBinding
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -84,15 +85,7 @@ class MainActivity : AppCompatActivity() {
             is ApiResponse.Success -> {
                 user = api.data
                 initNavigationViewHeader(user)
-                chatViewModel.getChats(
-                    object : ICoroutinesErrorHandler {
-                        override fun onError(message: String) {
-                            Toast.makeText(
-                                applicationContext,
-                                "Ошибка! $message", Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    })
+                getChats()
             }
 
             is ApiResponse.Failure -> {
@@ -108,22 +101,36 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun getChats(){
+        chatViewModel.getChats(
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    Toast.makeText(
+                        applicationContext,
+                        "Ошибка! $message", Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+
     private fun validateUser(userData: UserData?) {
-        if (userData?.accessToken.isNullOrBlank()) {
-            var intent = Intent(this@MainActivity, AuthorizationActivity::class.java)
-            startActivity(intent)
-            finish()
+        if (userData?.phone.isNullOrBlank() || userData?.accessToken.isNullOrBlank()) {
+            exitAuth()
             return
         }
-        userViewModel.getByPhone(userData!!.phone, object : ICoroutinesErrorHandler {
-            override fun onError(message: String) {
-                Toast.makeText(
-                    this@MainActivity, "Error! ${message}\n", Toast.LENGTH_SHORT
-                )
-                    .show()
-                exitAuth()
-            }
-        })
+        getByPhone(userData!!.phone)
+    }
+    private fun getByPhone(phone:String){
+        userViewModel.getByPhone(phone,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    Toast.makeText(
+                        this@MainActivity, "Error! ${message}\n", Toast.LENGTH_SHORT
+                    )
+                        .show()
+                    exitAuth()
+                }
+            })
     }
 
     private fun initDrawLayout() {
@@ -141,15 +148,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        removeListeners()
+        binding = null
+        bindingHeader = null
+    }
+
+    private fun removeListeners(){
         binding?.butAddChat?.setOnClickListener(null)
         binding?.navigationView?.setNavigationItemSelectedListener(null)
         bindingHeader?.imageMode?.setOnClickListener(null)
         chats.clear()
         binding?.recyclerChat?.adapter?.notifyDataSetChanged()
-        binding = null
-        bindingHeader = null
+        binding?.recyclerChat?.recycledViewPool?.clear()
     }
-
     private fun setListeners() {
         binding?.butAddChat?.setOnClickListener { onAddChat() }
         binding?.recyclerChat?.addOnChildAttachStateChangeListener(onRecyclerAttachState())
@@ -231,6 +242,14 @@ class MainActivity : AppCompatActivity() {
     private fun initNavigationViewHeader(user: User) {
         bindingHeader?.textFIO?.text = "${user.surname} ${user.name}"
         bindingHeader?.textPhone?.text = user.phone
+        if(user.photo.isNullOrBlank()){
+            return
+        }
+        Picasso.get()
+            .load(user.photo)
+            .placeholder(R.drawable.baseline_account_circle_24)
+            .error(R.drawable.baseline_account_circle_24)
+            .into(bindingHeader?.imageUser)
     }
 
     private fun loading(isLoading: Boolean) {

@@ -56,11 +56,14 @@ class AuthorizationActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        binding?.txtButRegister?.setOnClickListener(null)
-        binding?.butEnter?.setOnClickListener(null)
+        removeListeners()
         binding = null
     }
 
+    private fun removeListeners(){
+        binding?.txtButRegister?.setOnClickListener(null)
+        binding?.butEnter?.setOnClickListener(null)
+    }
     private fun setListeners() {
         binding?.txtButRegister?.setOnClickListener { navigateToRegister() }
         binding?.butEnter?.setOnClickListener { login() }
@@ -68,10 +71,17 @@ class AuthorizationActivity : ComponentActivity() {
 
     private fun login() {
         var password = binding!!.passField
+        var phone = binding!!.phoneField;
         if (password.length() < 8) {
             Toast.makeText(
-                applicationContext,
-                "Слишком маленький пароль (не меньше 8)",
+                applicationContext, "Слишком маленький пароль (не меньше 8)",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+        if(phone.text!!.length < 11){
+            Toast.makeText(
+                applicationContext, "Такого номера телефона не существует!",
                 Toast.LENGTH_SHORT
             ).show()
             return

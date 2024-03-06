@@ -49,6 +49,7 @@ class ChooseActivity : ComponentActivity() {
     private lateinit var adapter: RecyclerView.Adapter<UserViewItemAdapter.UserViewItemHolder>
     private lateinit var users: MutableList<User>
     private var iamgeURL: String? = null
+    private lateinit var file: File
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChooseBinding.inflate(layoutInflater)
@@ -84,6 +85,9 @@ class ChooseActivity : ComponentActivity() {
                 dialogBinding?.textHelpLoadImage?.text = "Фото загружено!"
                 var imageHttp = api.data.string()
                 iamgeURL = imageHttp
+                if(file.exists()){
+                    file.delete()
+                }
             }
 
             is ApiResponse.Failure -> {
@@ -115,14 +119,18 @@ class ChooseActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        binding?.back?.setOnClickListener(null)
-        binding?.addGroup?.setOnClickListener(null)
-        users.clear()
-        binding?.contactRecycler?.adapter?.notifyDataSetChanged()
+        removeListeners()
         binding = null
         dialogBinding = null
     }
 
+    private fun removeListeners(){
+        binding?.back?.setOnClickListener(null)
+        binding?.addGroup?.setOnClickListener(null)
+        users.clear()
+        binding?.contactRecycler?.adapter?.notifyDataSetChanged()
+        binding?.contactRecycler?.recycledViewPool?.clear()
+    }
     private fun setListeners() {
         binding?.back?.setOnClickListener { onBackPress() }
         binding?.addGroup?.setOnClickListener { onAddGroup() }
@@ -210,12 +218,13 @@ class ChooseActivity : ComponentActivity() {
                 dialogBinding?.imageChat?.setImageBitmap(bitmap)
 
                 val tempUri: Uri = getImageUri(applicationContext, bitmap!!)
-                val file: File = File(getRealPathFromURI(tempUri))
+                file = File(getRealPathFromURI(tempUri))
                 val requestFile =
                     RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
                 val filePart =
                     MultipartBody.Part.createFormData("file", file.name, requestFile)
                 postImg(filePart)
+
             }
         }
 
