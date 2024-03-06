@@ -159,7 +159,8 @@ class MainActivity : AppCompatActivity() {
         binding?.navigationView?.setNavigationItemSelectedListener(null)
         bindingHeader?.imageMode?.setOnClickListener(null)
         chats.clear()
-        binding?.recyclerChat?.adapter?.notifyDataSetChanged()
+        binding?.recyclerChat?.adapter = null
+        binding?.recyclerChat?.layoutManager = null
         binding?.recyclerChat?.recycledViewPool?.clear()
     }
 

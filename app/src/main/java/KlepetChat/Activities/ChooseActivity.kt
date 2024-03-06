@@ -128,7 +128,8 @@ class ChooseActivity : ComponentActivity() {
         binding?.back?.setOnClickListener(null)
         binding?.addGroup?.setOnClickListener(null)
         users.clear()
-        binding?.contactRecycler?.adapter?.notifyDataSetChanged()
+        binding?.contactRecycler?.adapter = null
+        binding?.contactRecycler?.layoutManager = null
         binding?.contactRecycler?.recycledViewPool?.clear()
     }
 

@@ -154,7 +154,8 @@ class ChatActivity : ComponentActivity() {
         binding?.back?.setOnClickListener(null)
         binding?.sendMessage?.setOnClickListener(null)
         messages.clear()
-        binding?.recyclerChat?.adapter?.notifyDataSetChanged()
+        binding?.recyclerChat?.adapter = null
+        binding?.recyclerChat?.layoutManager = null
         binding?.recyclerChat?.recycledViewPool?.clear()
     }
 
