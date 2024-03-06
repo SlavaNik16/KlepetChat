@@ -30,33 +30,33 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
     }
 
     override fun onBindViewHolder(holder: ChatViewItemHolder, position: Int) {
-        holder.binding.textName.text = chatViewItems[position].name
-        holder.binding.textDesc.text = String()
+        holder.binding?.textName?.text = chatViewItems[position].name
+        holder.binding?.textDesc?.text = String()
         if(!chatViewItems[position].lastMessage.isNullOrBlank()){
-            holder.binding.textDesc.text = chatViewItems[position].lastMessage
+            holder.binding?.textDesc?.text = chatViewItems[position].lastMessage
         }
         if(!chatViewItems[position].photo.isNullOrBlank()) {
             Picasso.get()
                 .load(chatViewItems[position].photo)
                 .placeholder(R.drawable.baseline_account_circle_24)
                 .error(R.drawable.baseline_account_circle_24)
-                .into(holder.binding.imageChat)
+                .into(holder.binding?.imageChat)
         }
         var resourceTypeChat =
             when(chatViewItems[position].chatType){
                 ChatTypes.Favorites -> {
-                    holder.binding.imageChat.setImageResource(R.drawable.favorites_icon)
+                    holder.binding?.imageChat?.setImageResource(R.drawable.favorites_icon)
                     R.drawable.ic_favourites
                 }
                 ChatTypes.Contact -> R.drawable.ic_person_contact
                 ChatTypes.Group -> R.drawable.ic_add_groups
             }
-        holder.binding.imageTypeChat.setBackgroundResource(resourceTypeChat)
+        holder.binding?.imageTypeChat?.setBackgroundResource(resourceTypeChat)
 
     }
 
     class ChatViewItemHolder : RecyclerView.ViewHolder{
-        var binding: ChatViewItemBinding
+        var binding: ChatViewItemBinding? = null
         constructor(itemView: View):super(itemView){
             binding = ChatViewItemBinding.bind(itemView)
         }

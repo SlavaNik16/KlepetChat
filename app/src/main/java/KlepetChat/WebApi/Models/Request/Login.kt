@@ -3,8 +3,8 @@ package KlepetChat.WebApi.Models.Request
 import com.google.gson.annotations.SerializedName
 
 data class Login (
-    @SerializedName("Phone")
+    @SerializedName("phone")
     val phone: String,
-    @SerializedName("Password")
+    @SerializedName("password")
     val password: String
 )

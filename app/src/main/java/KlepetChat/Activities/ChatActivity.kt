@@ -150,12 +150,18 @@ class ChatActivity : ComponentActivity() {
         binding?.sendMessage?.setOnClickListener { onSendMessage() }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    private fun removeListeners() {
         binding?.back?.setOnClickListener(null)
         binding?.sendMessage?.setOnClickListener(null)
         messages.clear()
-        binding?.recyclerChat?.adapter?.notifyDataSetChanged()
+        binding?.recyclerChat?.adapter = null
+        binding?.recyclerChat?.layoutManager = null
+        binding?.recyclerChat?.recycledViewPool?.clear()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        removeListeners()
         binding = null
     }
 
@@ -179,7 +185,7 @@ class ChatActivity : ComponentActivity() {
 
     private fun initChat() {
         var phone = intent.extras?.getString(Constants.KEY_USER_PHONE)
-        if(phone.isNullOrBlank()){
+        if (phone.isNullOrBlank()) {
             return
         }
         chatViewModel.postContact(phone,

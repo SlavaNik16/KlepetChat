@@ -7,6 +7,7 @@ import KlepetChat.WebApi.Interfaces.IAuthService
 import KlepetChat.WebApi.Interfaces.IChatService
 import KlepetChat.WebApi.Interfaces.IImageService
 import KlepetChat.WebApi.Interfaces.IMessageService
+import KlepetChat.WebApi.Interfaces.ITokenService
 import KlepetChat.WebApi.Interfaces.IUserService
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -92,6 +93,14 @@ class SingletonModule {
             .client(okHttpClient)
             .build()
             .create(IUserService::class.java)
+
+    @Singleton
+    @Provides
+    fun providesITokenService(okHttpClient: OkHttpClient, retrofit: Retrofit.Builder): ITokenService =
+        retrofit
+            .client(okHttpClient)
+            .build()
+            .create(ITokenService::class.java)
 
     @Singleton
     @Provides

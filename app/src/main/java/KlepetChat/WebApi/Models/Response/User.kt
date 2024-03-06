@@ -7,7 +7,7 @@ data class User (
     val surname: String,
     val name: String,
     val phone: String,
-    val nickname: String?,
-    val photo: String?,
+    val nickName: String?,
+    var photo: String?,
     val aboutMe: String?,
 )

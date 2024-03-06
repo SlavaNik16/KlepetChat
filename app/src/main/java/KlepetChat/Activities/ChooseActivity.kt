@@ -48,7 +48,8 @@ class ChooseActivity : ComponentActivity() {
     private val imageViewModel: ImageViewModel by viewModels()
     private lateinit var adapter: RecyclerView.Adapter<UserViewItemAdapter.UserViewItemHolder>
     private lateinit var users: MutableList<User>
-    private var iamgeURL:String? = null
+    private var iamgeURL: String? = null
+    private lateinit var file: File
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChooseBinding.inflate(layoutInflater)
@@ -58,7 +59,7 @@ class ChooseActivity : ComponentActivity() {
         getContactsOther()
     }
 
-    private fun getUsers(api:ApiResponse<MutableList<User>>){
+    private fun getUsers(api: ApiResponse<MutableList<User>>) {
         when (api) {
             is ApiResponse.Success -> {
                 this.users = api.data
@@ -77,26 +78,33 @@ class ChooseActivity : ComponentActivity() {
             }
         }
     }
-    private fun getHttpImage(api:ApiResponse<ResponseBody>){
+
+    private fun getHttpImage(api: ApiResponse<ResponseBody>) {
         when (api) {
             is ApiResponse.Success -> {
                 dialogBinding?.textHelpLoadImage?.text = "Фото загружено!"
                 var imageHttp = api.data.string()
                 iamgeURL = imageHttp
+                if (file.exists()) {
+                    file.delete()
+                }
             }
+
             is ApiResponse.Failure -> {
                 Toast.makeText(
                     this@ChooseActivity, "Ошибка! ${api.message}", Toast.LENGTH_SHORT
                 ).show()
             }
+
             is ApiResponse.Loading -> {
                 return
             }
         }
     }
+
     private fun setObserve() {
-        userViewModel.users.observe(this){ getUsers(it) }
-        imageViewModel.img.observe(this){getHttpImage(it)}
+        userViewModel.users.observe(this) { getUsers(it) }
+        imageViewModel.img.observe(this) { getHttpImage(it) }
     }
 
     private fun getContactsOther() {
@@ -111,18 +119,26 @@ class ChooseActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        binding?.back?.setOnClickListener(null)
-        binding?.addGroup?.setOnClickListener(null)
-        users.clear()
-        binding?.contactRecycler?.adapter?.notifyDataSetChanged()
+        removeListeners()
         binding = null
         dialogBinding = null
     }
+
+    private fun removeListeners() {
+        binding?.back?.setOnClickListener(null)
+        binding?.addGroup?.setOnClickListener(null)
+        users.clear()
+        binding?.contactRecycler?.adapter = null
+        binding?.contactRecycler?.layoutManager = null
+        binding?.contactRecycler?.recycledViewPool?.clear()
+    }
+
     private fun setListeners() {
         binding?.back?.setOnClickListener { onBackPress() }
-        binding?.addGroup?.setOnClickListener{onAddGroup()}
+        binding?.addGroup?.setOnClickListener { onAddGroup() }
         binding?.contactRecycler?.addOnChildAttachStateChangeListener(onContactRecyclerAttach())
     }
+
     private fun onContactRecyclerAttach(): RecyclerView.OnChildAttachStateChangeListener {
         return object : RecyclerView.OnChildAttachStateChangeListener {
             override fun onChildViewAttachedToWindow(view: View) {
@@ -140,19 +156,23 @@ class ChooseActivity : ComponentActivity() {
                     finish()
                 }
             }
+
             override fun onChildViewDetachedFromWindow(view: View) {
                 return
             }
         }
     }
-    private fun onBackPress(){
+
+    private fun onBackPress() {
         var intent = Intent(this@ChooseActivity, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
-    private fun onAddGroup(){
+
+    private fun onAddGroup() {
         var dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        var view = LayoutInflater.from(dialog.context).inflate(R.layout.alert_dialog_create_group, null)
+        var view =
+            LayoutInflater.from(dialog.context).inflate(R.layout.alert_dialog_create_group, null)
         dialogBinding = AlertDialogCreateGroupBinding.bind(view)
         dialog.setView(view)
         dialog.setNegativeButton("Отменить",
@@ -160,8 +180,8 @@ class ChooseActivity : ComponentActivity() {
                 dialog?.dismiss()
             })
         dialog.setPositiveButton("Создать",
-            DialogInterface.OnClickListener { dialog:DialogInterface?, _ ->
-                if(dialogBinding?.groupField?.text.isNullOrBlank()){
+            DialogInterface.OnClickListener { dialog: DialogInterface?, _ ->
+                if (dialogBinding?.groupField?.text.isNullOrBlank()) {
                     return@OnClickListener
                 }
                 chatViewModel.postGroup(
@@ -169,42 +189,48 @@ class ChooseActivity : ComponentActivity() {
                     iamgeURL,
                     object : ICoroutinesErrorHandler {
                         override fun onError(message: String) {
-                            Toast.makeText(this@ChooseActivity,"Ошибка! $message",
-                                Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@ChooseActivity, "Ошибка! $message",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     })
             })
 
         dialogBinding?.imageChat?.setOnClickListener {
-            var photoPickerIntent = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            var photoPickerIntent =
+                Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             photoPickerIntent.setType("image/*")
             getAction.launch(photoPickerIntent)
         }
         dialog.show()
     }
 
-    private val getAction = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        var bitmap: Bitmap? = null
-        if (it.resultCode == RESULT_OK) {
-            dialogBinding?.textHelpLoadImage?.text = "Идет загрузка фото..."
-            val selectedImage = it?.data?.data
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-            dialogBinding?.imageChat?.setImageBitmap(bitmap)
+    private val getAction =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            var bitmap: Bitmap? = null
+            if (it.resultCode == RESULT_OK) {
+                dialogBinding?.textHelpLoadImage?.text = "Идет загрузка фото..."
+                val selectedImage = it?.data?.data
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                dialogBinding?.imageChat?.setImageBitmap(bitmap)
 
-            val tempUri: Uri = getImageUri(applicationContext, bitmap!!)
-            val file: File = File(getRealPathFromURI(tempUri))
-            val requestFile =
-                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
-            val filePart =
-                MultipartBody.Part.createFormData("file", file.name, requestFile)
-            postImg(filePart)
+                val tempUri: Uri = getImageUri(applicationContext, bitmap!!)
+                file = File(getRealPathFromURI(tempUri))
+                val requestFile =
+                    RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+                val filePart =
+                    MultipartBody.Part.createFormData("file", file.name, requestFile)
+                postImg(filePart)
+
+            }
         }
-    }
-    private fun postImg(file:MultipartBody.Part){
+
+    private fun postImg(file: MultipartBody.Part) {
         imageViewModel.postImg(file,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
@@ -215,7 +241,8 @@ class ChooseActivity : ComponentActivity() {
                 }
             })
     }
-    fun getImageUri(inContext: Context, inImage: Bitmap): Uri{
+
+    fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
         val path = Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
@@ -229,7 +256,7 @@ class ChooseActivity : ComponentActivity() {
             cursor!!.moveToFirst()
             val idx = cursor.getColumnIndex(Images.ImageColumns.DATA)
             largeImagePath = cursor.getString(idx)
-        }finally {
+        } finally {
             cursor?.close()
         }
         return largeImagePath
