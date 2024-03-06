@@ -74,13 +74,13 @@ class RegisterActivity : ComponentActivity() {
     private fun postToken(phone: String) {
         tokenViewModel.postCreate(phone,
             object : ICoroutinesErrorHandler {
-            override fun onError(message: String) {
-                Toast.makeText(
-                    applicationContext, "Ошибка! $message",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        })
+                override fun onError(message: String) {
+                    Toast.makeText(
+                        applicationContext, "Ошибка! $message",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
     }
 
     private fun onRegister() {
@@ -93,7 +93,7 @@ class RegisterActivity : ComponentActivity() {
             ).show()
             return
         }
-        if(phone.text!!.length < 11){
+        if (phone.text!!.length < 11) {
             Toast.makeText(
                 applicationContext, "Такого номера телефона не существует!",
                 Toast.LENGTH_SHORT

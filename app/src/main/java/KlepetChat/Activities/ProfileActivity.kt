@@ -182,7 +182,7 @@ class ProfileActivity : ComponentActivity() {
         bindingEditFIO = null
     }
 
-    private fun removeListeners(){
+    private fun removeListeners() {
         binding?.imageButtonBack?.setOnClickListener(null)
         binding?.editName?.setOnClickListener(null)
         binding?.editPhone?.setOnClickListener(null)
@@ -190,6 +190,7 @@ class ProfileActivity : ComponentActivity() {
         binding?.inputMessageAboutMe?.onFocusChangeListener = null
         binding?.form?.setOnClickListener(null)
     }
+
     private fun setListeners() {
         binding?.imageButtonBack?.setOnClickListener { onBackPress() }
         binding?.imageUser?.setOnClickListener { onUserPress() }

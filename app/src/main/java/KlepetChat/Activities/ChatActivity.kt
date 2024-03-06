@@ -149,7 +149,8 @@ class ChatActivity : ComponentActivity() {
         binding?.back?.setOnClickListener { onBackPress() }
         binding?.sendMessage?.setOnClickListener { onSendMessage() }
     }
-    private fun removeListeners(){
+
+    private fun removeListeners() {
         binding?.back?.setOnClickListener(null)
         binding?.sendMessage?.setOnClickListener(null)
         messages.clear()

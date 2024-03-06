@@ -85,7 +85,7 @@ class ChooseActivity : ComponentActivity() {
                 dialogBinding?.textHelpLoadImage?.text = "Фото загружено!"
                 var imageHttp = api.data.string()
                 iamgeURL = imageHttp
-                if(file.exists()){
+                if (file.exists()) {
                     file.delete()
                 }
             }
@@ -124,13 +124,14 @@ class ChooseActivity : ComponentActivity() {
         dialogBinding = null
     }
 
-    private fun removeListeners(){
+    private fun removeListeners() {
         binding?.back?.setOnClickListener(null)
         binding?.addGroup?.setOnClickListener(null)
         users.clear()
         binding?.contactRecycler?.adapter?.notifyDataSetChanged()
         binding?.contactRecycler?.recycledViewPool?.clear()
     }
+
     private fun setListeners() {
         binding?.back?.setOnClickListener { onBackPress() }
         binding?.addGroup?.setOnClickListener { onAddGroup() }

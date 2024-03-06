@@ -60,10 +60,11 @@ class AuthorizationActivity : ComponentActivity() {
         binding = null
     }
 
-    private fun removeListeners(){
+    private fun removeListeners() {
         binding?.txtButRegister?.setOnClickListener(null)
         binding?.butEnter?.setOnClickListener(null)
     }
+
     private fun setListeners() {
         binding?.txtButRegister?.setOnClickListener { navigateToRegister() }
         binding?.butEnter?.setOnClickListener { login() }
@@ -79,7 +80,7 @@ class AuthorizationActivity : ComponentActivity() {
             ).show()
             return
         }
-        if(phone.text!!.length < 11){
+        if (phone.text!!.length < 11) {
             Toast.makeText(
                 applicationContext, "Такого номера телефона не существует!",
                 Toast.LENGTH_SHORT

@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getChats(){
+    private fun getChats() {
         chatViewModel.getChats(
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
@@ -120,7 +120,8 @@ class MainActivity : AppCompatActivity() {
         }
         getByPhone(userData!!.phone)
     }
-    private fun getByPhone(phone:String){
+
+    private fun getByPhone(phone: String) {
         userViewModel.getByPhone(phone,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
@@ -153,7 +154,7 @@ class MainActivity : AppCompatActivity() {
         bindingHeader = null
     }
 
-    private fun removeListeners(){
+    private fun removeListeners() {
         binding?.butAddChat?.setOnClickListener(null)
         binding?.navigationView?.setNavigationItemSelectedListener(null)
         bindingHeader?.imageMode?.setOnClickListener(null)
@@ -161,6 +162,7 @@ class MainActivity : AppCompatActivity() {
         binding?.recyclerChat?.adapter?.notifyDataSetChanged()
         binding?.recyclerChat?.recycledViewPool?.clear()
     }
+
     private fun setListeners() {
         binding?.butAddChat?.setOnClickListener { onAddChat() }
         binding?.recyclerChat?.addOnChildAttachStateChangeListener(onRecyclerAttachState())
@@ -242,7 +244,7 @@ class MainActivity : AppCompatActivity() {
     private fun initNavigationViewHeader(user: User) {
         bindingHeader?.textFIO?.text = "${user.surname} ${user.name}"
         bindingHeader?.textPhone?.text = user.phone
-        if(user.photo.isNullOrBlank()){
+        if (user.photo.isNullOrBlank()) {
             return
         }
         Picasso.get()
