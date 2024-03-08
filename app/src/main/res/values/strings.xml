@@ -33,4 +33,5 @@
     <string name="title_klepet_chat">KlepetChat</string>
     <string name="NewPhone">Новый телефон</string>
     <string name="ValidatePassword">Подтвердите паоль</string>
+    <string name="search">Поиск</string>
 </resources>

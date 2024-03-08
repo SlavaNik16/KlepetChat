@@ -14,6 +14,8 @@ class Constants {
 
         val KEY_TAG_MOON = "moon"
         val KEY_TAG_SUN = "sun"
+        val KEY_TAG_SEARCH = "search"
+        val KEY_TAG_SEARCHOFF = "search_off"
     }
 
 }
