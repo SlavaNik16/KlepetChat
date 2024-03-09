@@ -7,7 +7,6 @@ import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.ImageViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
-import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.User
 import android.content.Context
 import android.content.DialogInterface
@@ -146,11 +145,11 @@ class ChooseActivity : ComponentActivity() {
                     binding?.contactRecycler?.findContainingViewHolder(view)!!.adapterPosition
                 view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
                     var user = this@ChooseActivity.users[position]
-                    val intent = Intent(this@ChooseActivity, ChatActivity::class.java)
-                    intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
+                    val intent = Intent(this@ChooseActivity, ChatContactActivity::class.java)
+                    intent.putExtra(Constants.KEY_USER_PHONE_OTHER, user.phone)
+                    intent.putExtra(Constants.KEY_CHAT_ID, Constants.GUID_NULL)
                     intent.putExtra(Constants.KEY_CHAT_NAME, user.name)
                     intent.putExtra(Constants.KEY_IMAGE_URL, user.photo)
-                    intent.putExtra(Constants.KEY_CHAT_TYPE, ChatTypes.Contact)
                     intent.putExtra(Constants.KEY_IS_PREV, true)
                     startActivity(intent)
                     finish()

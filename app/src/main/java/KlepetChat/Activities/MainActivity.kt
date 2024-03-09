@@ -284,13 +284,12 @@ class MainActivity : AppCompatActivity() {
                     binding?.recyclerChat?.findContainingViewHolder(view)!!.adapterPosition
                 view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
                     var chat = this@MainActivity.chats[position]
-                    val intent = Intent(this@MainActivity, ChatActivity::class.java)
+                    val intent = Intent(this@MainActivity, ChatContactActivity::class.java)
 
                     intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
                     intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
                     intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
-                    intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
-                    intent.putExtra(Constants.KEY_CHAT_TYPE, chat.chatType.name)
+                    intent.putExtra(Constants.KEY_USER_PHONE_OTHER, user.phone)
                     intent.putExtra(Constants.KEY_IS_PREV, false)
                     startActivity(intent)
                     finish()

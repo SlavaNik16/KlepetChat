@@ -1,21 +1,21 @@
 package KlepetChat.Activities.Data
 
+import java.util.UUID
+
 class Constants {
     companion object{
-        val KEY_IS_PREV = "is_prev"
-        val KEY_USER_ID = "user_id"
-        val KEY_USER_PHONE = "user_phone"
-        val KEY_CHAT_ID = "chat_id"
-        val KEY_CHAT_NAME = "chat_name"
-        val KEY_CHAT_TYPE = "chat_type"
-        val KEY_IMAGE_URL = "image_url"
-        val KEY_NAME = "name"
-        val KEY_COUNT = "count"
+        const val KEY_IS_PREV = "is_prev"
+        const val KEY_USER_PHONE_OTHER = "user_phone_other"
+        const val KEY_CHAT_ID = "chat_id"
+        const val KEY_CHAT_NAME = "chat_name"
+        const val KEY_IMAGE_URL = "image_url"
 
-        val KEY_TAG_MOON = "moon"
-        val KEY_TAG_SUN = "sun"
-        val KEY_TAG_SEARCH = "search"
-        val KEY_TAG_SEARCHOFF = "search_off"
+        const val KEY_TAG_MOON = "moon"
+        const val KEY_TAG_SUN = "sun"
+        const val KEY_TAG_SEARCH = "search"
+        const val KEY_TAG_SEARCHOFF = "search_off"
+
+        val GUID_NULL:UUID = UUID.fromString("00000000-0000-0000-0000-000000000000")
     }
 
 }
