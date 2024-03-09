@@ -10,6 +10,7 @@ import KlepetChat.WebApi.Models.Response.Chat
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +30,8 @@ class ChatContactActivity : AppCompatActivity() {
 
     private lateinit var chatId: UUID
     private lateinit var phoneOther: String
+
+    private lateinit var fragment: ChatFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,10 +62,10 @@ class ChatContactActivity : AppCompatActivity() {
         val chatIdStr = argument?.getString(Constants.KEY_CHAT_ID)
         if(!chatIdStr.isNullOrBlank()){
             chatId = UUID.fromString(chatIdStr)
-            val fragment = ChatFragment.newInstance(chatId)
+            fragment = ChatFragment.newInstance(chatId)
             fragmentInstance(fragment)
         }else{
-            val fragment = ChatFragment.newInstanceInit() { onInitChat() }
+            fragment = ChatFragment.newInstanceInit() { onInitChat() }
             fragmentInstance(fragment)
         }
 
@@ -121,7 +124,8 @@ class ChatContactActivity : AppCompatActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 chatId = api.data.id
-                fragmentInstance(ChatFragment.newInstance(chatId))
+                fragment.binding?.buttonInitChat?.visibility = View.GONE
+                fragment.chatId = chatId
             }
 
             is ApiResponse.Failure -> {

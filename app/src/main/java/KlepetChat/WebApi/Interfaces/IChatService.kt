@@ -24,4 +24,8 @@ interface IChatService {
 
     @POST("chat/group")
     suspend fun postGroup(@Query("name") name: String, @Query("photo") photo:String? = null):Response<Chat>
+
+    @POST("chat/join")
+    suspend fun postJoinGroup(@Query("id") id: UUID):Response<Chat>
+
 }

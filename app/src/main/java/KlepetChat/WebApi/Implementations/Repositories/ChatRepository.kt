@@ -28,4 +28,8 @@ class ChatRepository @Inject constructor(
         chatService.postGroup(name,photo)
     }
 
+    fun postJoinGroup(id:UUID) = ApiRequestFlowResponse {
+        chatService.postJoinGroup(id)
+    }
+
 }

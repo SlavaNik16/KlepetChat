@@ -23,7 +23,7 @@ class ChatFragment : Fragment() {
     private val messageViewModel: MessageViewModel by activityViewModels()
     private val userDataViewModel: UserDataViewModel by activityViewModels()
 
-    private var chatId: UUID = Constants.GUID_NULL
+    var chatId: UUID = Constants.GUID_NULL
 
     private lateinit var phone: String
     private lateinit var messages: MutableList<Message>
@@ -35,13 +35,13 @@ class ChatFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentChatBinding.inflate(inflater)
+        setListeners()
+        setObserve()
         return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setListeners()
-        setObserve()
         init()
     }
 
@@ -128,6 +128,9 @@ class ChatFragment : Fragment() {
     private fun getMessage(api: ApiResponse<Message>) {
         when (api) {
             is ApiResponse.Success -> {
+                Toast.makeText(
+                    requireContext(), "Текст! ${api.data.text}", Toast.LENGTH_SHORT
+                ).show()
                 EventUpdateMessages(api.data)
             }
 
@@ -150,7 +153,7 @@ class ChatFragment : Fragment() {
         }
         messages.sortBy { it.createdAt }
         if (messages.size != 0) {
-            chatAdapter = ChatAdapter(requireContext(), messages, phone)
+            chatAdapter = ChatAdapter(messages, phone)
             binding?.recyclerChat?.adapter = chatAdapter
             chatAdapter.notifyDataSetChanged()
         }

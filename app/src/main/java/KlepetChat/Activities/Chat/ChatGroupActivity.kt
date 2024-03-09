@@ -5,9 +5,11 @@ import KlepetChat.Activities.Data.Constants
 import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
+import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +29,8 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private lateinit var chatId: UUID
 
+    private lateinit var fragment: ChatFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatGroupBinding.inflate(layoutInflater)
@@ -34,7 +38,7 @@ class ChatGroupActivity : AppCompatActivity() {
         setListeners()
         setObserve()
         init()
-
+        Toast.makeText(this,"$chatId", Toast.LENGTH_SHORT).show()
     }
 
     private fun setObserve() {
@@ -48,24 +52,26 @@ class ChatGroupActivity : AppCompatActivity() {
             .commit()
     }
 
-
     private fun init() {
         val argument = intent.extras
 
+        val persons = argument?.getStringArrayList(Constants.KEY_CHAT_PEOPLE)
+        binding?.textDesc?.text = "${persons?.count()} подписчик(-a)"
+        val phone = argument?.getString(Constants.KEY_USER_PHONE)
         val chatIdStr = argument?.getString(Constants.KEY_CHAT_ID)
-        if(!chatIdStr.isNullOrBlank()){
-            chatId = UUID.fromString(chatIdStr)
-            val fragment = ChatFragment.newInstance(chatId)
+        chatId = UUID.fromString(chatIdStr)
+        if(persons!!.contains(phone)){
+            fragment = ChatFragment.newInstance(chatId)
             fragmentInstance(fragment)
         }else{
-            val fragment = ChatFragment.newInstanceInit() { onInitChat() }
+            fragment = ChatFragment.newInstanceInit() { onInitChat() }
             fragmentInstance(fragment)
         }
 
-        val txtName = argument?.getString(Constants.KEY_CHAT_NAME)
+        val txtName = argument.getString(Constants.KEY_CHAT_NAME)
         binding?.txtName?.text = txtName
 
-        val imageChat = argument?.getString(Constants.KEY_IMAGE_URL)
+        val imageChat = argument.getString(Constants.KEY_IMAGE_URL)
         if (!imageChat.isNullOrBlank()) {
             Picasso.get()
                 .load(imageChat)
@@ -73,8 +79,7 @@ class ChatGroupActivity : AppCompatActivity() {
                 .error(R.drawable.baseline_account_circle_24)
                 .into(binding?.imageChat)
         }
-        val countPerson = argument?.getString(Constants.KEY_CHAT_COUNT)
-        binding?.textDesc?.text = "${countPerson+1} подписчик(-a)"
+
     }
 
     private fun setListeners() {
@@ -98,14 +103,14 @@ class ChatGroupActivity : AppCompatActivity() {
     }
 
     private fun onInitChat() {
-//        chatViewModel.postContact(phoneOther,
-//            object : ICoroutinesErrorHandler {
-//                override fun onError(message: String) {
-//                    Toast.makeText(
-//                        this@ChatGroupActivity, "Ошибка! $message", Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//            })
+        chatViewModel.postJoinGroup(chatId,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    Toast.makeText(
+                        this@ChatGroupActivity, "Ошибка! $message", Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
         Toast.makeText(this,"$chatId", Toast.LENGTH_SHORT).show()
     }
 
@@ -113,7 +118,8 @@ class ChatGroupActivity : AppCompatActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 chatId = api.data.id
-                fragmentInstance(ChatFragment.newInstance(chatId))
+                fragment.binding?.buttonInitChat?.visibility = View.GONE
+                fragment.chatId = chatId
             }
 
             is ApiResponse.Failure -> {

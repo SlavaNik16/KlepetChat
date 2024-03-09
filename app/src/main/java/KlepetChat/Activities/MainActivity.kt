@@ -283,6 +283,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onRecyclerAttachState(): RecyclerView.OnChildAttachStateChangeListener {
         return object : RecyclerView.OnChildAttachStateChangeListener {
+
             override fun onChildViewAttachedToWindow(view: View) {
                 var position =
                     binding?.recyclerChat?.findContainingViewHolder(view)!!.adapterPosition
@@ -306,7 +307,12 @@ class MainActivity : AppCompatActivity() {
                             intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
                             intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
                             intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
-                            intent.putExtra(Constants.KEY_CHAT_COUNT, chat.phones.count())
+                            var arrayList: ArrayList<String> = arrayListOf()
+                            for(item in chat.phones){
+                                arrayList.add(item)
+                            }
+                            intent.putStringArrayListExtra(Constants.KEY_CHAT_PEOPLE, arrayList)
+                            intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
                         }
                     }
                     startActivity(intent)

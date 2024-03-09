@@ -56,4 +56,11 @@ class ChatViewModel @Inject constructor(
     ){
         chatRepository.postGroup(name,photo)
     }
+
+    fun postJoinGroup(id:UUID, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+        chatResponse,
+        coroutineErrorHandler
+    ){
+        chatRepository.postJoinGroup(id)
+    }
 }
