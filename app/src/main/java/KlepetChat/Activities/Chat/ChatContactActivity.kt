@@ -60,11 +60,11 @@ class ChatContactActivity : AppCompatActivity() {
         phoneOther = argument?.getString(Constants.KEY_USER_PHONE_OTHER).toString()
 
         val chatIdStr = argument?.getString(Constants.KEY_CHAT_ID)
-        if(!chatIdStr.isNullOrBlank()){
+        if (!chatIdStr.isNullOrBlank()) {
             chatId = UUID.fromString(chatIdStr)
             fragment = ChatFragment.newInstance(chatId)
             fragmentInstance(fragment)
-        }else{
+        } else {
             fragment = ChatFragment.newInstanceInit() { onInitChat() }
             fragmentInstance(fragment)
         }
@@ -95,11 +95,13 @@ class ChatContactActivity : AppCompatActivity() {
 
     private fun removeListeners() {
         binding?.back?.setOnClickListener(null)
+        binding?.butPhone?.setOnClickListener(null)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         removeListeners()
+        fragment.onDestroy()
         binding = null
     }
 
@@ -114,7 +116,7 @@ class ChatContactActivity : AppCompatActivity() {
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
                     Toast.makeText(
-                       this@ChatContactActivity, "Ошибка! $message", Toast.LENGTH_SHORT
+                        this@ChatContactActivity, "Ошибка! $message", Toast.LENGTH_SHORT
                     ).show()
                 }
             })
@@ -130,7 +132,8 @@ class ChatContactActivity : AppCompatActivity() {
 
             is ApiResponse.Failure -> {
                 Toast.makeText(
-                    this@ChatContactActivity, "Ошибка! ${api.message}", Toast.LENGTH_SHORT
+                    this@ChatContactActivity, "Ошибка! ${api.message}",
+                    Toast.LENGTH_SHORT
                 ).show()
             }
 

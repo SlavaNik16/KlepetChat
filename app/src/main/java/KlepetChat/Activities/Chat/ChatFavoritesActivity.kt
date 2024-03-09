@@ -18,6 +18,7 @@ class ChatFavoritesActivity : AppCompatActivity() {
     private var binding: ActivityChatFavoritesBinding? = null
 
     private lateinit var chatId: UUID
+    private lateinit var fragment: ChatFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatFavoritesBinding.inflate(layoutInflater)
@@ -41,7 +42,7 @@ class ChatFavoritesActivity : AppCompatActivity() {
 
         val chatIdStr = argument?.getString(Constants.KEY_CHAT_ID)
         chatId = UUID.fromString(chatIdStr)
-        val fragment = ChatFragment.newInstance(chatId)
+        fragment = ChatFragment.newInstance(chatId)
         fragmentInstance(fragment)
 
         val txtName = argument?.getString(Constants.KEY_CHAT_NAME)
@@ -62,6 +63,7 @@ class ChatFavoritesActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         removeListeners()
+        fragment.onDestroy()
         binding = null
     }
 

@@ -195,7 +195,7 @@ class MainActivity : AppCompatActivity() {
             private val DELAY: Long = 500
             override fun onTextChanged(target: EditText, s: Editable?) {
                 if (target.text.isNullOrBlank()) {
-                    if(isEdit) {
+                    if (isEdit) {
                         getChats()
                     }
                     return
@@ -289,7 +289,7 @@ class MainActivity : AppCompatActivity() {
                     binding?.recyclerChat?.findContainingViewHolder(view)!!.adapterPosition
                 view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
                     var chat = this@MainActivity.chats[position]
-                    var intent =  when(chat.chatType){
+                    var intent = when (chat.chatType) {
                         ChatTypes.Contact -> {
                             val intent = Intent(this@MainActivity, ChatContactActivity::class.java)
                             intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
@@ -297,18 +297,21 @@ class MainActivity : AppCompatActivity() {
                             intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
                             intent.putExtra(Constants.KEY_USER_PHONE_OTHER, chat.phones[0])
                         }
-                        ChatTypes.Favorites ->{
-                            val intent = Intent(this@MainActivity, ChatFavoritesActivity::class.java)
+
+                        ChatTypes.Favorites -> {
+                            val intent =
+                                Intent(this@MainActivity, ChatFavoritesActivity::class.java)
                             intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
                             intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
                         }
-                        ChatTypes.Group ->{
+
+                        ChatTypes.Group -> {
                             val intent = Intent(this@MainActivity, ChatGroupActivity::class.java)
                             intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
                             intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
                             intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
                             var arrayList: ArrayList<String> = arrayListOf()
-                            for(item in chat.phones){
+                            for (item in chat.phones) {
                                 arrayList.add(item)
                             }
                             intent.putStringArrayListExtra(Constants.KEY_CHAT_PEOPLE, arrayList)

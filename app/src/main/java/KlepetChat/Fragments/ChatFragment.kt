@@ -128,9 +128,6 @@ class ChatFragment : Fragment() {
     private fun getMessage(api: ApiResponse<Message>) {
         when (api) {
             is ApiResponse.Success -> {
-                Toast.makeText(
-                    requireContext(), "Текст! ${api.data.text}", Toast.LENGTH_SHORT
-                ).show()
                 EventUpdateMessages(api.data)
             }
 

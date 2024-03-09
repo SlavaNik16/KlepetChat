@@ -38,7 +38,6 @@ class ChatGroupActivity : AppCompatActivity() {
         setListeners()
         setObserve()
         init()
-        Toast.makeText(this,"$chatId", Toast.LENGTH_SHORT).show()
     }
 
     private fun setObserve() {
@@ -60,10 +59,10 @@ class ChatGroupActivity : AppCompatActivity() {
         val phone = argument?.getString(Constants.KEY_USER_PHONE)
         val chatIdStr = argument?.getString(Constants.KEY_CHAT_ID)
         chatId = UUID.fromString(chatIdStr)
-        if(persons!!.contains(phone)){
+        if (persons!!.contains(phone)) {
             fragment = ChatFragment.newInstance(chatId)
             fragmentInstance(fragment)
-        }else{
+        } else {
             fragment = ChatFragment.newInstanceInit() { onInitChat() }
             fragmentInstance(fragment)
         }
@@ -93,6 +92,7 @@ class ChatGroupActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         removeListeners()
+        fragment.onDestroy()
         binding = null
     }
 
@@ -111,7 +111,6 @@ class ChatGroupActivity : AppCompatActivity() {
                     ).show()
                 }
             })
-        Toast.makeText(this,"$chatId", Toast.LENGTH_SHORT).show()
     }
 
     private fun getChat(api: ApiResponse<Chat>) {
