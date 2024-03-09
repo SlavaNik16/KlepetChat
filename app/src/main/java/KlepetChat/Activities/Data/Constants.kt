@@ -4,7 +4,7 @@ import java.util.UUID
 
 class Constants {
     companion object{
-        const val KEY_IS_PREV = "is_prev"
+        const val KEY_CHAT_COUNT = "chat_count"
         const val KEY_USER_PHONE_OTHER = "user_phone_other"
         const val KEY_CHAT_ID = "chat_id"
         const val KEY_CHAT_NAME = "chat_name"

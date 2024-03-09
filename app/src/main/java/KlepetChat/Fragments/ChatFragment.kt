@@ -188,7 +188,7 @@ class ChatFragment : Fragment() {
             }
 
         @JvmStatic
-        fun newInstanceContactInit(onInitChat: () -> Unit) =
+        fun newInstanceInit(onInitChat: () -> Unit) =
             ChatFragment().apply {
                 arguments = Bundle().apply {
                     initChat = onInitChat

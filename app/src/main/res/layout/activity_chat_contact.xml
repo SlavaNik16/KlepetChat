@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="KlepetChat.Activities.ChatContactActivity">
+    tools:context="KlepetChat.Activities.Chat.ChatContactActivity">
 
 
 
@@ -46,12 +46,13 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <LinearLayout
+            android:id="@+id/linearLayout4"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="10dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/butMenu"
+            app:layout_constraintEnd_toStartOf="@+id/butPhone"
             app:layout_constraintStart_toEndOf="@+id/imageChat"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -59,8 +60,8 @@
                 android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:text="TextView"
                 android:textColor="@color/black" />
 
@@ -74,6 +75,15 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/butPhone"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ic_phone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/butMenu"
+            app:layout_constraintTop_toTopOf="parent" />
         <ImageView
             android:id="@+id/butMenu"
             android:layout_width="32dp"

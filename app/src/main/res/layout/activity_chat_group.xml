@@ -64,6 +64,14 @@
                 android:text="TextView"
                 android:textColor="@color/black" />
 
+            <TextView
+                android:id="@+id/textDesc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="TextView"
+                android:textColor="@color/black" />
+
         </LinearLayout>
 
         <ImageView

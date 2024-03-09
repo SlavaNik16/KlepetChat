@@ -1,5 +1,6 @@
 package KlepetChat.Activities
 
+import KlepetChat.Activities.Chat.ChatContactActivity
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.UserViewItemAdapter
 import KlepetChat.WebApi.Implementations.ApiResponse
@@ -150,7 +151,6 @@ class ChooseActivity : ComponentActivity() {
                     intent.putExtra(Constants.KEY_CHAT_ID, Constants.GUID_NULL)
                     intent.putExtra(Constants.KEY_CHAT_NAME, user.name)
                     intent.putExtra(Constants.KEY_IMAGE_URL, user.photo)
-                    intent.putExtra(Constants.KEY_IS_PREV, true)
                     startActivity(intent)
                     finish()
                 }

@@ -1,7 +1,8 @@
-package KlepetChat.Activities
+package KlepetChat.Activities.Chat
 
 import ChatFragment
 import KlepetChat.Activities.Data.Constants
+import KlepetChat.Activities.MainActivity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

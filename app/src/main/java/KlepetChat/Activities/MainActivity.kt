@@ -1,5 +1,8 @@
 package KlepetChat.Activities
 
+import KlepetChat.Activities.Chat.ChatContactActivity
+import KlepetChat.Activities.Chat.ChatFavoritesActivity
+import KlepetChat.Activities.Chat.ChatGroupActivity
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.ChatViewItemAdapter
 import KlepetChat.DataSore.Models.UserData
@@ -10,6 +13,7 @@ import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
+import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.User
 import android.content.Context
 import android.content.Intent
@@ -284,13 +288,27 @@ class MainActivity : AppCompatActivity() {
                     binding?.recyclerChat?.findContainingViewHolder(view)!!.adapterPosition
                 view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
                     var chat = this@MainActivity.chats[position]
-                    val intent = Intent(this@MainActivity, ChatContactActivity::class.java)
-
-                    intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
-                    intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
-                    intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
-                    intent.putExtra(Constants.KEY_USER_PHONE_OTHER, user.phone)
-                    intent.putExtra(Constants.KEY_IS_PREV, false)
+                    var intent =  when(chat.chatType){
+                        ChatTypes.Contact -> {
+                            val intent = Intent(this@MainActivity, ChatContactActivity::class.java)
+                            intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
+                            intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
+                            intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
+                            intent.putExtra(Constants.KEY_USER_PHONE_OTHER, chat.phones[0])
+                        }
+                        ChatTypes.Favorites ->{
+                            val intent = Intent(this@MainActivity, ChatFavoritesActivity::class.java)
+                            intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
+                            intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
+                        }
+                        ChatTypes.Group ->{
+                            val intent = Intent(this@MainActivity, ChatGroupActivity::class.java)
+                            intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
+                            intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
+                            intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
+                            intent.putExtra(Constants.KEY_CHAT_COUNT, chat.phones.count())
+                        }
+                    }
                     startActivity(intent)
                     finish()
                 }

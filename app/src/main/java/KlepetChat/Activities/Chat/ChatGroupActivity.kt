@@ -1,10 +1,10 @@
-package KlepetChat.Activities
+package KlepetChat.Activities.Chat
 
 import ChatFragment
 import KlepetChat.Activities.Data.Constants
+import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
-import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import android.content.Intent
 import android.os.Bundle
@@ -13,24 +13,23 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.klepetchat.R
-import com.example.klepetchat.databinding.ActivityChatContactBinding
+import com.example.klepetchat.databinding.ActivityChatGroupBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.UUID
 
 
 @AndroidEntryPoint
-class ChatContactActivity : AppCompatActivity() {
-    private var binding: ActivityChatContactBinding? = null
+class ChatGroupActivity : AppCompatActivity() {
+    private var binding: ActivityChatGroupBinding? = null
 
     private val chatViewModel: ChatViewModel by viewModels()
 
     private lateinit var chatId: UUID
-    private lateinit var phoneOther: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityChatContactBinding.inflate(layoutInflater)
+        binding = ActivityChatGroupBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         setListeners()
         setObserve()
@@ -52,7 +51,6 @@ class ChatContactActivity : AppCompatActivity() {
 
     private fun init() {
         val argument = intent.extras
-        phoneOther = argument?.getString(Constants.KEY_USER_PHONE_OTHER).toString()
 
         val chatIdStr = argument?.getString(Constants.KEY_CHAT_ID)
         if(!chatIdStr.isNullOrBlank()){
@@ -60,7 +58,7 @@ class ChatContactActivity : AppCompatActivity() {
             val fragment = ChatFragment.newInstance(chatId)
             fragmentInstance(fragment)
         }else{
-            val fragment = ChatFragment.newInstanceContactInit() { onInitChat() }
+            val fragment = ChatFragment.newInstanceInit() { onInitChat() }
             fragmentInstance(fragment)
         }
 
@@ -75,7 +73,8 @@ class ChatContactActivity : AppCompatActivity() {
                 .error(R.drawable.baseline_account_circle_24)
                 .into(binding?.imageChat)
         }
-        binding?.textDesc?.text = "В сети"
+        val countPerson = argument?.getString(Constants.KEY_CHAT_COUNT)
+        binding?.textDesc?.text = "${countPerson+1} подписчик(-a)"
     }
 
     private fun setListeners() {
@@ -93,20 +92,21 @@ class ChatContactActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-        var intent = Intent(this@ChatContactActivity, MainActivity::class.java)
+        var intent = Intent(this@ChatGroupActivity, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
 
     private fun onInitChat() {
-        chatViewModel.postContact(phoneOther,
-            object : ICoroutinesErrorHandler {
-                override fun onError(message: String) {
-                    Toast.makeText(
-                       this@ChatContactActivity, "Ошибка! $message", Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
+//        chatViewModel.postContact(phoneOther,
+//            object : ICoroutinesErrorHandler {
+//                override fun onError(message: String) {
+//                    Toast.makeText(
+//                        this@ChatGroupActivity, "Ошибка! $message", Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+//            })
+        Toast.makeText(this,"$chatId", Toast.LENGTH_SHORT).show()
     }
 
     private fun getChat(api: ApiResponse<Chat>) {
@@ -118,7 +118,7 @@ class ChatContactActivity : AppCompatActivity() {
 
             is ApiResponse.Failure -> {
                 Toast.makeText(
-                    this@ChatContactActivity, "Ошибка! ${api.message}", Toast.LENGTH_SHORT
+                    this@ChatGroupActivity, "Ошибка! ${api.message}", Toast.LENGTH_SHORT
                 ).show()
             }
 

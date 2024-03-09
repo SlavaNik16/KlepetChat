@@ -18,7 +18,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name="KlepetChat.Activities.ChatFavoritesActivity"
+            android:name="KlepetChat.Activities.Chat.ChatFavoritesActivity"
+            android:exported="false" />
+        <activity
+            android:name="KlepetChat.Activities.Chat.ChatGroupActivity"
             android:exported="false" />
         <activity
             android:name="KlepetChat.Activities.ProfileActivity"
@@ -31,7 +34,7 @@
             android:exported="false"
             android:theme="@style/Theme.KlepetChat" />
         <activity
-            android:name="KlepetChat.Activities.ChatContactActivity"
+            android:name="KlepetChat.Activities.Chat.ChatContactActivity"
             android:exported="false"
             android:theme="@style/Theme.KlepetChat" />
         <activity

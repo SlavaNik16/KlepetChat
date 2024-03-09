@@ -19,6 +19,7 @@ class AuthInterceptor @Inject  constructor(
         Log.d("Debug","Перехватчик сработал")
         Log.d("Intercept","Перехватчик сработал")
         val request = chain.request().newBuilder()
+        Log.d("POST", "accessToken ${userData.accessToken}")
         request.addHeader("Authorization", "Bearer ${userData.accessToken}")
         return chain.proceed(request.build())
     }
