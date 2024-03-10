@@ -13,7 +13,8 @@
     <string name="Required">Обязательно</string>
     <string name="NotAccount">Нет аккаунта</string>
     <string name="Register">SIGN UP</string>
-    <string name="RegisterMe">Зарегистрироваться</string>
+    <string name="RegisterMe">SIGN UP</string>
+    <string name="BackRegisterBtn">Back</string>
     <string name="I_forgot_My_Password">Я забыл пароль</string>
 
     <string name="Empty"> </string>
