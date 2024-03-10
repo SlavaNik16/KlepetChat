@@ -12,7 +12,7 @@
     <string name="Enter">Войти</string>
     <string name="Required">Обязательно</string>
     <string name="NotAccount">Нет аккаунта</string>
-    <string name="Register">SIGN UP</string>
+    <string name="Register">Регистрация</string>
     <string name="RegisterMe">SIGN UP</string>
     <string name="BackRegisterBtn">Back</string>
     <string name="I_forgot_My_Password">Я забыл пароль</string>

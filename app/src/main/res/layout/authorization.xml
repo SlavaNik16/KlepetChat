@@ -9,12 +9,13 @@
 
 
     <androidx.cardview.widget.CardView
+
         android:id="@+id/cardViewProfile"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:rotation="-26"
         android:scrollbarSize="5dp"
-        app:cardBackgroundColor="#314267"
+        android:backgroundTint="@color/white"
         app:cardCornerRadius="60dp"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutЗPhone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,15 +25,17 @@
         <ImageView
             android:id="@+id/imageViewUserAvatar"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/Empty"
             android:padding="25dp"
             android:rotation="26"
-            android:contentDescription="@string/Empty"
             android:scaleType="centerCrop"
             android:scrollbarSize="2dp"
-            app:srcCompat="@drawable/baseline_account_circle_24" />
+            android:src="@drawable/ic_logo"
+            android:visibility="visible" />
 
     </androidx.cardview.widget.CardView>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutЗPhone"
@@ -65,22 +68,25 @@
             android:textSize="24sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutPassword"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
+        android:layout_marginBottom="10dp"
         app:counterEnabled="true"
         app:counterMaxLength="15"
         app:endIconMode="password_toggle"
         app:helperText="@string/Required"
         app:layout_constraintBottom_toTopOf="@+id/butEnter"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.733"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutЗPhone">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutЗPhone"
+        app:layout_constraintVertical_bias="0.0">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passField"
@@ -91,68 +97,76 @@
             android:maxLength="15"
             android:text=""
             android:textSize="24sp" />
+
+
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <androidx.cardview.widget.CardView
         android:id="@+id/butEnter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Enter"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        android:layout_width="298dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginEnd="110dp"
+        android:layout_marginBottom="156dp"
+        android:backgroundTint="#A12998"
+        android:rotation="0"
+        android:scrollbarSize="5dp"
+        android:visibility="visible"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/txtButForgetPas"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/butEnter">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/txtAccount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="96dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
-            android:layout_weight="1"
-            android:ems="1"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="#A12998"
             android:gravity="center"
-            android:text="@string/NotAccount"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/txtButRegister"
-            android:layout_width="112dp"
-            android:layout_height="55dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:ems="1"
-            android:gravity="center"
-            android:text="@string/Register"
-            android:textColor="#2196F3"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+            android:text="@string/Enter"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.543"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+            app:layout_constraintVertical_bias="0.429" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/txtButForgetPas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="116dp"
         android:text="@string/I_forgot_My_Password"
         android:textColor="#2196F3"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtButRegister"
+        android:layout_width="171dp"
+        android:layout_height="54dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
+        android:ems="1"
+        android:gravity="center"
+        android:text="@string/Register"
+        android:textColor="#2196F3"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

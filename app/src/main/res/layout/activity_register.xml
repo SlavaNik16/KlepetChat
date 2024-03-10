@@ -12,14 +12,14 @@
         android:id="@+id/cardView10"
         android:layout_width="308dp"
         android:layout_height="70dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#A12998"
+        android:layout_marginTop="28dp"
+
         android:rotation="0"
         android:scrollbarSize="5dp"
         android:visibility="visible"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -30,7 +30,7 @@
             android:layout_gravity="center"
             android:rotation="0"
             android:text="@string/Register"
-            android:textColor="@color/white"
+            android:textColor="#74726D"
             android:textSize="24sp" />
 
     </androidx.cardview.widget.CardView>
@@ -156,22 +156,42 @@
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
-    <Button
+    <androidx.cardview.widget.CardView
         android:id="@+id/butReg"
-        android:layout_width="218dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginEnd="110dp"
         android:backgroundTint="#A12998"
-        android:text="@string/RegisterMe"
-        android:textSize="20sp"
-        app:cornerRadius="20dp"
+        android:rotation="0"
+        android:scrollbarSize="5dp"
+        android:visibility="visible"
+        app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-        app:layout_constraintVertical_bias="0.487" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+
+        <TextView
+            android:layout_width="96dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="#A12998"
+            android:gravity="center"
+            android:text="@string/RegisterMe"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.543"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+            app:layout_constraintVertical_bias="0.429" />
+    </androidx.cardview.widget.CardView>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/logoProgr"
@@ -185,6 +205,23 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView10" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView10"
+        app:layout_constraintVertical_bias="0.363" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/butBack"
+        android:layout_width="42dp"
+        android:layout_height="54dp"
+        android:layout_margin="10dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="187dp"
+        android:src="@drawable/ic_back"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.109" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
