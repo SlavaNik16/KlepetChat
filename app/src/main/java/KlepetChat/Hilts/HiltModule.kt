@@ -37,4 +37,7 @@ class HiltModule {
 
     @Provides
     fun providesImageRepository(imageService: IImageService) = ImageRepository(imageService)
+
+//    @Provides
+//    fun providesHubRepository(hubService: IHubService) = HubRepository(hubService)
 }

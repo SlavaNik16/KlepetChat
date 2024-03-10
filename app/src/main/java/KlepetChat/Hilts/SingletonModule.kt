@@ -33,6 +33,7 @@ class SingletonModule {
     companion object{
         val URL_BASE = "http://klepetapi.somee.com/"
         val URL_IMG = "http://upload-soft.photolab.me/"
+        val URL_SIGNALR = "http://klepetapi.somee.com/ch"
     }
     @Singleton
     @Provides
@@ -127,4 +128,21 @@ class SingletonModule {
             .build()
             .create(IImageService::class.java)
     }
+//    @Singleton
+//    @Provides
+//    fun providesIHubService(): IHubService {
+//        return Retrofit.Builder()
+//            .baseUrl(URL_IMG)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//            .create(IHubService::class.java)
+//    }
+
+//    @Singleton
+//    @Provides
+//    fun providesHubConnection(): HubConnection {
+//        return HubConnectionBuilder
+//            .create(URL_SIGNALR)
+//            .build()
+//    }
 }

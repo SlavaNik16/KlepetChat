@@ -53,6 +53,9 @@ android {
 }
 
 dependencies {
+    implementation("com.microsoft.signalr:signalr:5.0.10")
+    implementation("org.slf4j:slf4j-jdk14:1.7.25")
+
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.squareup.picasso:picasso:2.71828")
 
