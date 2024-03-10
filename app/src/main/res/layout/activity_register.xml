@@ -10,14 +10,15 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView10"
-        android:layout_width="310dp"
-        android:layout_height="92dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="308dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="16dp"
         android:rotation="0"
         android:scrollbarSize="5dp"
-        app:cardBackgroundColor="#243E77"
-        app:cardCornerRadius="10dp"
+        android:visibility="visible"
+        app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -28,7 +29,7 @@
             android:layout_gravity="center"
             android:rotation="0"
             android:text="@string/Register"
-            android:textColor="#C0C1C5"
+            android:textColor="@color/black"
             android:textSize="24sp" />
 
     </androidx.cardview.widget.CardView>
@@ -42,8 +43,10 @@
         android:padding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView10">
+        app:layout_constraintTop_toBottomOf="@+id/cardView10"
+        app:layout_constraintVertical_bias="0.689">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayoutEmail"
@@ -111,10 +114,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+
             app:startIconDrawable="@drawable/ic_phone">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/phoneField"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/Phone"
@@ -161,5 +166,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/logoProgr"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/baseline_account_circle_24"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
