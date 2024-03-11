@@ -2,9 +2,9 @@ package KlepetChat.WebApi.Models.Exceptions
 
 import com.google.gson.annotations.SerializedName
 
-data class InvalidateItemModel (
+data class InvalidateItemModel(
     @SerializedName("field")
-    val field:String,
+    val field: String,
     @SerializedName("message")
-    val message:String,
+    val message: String,
 )

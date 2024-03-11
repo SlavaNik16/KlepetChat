@@ -13,15 +13,16 @@ import javax.inject.Inject
 @HiltViewModel
 class ImageViewModel @Inject constructor(
     private val imageRepository: ImageRepository,
-): BaseViewModel() {
+) : BaseViewModel() {
     private val imgResponse = MutableLiveData<ApiResponse<ResponseBody>>()
     val img = imgResponse
 
 
-    fun postImg(file1: MultipartBody.Part, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
-        imgResponse,
-        coroutineErrorHandler
-    ) {
-        imageRepository.postImg(file1)
-    }
+    fun postImg(file1: MultipartBody.Part, coroutineErrorHandler: ICoroutinesErrorHandler) =
+        BaseRequest(
+            imgResponse,
+            coroutineErrorHandler
+        ) {
+            imageRepository.postImg(file1)
+        }
 }

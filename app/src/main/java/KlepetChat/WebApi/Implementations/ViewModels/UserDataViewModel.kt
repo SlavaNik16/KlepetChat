@@ -13,26 +13,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserDataViewModel @Inject constructor(
-    private val dataStoreManager: DataStoreManager
-): ViewModel() {
+    private val dataStoreManager: DataStoreManager,
+) : ViewModel() {
     val userData = MutableLiveData<UserData?>()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             dataStoreManager.userDataFlow.collect() {
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     userData.value = it
                 }
             }
         }
     }
 
-    fun SaveUserData(userData: UserData){
+    fun SaveUserData(userData: UserData) {
         viewModelScope.launch(Dispatchers.IO) {
             dataStoreManager.SaveUserData(userData)
         }
     }
-    fun ClearUserData(){
+
+    fun ClearUserData() {
         viewModelScope.launch(Dispatchers.IO) {
             dataStoreManager.ClearUserData()
         }

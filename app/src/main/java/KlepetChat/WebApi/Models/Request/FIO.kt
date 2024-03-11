@@ -2,9 +2,9 @@ package KlepetChat.WebApi.Models.Request
 
 import com.google.gson.annotations.SerializedName
 
-data class FIO (
+data class FIO(
     @SerializedName("surname")
-    val surname:String,
+    val surname: String,
     @SerializedName("name")
-    val name:String,
+    val name: String,
 )

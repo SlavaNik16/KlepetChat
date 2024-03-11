@@ -14,5 +14,8 @@ interface IMessageService {
     suspend fun getMessagesWithChatId(@Path("chatId") chatId: UUID): Response<MutableList<Message>>
 
     @POST("message")
-    suspend fun createMessage(@Query("chatId") chatId: UUID, @Query("message") message:String): Response<Message>
+    suspend fun createMessage(
+        @Query("chatId") chatId: UUID,
+        @Query("message") message: String,
+    ): Response<Message>
 }

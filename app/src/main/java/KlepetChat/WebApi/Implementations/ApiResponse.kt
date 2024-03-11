@@ -5,7 +5,7 @@ package KlepetChat.WebApi.Implementations
  * что поможет нам извлекать данные
  * @param T - тип
  */
-sealed class ApiResponse<out T>{
+sealed class ApiResponse<out T> {
     data object Loading : ApiResponse<Nothing>()
 
     data class Success<out T>(

@@ -1,4 +1,3 @@
-
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.ChatAdapter
 import KlepetChat.DataSore.Models.UserData
@@ -60,17 +59,16 @@ class ChatFragment : Fragment() {
     }
 
     private fun onHandlers() {
-        signalRViewModel.getConnection().on("Test",
-            { onHandlerTest(it) }, String::class.java
+        signalRViewModel.getConnection().on(
+            "ReceiveMessage",
+            { onHandlerReceiveMessage(it) }, Message::class.java
         )
     }
 
-    private fun onHandlerTest(it: String) {
+    private fun onHandlerReceiveMessage(it: Message) {
         requireActivity()
             .runOnUiThread(Runnable {
-                Toast.makeText(
-                    requireContext(), it, Toast.LENGTH_SHORT
-                ).show()
+                EventUpdateMessages(it)
             })
     }
 
@@ -80,14 +78,14 @@ class ChatFragment : Fragment() {
             return
         }
         joinGroup()
-        getMessages(chatId)
     }
 
     fun joinGroup() {
-        if(chatType != ChatTypes.Favorites) {
+        if (chatType != ChatTypes.Favorites) {
             signalRViewModel.start(chatId.toString())
         }
         binding?.buttonInitChat?.visibility = View.GONE
+        getMessages(chatId)
     }
 
     private fun setListeners() {
@@ -193,7 +191,11 @@ class ChatFragment : Fragment() {
         if (binding?.inputMessage?.text.isNullOrBlank()) {
             return
         }
-        sendMessage(chatId)
+        if (chatType == ChatTypes.Favorites) {
+            sendMessage(chatId)
+            return
+        }
+        sendMessageSignalR(chatId)
     }
 
     private fun sendMessage(chatId: UUID) {
@@ -209,7 +211,21 @@ class ChatFragment : Fragment() {
         binding?.inputMessage?.text?.clear()
     }
 
-    fun leaveGroup(){
+    private fun sendMessageSignalR(chatId: UUID) {
+        signalRViewModel.sendMessage(chatId,
+            binding?.inputMessage?.text.toString(),
+            chatId.toString(),
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    Toast.makeText(
+                        requireContext(), "Ошибка! $message", Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+        binding?.inputMessage?.text?.clear()
+    }
+
+    fun leaveGroup() {
         signalRViewModel.close(chatId.toString())
     }
 

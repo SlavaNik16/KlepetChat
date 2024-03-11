@@ -15,38 +15,45 @@ import javax.inject.Inject
 @HiltViewModel
 class SignalRViewModel @Inject constructor(
     private val hubConnection: HubConnection,
-    private val hubRepository: HubRepository
-):BaseViewModel() {
+    private val hubRepository: HubRepository,
+) : BaseViewModel() {
     private val hubResponse = MutableLiveData<ApiResponse<ResponseBody>>()
     fun getConnection() = hubConnection
-    fun joinGroup(connectionId: String,
-                  groupName: String,
-                  coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+    fun joinGroup(
+        connectionId: String,
+        groupName: String,
+        coroutineErrorHandler: ICoroutinesErrorHandler,
+    ) = BaseRequest(
         hubResponse,
         coroutineErrorHandler
     ) {
         hubRepository.joinGroup(connectionId, groupName)
     }
 
-    fun leaveGroup(connectionId: String,
-                  groupName: String,
-                  coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+    fun leaveGroup(
+        connectionId: String,
+        groupName: String,
+        coroutineErrorHandler: ICoroutinesErrorHandler,
+    ) = BaseRequest(
         hubResponse,
         coroutineErrorHandler
     ) {
         hubRepository.leaveGroup(connectionId, groupName)
     }
 
-    fun sendMessage(chatId: UUID, message: String, groupName: String,
-                   coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+    fun sendMessage(
+        chatId: UUID, message: String, groupName: String,
+        coroutineErrorHandler: ICoroutinesErrorHandler,
+    ) = BaseRequest(
         hubResponse,
         coroutineErrorHandler
     ) {
         hubRepository.sendMessage(chatId, message, groupName)
     }
-    fun start(groupName:String){
+
+    fun start(groupName: String) {
         try {
-            if(hubConnection.connectionState == HubConnectionState.DISCONNECTED) {
+            if (hubConnection.connectionState == HubConnectionState.DISCONNECTED) {
                 hubConnection.start().blockingAwait()
                 joinGroup(
                     hubConnection.connectionId.toString(),
@@ -57,13 +64,14 @@ class SignalRViewModel @Inject constructor(
                         }
                     })
             }
-        }catch (ex:Exception){
+        } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
+
     fun close(groupName: String) {
         try {
-            if(hubConnection.connectionState != HubConnectionState.DISCONNECTED) {
+            if (hubConnection.connectionState != HubConnectionState.DISCONNECTED) {
                 leaveGroup(
                     hubConnection.connectionId.toString(),
                     groupName,
@@ -74,7 +82,7 @@ class SignalRViewModel @Inject constructor(
                     })
                 hubConnection.stop().blockingAwait()
             }
-        }catch (ex:Exception){
+        } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
