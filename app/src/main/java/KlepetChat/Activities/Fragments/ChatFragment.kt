@@ -2,11 +2,12 @@
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.ChatAdapter
 import KlepetChat.DataSore.Models.UserData
-import KlepetChat.Hilts.SingletonModule
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
+import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.Message
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,22 +17,20 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.klepetchat.databinding.FragmentChatBinding
-import com.microsoft.signalr.HubConnection
-import com.microsoft.signalr.HubConnectionBuilder
 import java.util.UUID
+
 
 class ChatFragment : Fragment() {
 
     var binding: FragmentChatBinding? = null
     private val messageViewModel: MessageViewModel by activityViewModels()
     private val userDataViewModel: UserDataViewModel by activityViewModels()
-    //private val signalRViewModel: SignalRViewModel by activityViewModels()
-    //private val hubViewModel: HubViewModel by activityViewModels()
+    private val signalRViewModel: SignalRViewModel by activityViewModels()
 
     var chatId: UUID = Constants.GUID_NULL
-    lateinit var hubConnection: HubConnection
 
     private lateinit var phone: String
+    private var chatType: ChatTypes = ChatTypes.Favorites
     private lateinit var messages: MutableList<Message>
     private lateinit var chatAdapter: ChatAdapter
 
@@ -44,27 +43,12 @@ class ChatFragment : Fragment() {
         binding = FragmentChatBinding.inflate(inflater)
         setListeners()
         setObserve()
-        hubConnection = HubConnectionBuilder.create(SingletonModule.URL_SIGNALR).build()
         return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        hubConnection.on("TestHub", {
-            Toast.makeText(
-                requireContext(), it, Toast.LENGTH_SHORT
-            ).show()
-        }, String::class.java)
-        hubConnection.start()?.blockingAwait()
-//        signalRViewModel.answerMessage(requireContext())
-//        signalRViewModel.start()
-
-
-       // hubViewModel.postTest(object : ICoroutinesErrorHandler{
-        //    override fun onError(message: String) {
-         //       Toast.makeText(requireContext(),"$message",Toast.LENGTH_SHORT).show()
-          //  }
-        //})
+        onHandlers()
         init()
     }
 
@@ -75,21 +59,41 @@ class ChatFragment : Fragment() {
 
     }
 
+    private fun onHandlers() {
+        signalRViewModel.getConnection().on("Test",
+            { onHandlerTest(it) }, String::class.java
+        )
+    }
+
+    private fun onHandlerTest(it: String) {
+        requireActivity()
+            .runOnUiThread(Runnable {
+                Toast.makeText(
+                    requireContext(), it, Toast.LENGTH_SHORT
+                ).show()
+            })
+    }
+
     private fun validateChatId() {
         if (chatId == Constants.GUID_NULL) {
             binding?.buttonInitChat?.visibility = View.VISIBLE
             return
         }
-        binding?.buttonInitChat?.visibility = View.GONE
+        joinGroup()
         getMessages(chatId)
+    }
+
+    fun joinGroup() {
+        if(chatType != ChatTypes.Favorites) {
+            signalRViewModel.start(chatId.toString())
+        }
+        binding?.buttonInitChat?.visibility = View.GONE
     }
 
     private fun setListeners() {
         binding?.sendMessage?.setOnClickListener { onSendMessage() }
         binding?.buttonInitChat?.setOnClickListener { initChat() }
-        binding?.sendEmoticon?.setOnClickListener{
-            hubConnection.send("TestHub", null)
-        }
+        binding?.sendEmoticon?.setOnClickListener { }
     }
 
 
@@ -140,6 +144,7 @@ class ChatFragment : Fragment() {
     private fun removeListeners() {
         binding?.sendMessage?.setOnClickListener(null)
         binding?.buttonInitChat?.setOnClickListener(null)
+        binding?.sendEmoticon?.setOnClickListener(null)
         messages.clear()
         binding?.recyclerChat?.adapter = null
         binding?.recyclerChat?.layoutManager = null
@@ -151,6 +156,7 @@ class ChatFragment : Fragment() {
         removeListeners()
         binding = null
     }
+
 
     private fun getMessage(api: ApiResponse<Message>) {
         when (api) {
@@ -203,13 +209,18 @@ class ChatFragment : Fragment() {
         binding?.inputMessage?.text?.clear()
     }
 
+    fun leaveGroup(){
+        signalRViewModel.close(chatId.toString())
+    }
+
 
     companion object {
 
         @JvmStatic
-        fun newInstance(chatId: UUID) =
+        fun newInstance(chatId: UUID, type: ChatTypes = ChatTypes.Favorites) =
             ChatFragment().apply {
                 arguments = Bundle().apply {
+                    chatType = type
                     putString(Constants.KEY_CHAT_ID, chatId.toString())
                 }
             }

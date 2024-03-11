@@ -7,9 +7,9 @@ import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
+import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -60,7 +60,7 @@ class ChatGroupActivity : AppCompatActivity() {
         val chatIdStr = argument?.getString(Constants.KEY_CHAT_ID)
         chatId = UUID.fromString(chatIdStr)
         if (persons!!.contains(phone)) {
-            fragment = ChatFragment.newInstance(chatId)
+            fragment = ChatFragment.newInstance(chatId,ChatTypes.Group)
             fragmentInstance(fragment)
         } else {
             fragment = ChatFragment.newInstanceInit() { onInitChat() }
@@ -96,6 +96,11 @@ class ChatGroupActivity : AppCompatActivity() {
         binding = null
     }
 
+    override fun onPause() {
+        super.onPause()
+        fragment.leaveGroup()
+    }
+
     private fun onBackPress() {
         var intent = Intent(this@ChatGroupActivity, MainActivity::class.java)
         startActivity(intent)
@@ -117,8 +122,8 @@ class ChatGroupActivity : AppCompatActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 chatId = api.data.id
-                fragment.binding?.buttonInitChat?.visibility = View.GONE
                 fragment.chatId = chatId
+                fragment.joinGroup()
             }
 
             is ApiResponse.Failure -> {

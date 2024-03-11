@@ -5,6 +5,7 @@ import KlepetChat.WebApi.Implementations.Authentificator.AuthAuthenticator
 import KlepetChat.WebApi.Implementations.Interceptor.AuthInterceptor
 import KlepetChat.WebApi.Interfaces.IAuthService
 import KlepetChat.WebApi.Interfaces.IChatService
+import KlepetChat.WebApi.Interfaces.IHubService
 import KlepetChat.WebApi.Interfaces.IImageService
 import KlepetChat.WebApi.Interfaces.IMessageService
 import KlepetChat.WebApi.Interfaces.ITokenService
@@ -13,6 +14,8 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.microsoft.signalr.HubConnection
+import com.microsoft.signalr.HubConnectionBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,6 +37,7 @@ class SingletonModule {
         val URL_BASE = "http://klepetapi.somee.com/"
         val URL_IMG = "http://upload-soft.photolab.me/"
         val URL_SIGNALR = "http://klepetapi.somee.com/ch"
+        val URL_SIGNALR_CONTROLLER = "http://klepetapi.somee.com/ch"
     }
     @Singleton
     @Provides
@@ -128,21 +132,20 @@ class SingletonModule {
             .build()
             .create(IImageService::class.java)
     }
-//    @Singleton
-//    @Provides
-//    fun providesIHubService(): IHubService {
-//        return Retrofit.Builder()
-//            .baseUrl(URL_IMG)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//            .create(IHubService::class.java)
-//    }
+    @Singleton
+    @Provides
+    fun providesIHubService(okHttpClient: OkHttpClient, retrofit: Retrofit.Builder): IHubService =
+        retrofit
+            .client(okHttpClient)
+            .build()
+            .create(IHubService::class.java)
 
-//    @Singleton
-//    @Provides
-//    fun providesHubConnection(): HubConnection {
-//        return HubConnectionBuilder
-//            .create(URL_SIGNALR)
-//            .build()
-//    }
+
+    @Singleton
+    @Provides
+    fun providesHubConnection(): HubConnection {
+        return HubConnectionBuilder
+            .create(URL_SIGNALR)
+            .build()
+    }
 }
