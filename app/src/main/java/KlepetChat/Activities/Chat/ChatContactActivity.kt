@@ -80,7 +80,7 @@ class ChatContactActivity : AppCompatActivity() {
                 .error(R.drawable.baseline_account_circle_24)
                 .into(binding?.imageChat)
         }
-        binding?.textDesc?.text = "В сети"
+        binding?.textDesc?.text = "Не в сети"
     }
 
     private fun setListeners() {
