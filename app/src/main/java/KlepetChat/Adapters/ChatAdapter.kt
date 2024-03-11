@@ -1,7 +1,6 @@
 package KlepetChat.Adapters
 
 import KlepetChat.WebApi.Models.Response.Message
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,15 +15,13 @@ import java.util.Locale
 
 class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private lateinit var context: Context
     private lateinit var messageViewItems: MutableList<Message>
     private lateinit var phone:String
 
     var VIEW_TYPE_SENT = 1
     var VIEW_TYPE_RECEIVED = 2
 
-    constructor(context: Context, messageViewItems:MutableList<Message>,phone:String):this(){
-        this.context = context;
+    constructor(messageViewItems:MutableList<Message>,phone:String):this(){
         this.messageViewItems = messageViewItems;
         this.phone = phone
     }
@@ -33,12 +30,12 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if(viewType == VIEW_TYPE_SENT){
             var sendMessageView: View =
-                LayoutInflater.from(context).inflate(R.layout.item_container_send_message,
+                LayoutInflater.from(parent.context).inflate(R.layout.item_container_send_message,
                     parent, false)
             return SentMessageViewHolder(sendMessageView)
         }else{
             var receivedMessageView: View =
-                LayoutInflater.from(context).inflate(R.layout.item_container_received_message,
+                LayoutInflater.from(parent.context).inflate(R.layout.item_container_received_message,
                     parent, false)
             return ReceivedMessageViewHolder(receivedMessageView)
         }

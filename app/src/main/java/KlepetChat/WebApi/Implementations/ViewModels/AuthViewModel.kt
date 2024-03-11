@@ -16,13 +16,13 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-): BaseViewModel() {
+) : BaseViewModel() {
     private val tokenResponse = MutableLiveData<ApiResponse<Token>>()
     val token = tokenResponse
     fun login(login: Login, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         tokenResponse,
         coroutineErrorHandler
-    ){
+    ) {
         authRepository.login(login)
     }
 }

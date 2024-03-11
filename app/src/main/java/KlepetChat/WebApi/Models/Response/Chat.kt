@@ -11,6 +11,8 @@ data class Chat (
     val name: String,
     @SerializedName("lastMessage")
     val lastMessage: String?,
+    @SerializedName("phones")
+    val phones: MutableList<String>,
     @SerializedName("chatType")
     val chatType: ChatTypes,
     @SerializedName("photo")

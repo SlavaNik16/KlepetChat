@@ -9,6 +9,13 @@ import javax.inject.Inject
 class ChatRepository @Inject constructor(
     private val chatService: IChatService,
 ) {
+    fun getChats() = ApiRequestFlowResponse {
+        chatService.getChats()
+    }
+    fun getChatsByName(name:String) = ApiRequestFlowResponse {
+        chatService.getChatsByName(name)
+    }
+
     fun postFavorites(userId:UUID) = ApiRequestFlowResponse {
         chatService.postFavorites(userId)
     }
@@ -21,7 +28,8 @@ class ChatRepository @Inject constructor(
         chatService.postGroup(name,photo)
     }
 
-    fun getChats() = ApiRequestFlowResponse {
-        chatService.getChats()
+    fun postJoinGroup(id:UUID) = ApiRequestFlowResponse {
+        chatService.postJoinGroup(id)
     }
+
 }

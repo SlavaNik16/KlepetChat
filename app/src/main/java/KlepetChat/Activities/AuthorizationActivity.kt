@@ -27,8 +27,6 @@ class AuthorizationActivity : ComponentActivity() {
         setContentView(binding?.root)
         setListeners()
         setObserve()
-
-
     }
 
     private fun setObserve() {
