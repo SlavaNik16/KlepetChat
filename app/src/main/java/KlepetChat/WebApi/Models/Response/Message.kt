@@ -4,15 +4,15 @@ import com.google.gson.annotations.SerializedName
 import java.util.Date
 import java.util.UUID
 
-data class Message (
+data class Message(
     @SerializedName("id")
     val id: UUID,
     @SerializedName("nameBy")
-    val nameBy:String,
+    val nameBy: String,
     @SerializedName("phone")
-    val phone:String,
+    val phone: String,
     @SerializedName("photo")
-    val photo:String?,
+    val photo: String?,
     @SerializedName("text")
     val text: String,
     @SerializedName("createdAt")

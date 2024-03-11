@@ -104,6 +104,7 @@ class ChatContactActivity : AppCompatActivity() {
         fragment.onDestroy()
         binding = null
     }
+
     override fun onPause() {
         super.onPause()
         fragment.leaveGroup()

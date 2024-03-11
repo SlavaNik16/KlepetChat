@@ -10,5 +10,6 @@ abstract class TextChangedListener<T>(private val target: T) : TextWatcher {
     override fun afterTextChanged(s: Editable) {
         this.onTextChanged(target, s)
     }
+
     abstract fun onTextChanged(target: T, s: Editable?)
 }

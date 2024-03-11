@@ -3,7 +3,7 @@ package KlepetChat.Activities.Data
 import java.util.UUID
 
 class Constants {
-    companion object{
+    companion object {
         const val KEY_CHAT_PEOPLE = "chat_people"
         const val KEY_USER_PHONE_OTHER = "user_phone_other"
         const val KEY_USER_PHONE = "user_phone"
@@ -16,7 +16,7 @@ class Constants {
         const val KEY_TAG_SEARCH = "search"
         const val KEY_TAG_SEARCHOFF = "search_off"
 
-        val GUID_NULL:UUID = UUID.fromString("00000000-0000-0000-0000-000000000000")
+        val GUID_NULL: UUID = UUID.fromString("00000000-0000-0000-0000-000000000000")
     }
 
 }

@@ -60,7 +60,7 @@ class ChatGroupActivity : AppCompatActivity() {
         val chatIdStr = argument?.getString(Constants.KEY_CHAT_ID)
         chatId = UUID.fromString(chatIdStr)
         if (persons!!.contains(phone)) {
-            fragment = ChatFragment.newInstance(chatId,ChatTypes.Group)
+            fragment = ChatFragment.newInstance(chatId, ChatTypes.Group)
             fragmentInstance(fragment)
         } else {
             fragment = ChatFragment.newInstanceInit() { onInitChat() }

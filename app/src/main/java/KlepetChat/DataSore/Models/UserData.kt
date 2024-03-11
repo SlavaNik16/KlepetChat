@@ -2,7 +2,7 @@ package KlepetChat.DataSore.Models
 
 import com.google.gson.annotations.SerializedName
 
-data class UserData (
+data class UserData(
     @SerializedName("phone")
     val phone: String,
     @SerializedName("access_token")

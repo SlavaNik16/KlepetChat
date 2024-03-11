@@ -16,27 +16,31 @@ import java.util.Locale
 class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var messageViewItems: MutableList<Message>
-    private lateinit var phone:String
+    private lateinit var phone: String
 
     var VIEW_TYPE_SENT = 1
     var VIEW_TYPE_RECEIVED = 2
 
-    constructor(messageViewItems:MutableList<Message>,phone:String):this(){
+    constructor(messageViewItems: MutableList<Message>, phone: String) : this() {
         this.messageViewItems = messageViewItems;
         this.phone = phone
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if(viewType == VIEW_TYPE_SENT){
+        if (viewType == VIEW_TYPE_SENT) {
             var sendMessageView: View =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_container_send_message,
-                    parent, false)
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_container_send_message,
+                    parent, false
+                )
             return SentMessageViewHolder(sendMessageView)
-        }else{
+        } else {
             var receivedMessageView: View =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_container_received_message,
-                    parent, false)
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_container_received_message,
+                    parent, false
+                )
             return ReceivedMessageViewHolder(receivedMessageView)
         }
     }
@@ -46,46 +50,49 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-       if(getItemViewType(position)== VIEW_TYPE_SENT){
-           if(holder is SentMessageViewHolder){
-               holder.setData(messageViewItems[position])
-           }
-       }else{
-           if(holder is ReceivedMessageViewHolder){
-               holder.setData(messageViewItems[position])
-           }
-       }
+        if (getItemViewType(position) == VIEW_TYPE_SENT) {
+            if (holder is SentMessageViewHolder) {
+                holder.setData(messageViewItems[position])
+            }
+        } else {
+            if (holder is ReceivedMessageViewHolder) {
+                holder.setData(messageViewItems[position])
+            }
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
-        if(messageViewItems[position].phone.equals(phone)){
+        if (messageViewItems[position].phone.equals(phone)) {
             return VIEW_TYPE_SENT
-        }else{
+        } else {
             return VIEW_TYPE_RECEIVED
         }
     }
-    class SentMessageViewHolder : RecyclerView.ViewHolder{
+
+    class SentMessageViewHolder : RecyclerView.ViewHolder {
         var binding: ItemContainerSendMessageBinding
-        constructor(itemView: View):super(itemView){
+
+        constructor(itemView: View) : super(itemView) {
             binding = ItemContainerSendMessageBinding.bind(itemView)
         }
 
-        fun setData(message:Message) {
+        fun setData(message: Message) {
             binding.textMessage.text = message.text
             binding.textDateTime.text = getReadableDateTime(message.createdAt)
         }
     }
 
-    class ReceivedMessageViewHolder : RecyclerView.ViewHolder{
+    class ReceivedMessageViewHolder : RecyclerView.ViewHolder {
         var binding: ItemContainerReceivedMessageBinding
-        constructor(itemView: View):super(itemView){
+
+        constructor(itemView: View) : super(itemView) {
             binding = ItemContainerReceivedMessageBinding.bind(itemView)
         }
 
-        fun setData(message:Message){
+        fun setData(message: Message) {
             binding.textMessage.text = message.text
             binding.textDateTime.text = getReadableDateTime(message.createdAt)
-            if(message.photo.isNullOrBlank()){
+            if (message.photo.isNullOrBlank()) {
                 binding.imageProfile.setBackgroundResource(R.drawable.baseline_account_circle_24)
                 return
             }
@@ -98,7 +105,7 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     companion object {
-        fun getReadableDateTime(date: Date):String{
+        fun getReadableDateTime(date: Date): String {
             return SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date)
         }
     }

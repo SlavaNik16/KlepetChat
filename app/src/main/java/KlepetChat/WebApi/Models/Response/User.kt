@@ -2,7 +2,7 @@ package KlepetChat.WebApi.Models.Response
 
 import java.util.UUID
 
-data class User (
+data class User(
     val id: UUID,
     val surname: String,
     val name: String,

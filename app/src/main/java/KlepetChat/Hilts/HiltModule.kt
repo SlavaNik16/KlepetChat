@@ -35,7 +35,8 @@ class HiltModule {
     fun providesChatRepository(chatService: IChatService) = ChatRepository(chatService)
 
     @Provides
-    fun providesMessageRepository(messageService: IMessageService) = MessageRepository(messageService)
+    fun providesMessageRepository(messageService: IMessageService) =
+        MessageRepository(messageService)
 
     @Provides
     fun providesImageRepository(imageService: IImageService) = ImageRepository(imageService)

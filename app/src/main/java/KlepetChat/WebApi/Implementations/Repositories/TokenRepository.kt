@@ -8,7 +8,7 @@ class TokenRepository @Inject constructor(
     private val tokenService: ITokenService,
 ) {
 
-    fun postCreate(phone:String) = ApiRequestFlowResponse {
+    fun postCreate(phone: String) = ApiRequestFlowResponse {
         tokenService.postCreate(phone)
     }
 

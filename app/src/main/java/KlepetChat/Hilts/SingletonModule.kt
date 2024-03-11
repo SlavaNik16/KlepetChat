@@ -33,15 +33,17 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "us
 @InstallIn(SingletonComponent::class)
 class SingletonModule {
 
-    companion object{
+    companion object {
         val URL_BASE = "http://klepetapi.somee.com/"
         val URL_IMG = "http://upload-soft.photolab.me/"
         val URL_SIGNALR = "http://klepetapi.somee.com/ch"
         val URL_SIGNALR_CONTROLLER = "http://klepetapi.somee.com/ch"
     }
+
     @Singleton
     @Provides
-    fun providesDataStoreManager(@ApplicationContext context: Context): DataStoreManager = DataStoreManager(context)
+    fun providesDataStoreManager(@ApplicationContext context: Context): DataStoreManager =
+        DataStoreManager(context)
 
     @Singleton
     @Provides
@@ -71,16 +73,16 @@ class SingletonModule {
 
     @Singleton
     @Provides
-    fun providesRetrofitBuilder():Retrofit.Builder {
+    fun providesRetrofitBuilder(): Retrofit.Builder {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         var client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .build()
         return Retrofit.Builder()
-                .baseUrl(URL_BASE)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(URL_BASE)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
     }
 
     @Singleton
@@ -101,7 +103,10 @@ class SingletonModule {
 
     @Singleton
     @Provides
-    fun providesITokenService(okHttpClient: OkHttpClient, retrofit: Retrofit.Builder): ITokenService =
+    fun providesITokenService(
+        okHttpClient: OkHttpClient,
+        retrofit: Retrofit.Builder,
+    ): ITokenService =
         retrofit
             .client(okHttpClient)
             .build()
@@ -117,7 +122,10 @@ class SingletonModule {
 
     @Singleton
     @Provides
-    fun providesIMessageService(okHttpClient: OkHttpClient, retrofit: Retrofit.Builder): IMessageService =
+    fun providesIMessageService(
+        okHttpClient: OkHttpClient,
+        retrofit: Retrofit.Builder,
+    ): IMessageService =
         retrofit
             .client(okHttpClient)
             .build()
@@ -132,6 +140,7 @@ class SingletonModule {
             .build()
             .create(IImageService::class.java)
     }
+
     @Singleton
     @Provides
     fun providesIHubService(okHttpClient: OkHttpClient, retrofit: Retrofit.Builder): IHubService =

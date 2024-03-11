@@ -15,9 +15,9 @@ import javax.inject.Inject
 
 class DataStoreManager @Inject constructor(private val context: Context) : IUserDataStore {
     override val userDataFlow: Flow<UserData> = context.dataStore.data.catch { exception ->
-        if (exception is IOException){
+        if (exception is IOException) {
             emit(emptyPreferences())
-        }else{
+        } else {
             throw exception
         }
     }.map { preferences ->
@@ -27,7 +27,7 @@ class DataStoreManager @Inject constructor(private val context: Context) : IUser
         UserData(phone, accessToken, refreshToken)
     }
 
-    override suspend fun SaveUserData(userData: UserData){
+    override suspend fun SaveUserData(userData: UserData) {
         context.dataStore.edit { preferences ->
             preferences[KEY_PHONE] = userData.phone
             preferences[KEY_ACCESS_TOKEN] = userData.accessToken
@@ -35,7 +35,7 @@ class DataStoreManager @Inject constructor(private val context: Context) : IUser
         }
     }
 
-    override suspend fun ClearUserData(){
+    override suspend fun ClearUserData() {
         context.dataStore.edit { preferences ->
             preferences[KEY_PHONE] = ""
             preferences[KEY_ACCESS_TOKEN] = ""
@@ -43,17 +43,18 @@ class DataStoreManager @Inject constructor(private val context: Context) : IUser
         }
     }
 
-    override suspend fun UpdateTokens(accessToken: String?, refreshToken: String?){
+    override suspend fun UpdateTokens(accessToken: String?, refreshToken: String?) {
         context.dataStore.edit { preferences ->
-            if (accessToken != null){
+            if (accessToken != null) {
                 preferences[KEY_ACCESS_TOKEN] = accessToken
             }
-            if (refreshToken != null ) {
+            if (refreshToken != null) {
                 preferences[KEY_REFRESH_TOKEN] = refreshToken
             }
         }
     }
-    companion object{
+
+    companion object {
         private const val FILE_NAME = "user-data"
 
         private val KEY_PHONE = stringPreferencesKey("key_phone")

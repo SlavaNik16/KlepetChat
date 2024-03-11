@@ -12,23 +12,24 @@ class ChatRepository @Inject constructor(
     fun getChats() = ApiRequestFlowResponse {
         chatService.getChats()
     }
-    fun getChatsByName(name:String) = ApiRequestFlowResponse {
+
+    fun getChatsByName(name: String) = ApiRequestFlowResponse {
         chatService.getChatsByName(name)
     }
 
-    fun postFavorites(userId:UUID) = ApiRequestFlowResponse {
+    fun postFavorites(userId: UUID) = ApiRequestFlowResponse {
         chatService.postFavorites(userId)
     }
 
-    fun postContact(phoneOther:String) = ApiRequestFlowResponse {
+    fun postContact(phoneOther: String) = ApiRequestFlowResponse {
         chatService.postContact(phoneOther)
     }
 
-    fun postGroup(name:String, photo:String? = null,) = ApiRequestFlowResponse {
-        chatService.postGroup(name,photo)
+    fun postGroup(name: String, photo: String? = null) = ApiRequestFlowResponse {
+        chatService.postGroup(name, photo)
     }
 
-    fun postJoinGroup(id:UUID) = ApiRequestFlowResponse {
+    fun postJoinGroup(id: UUID) = ApiRequestFlowResponse {
         chatService.postJoinGroup(id)
     }
 

@@ -4,7 +4,7 @@ import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import com.google.gson.annotations.SerializedName
 import java.util.UUID
 
-data class Chat (
+data class Chat(
     @SerializedName("id")
     val id: UUID,
     @SerializedName("name")
@@ -16,5 +16,5 @@ data class Chat (
     @SerializedName("chatType")
     val chatType: ChatTypes,
     @SerializedName("photo")
-    val photo: String
+    val photo: String,
 )

@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 class AuthAuthenticator @Inject constructor(
-    private val dataStoreManager: DataStoreManager
+    private val dataStoreManager: DataStoreManager,
 ) : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
         val userData = runBlocking {
@@ -44,6 +44,7 @@ class AuthAuthenticator @Inject constructor(
             }
         }
     }
+
     private suspend fun PostRefreshToken(token: Token): retrofit2.Response<Token> {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
