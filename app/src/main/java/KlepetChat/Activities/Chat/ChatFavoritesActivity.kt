@@ -72,11 +72,13 @@ class ChatFavoritesActivity : AppCompatActivity() {
         popupMenu?.setOnMenuItemClickListener { onMenuItemClick(it) }
         popupMenu?.show()
     }
+
     private fun onMenuItemClick(menuItem: MenuItem): Boolean {
-        when(menuItem.itemId){
-            R.id.nav_clear ->{
+        when (menuItem.itemId) {
+            R.id.nav_clear -> {
                 deletedMessages()
             }
+
             R.id.nav_delete -> {
                 deletedChat()
             }
@@ -84,7 +86,7 @@ class ChatFavoritesActivity : AppCompatActivity() {
         return true
     }
 
-    private fun deletedMessages(){
+    private fun deletedMessages() {
         messageViewModel.deleteMessages(chatId,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
@@ -94,7 +96,8 @@ class ChatFavoritesActivity : AppCompatActivity() {
         finish()
         startActivity(intent)
     }
-    private fun deletedChat(){
+
+    private fun deletedChat() {
         chatViewModel.deleteChat(chatId,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
