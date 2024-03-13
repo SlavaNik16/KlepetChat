@@ -4,6 +4,7 @@ import ChatFragment
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import android.content.Intent
 import android.os.Bundle
@@ -24,6 +25,7 @@ class ChatFavoritesActivity : AppCompatActivity() {
     private lateinit var chatId: UUID
     private lateinit var fragment: ChatFragment
     private val chatViewModel: ChatViewModel by viewModels()
+    private val messageViewModel: MessageViewModel by viewModels()
     private var popupMenu: PopupMenu? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,13 +75,24 @@ class ChatFavoritesActivity : AppCompatActivity() {
     private fun onMenuItemClick(menuItem: MenuItem): Boolean {
         when(menuItem.itemId){
             R.id.nav_clear ->{
-
+                deletedMessages()
             }
             R.id.nav_delete -> {
                 deletedChat()
             }
         }
         return true
+    }
+
+    private fun deletedMessages(){
+        messageViewModel.deleteMessages(chatId,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+        finish()
+        startActivity(intent)
     }
     private fun deletedChat(){
         chatViewModel.deleteChat(chatId,

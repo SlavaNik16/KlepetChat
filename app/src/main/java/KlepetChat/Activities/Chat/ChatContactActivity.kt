@@ -5,6 +5,7 @@ import KlepetChat.Activities.Data.Constants
 import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
@@ -30,6 +31,7 @@ class ChatContactActivity : AppCompatActivity() {
     private var binding: ActivityChatContactBinding? = null
 
     private val chatViewModel: ChatViewModel by viewModels()
+    private val messageViewModel: MessageViewModel by viewModels()
 
     private lateinit var chatId: UUID
     private lateinit var phoneOther: String
@@ -118,7 +120,7 @@ class ChatContactActivity : AppCompatActivity() {
     private fun onMenuItemClick(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.nav_clear -> {
-
+                deletedMessages()
             }
 
             R.id.nav_delete -> {
@@ -128,6 +130,16 @@ class ChatContactActivity : AppCompatActivity() {
         return true
     }
 
+    private fun deletedMessages(){
+        messageViewModel.deleteMessages(chatId,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+        finish()
+        startActivity(intent)
+    }
     private fun deletedChat() {
         chatViewModel.deleteChat(chatId,
             object : ICoroutinesErrorHandler {

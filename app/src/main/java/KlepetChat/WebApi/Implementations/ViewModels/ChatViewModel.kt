@@ -70,6 +70,12 @@ class ChatViewModel @Inject constructor(
     ) {
         chatRepository.postJoinGroup(id)
     }
+    fun postLeaveGroup(id: UUID, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+        chatExists,
+        coroutineErrorHandler
+    ) {
+        chatRepository.postLeaveGroup(id)
+    }
     fun deleteChat(id: UUID, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         chatBodyResponse,
         coroutineErrorHandler

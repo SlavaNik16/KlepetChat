@@ -120,25 +120,34 @@ class ChatGroupActivity : AppCompatActivity() {
     private fun onMenuItemClick(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.nav_exit_from_chat -> {
-
+                exitFromChat()
             }
 
             R.id.nav_delete -> {
-
+                deletedChat()
             }
         }
         return true
     }
 
-//    private fun deletedChat() {
-//        chatViewModel.deleteChat(chatId,
-//            object : ICoroutinesErrorHandler {
-//                override fun onError(message: String) {
-//
-//                }
-//            })
-//        onBackPress()
-//    }
+    private fun exitFromChat(){
+        chatViewModel.postLeaveGroup(chatId,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+        onBackPress()
+    }
+    private fun deletedChat() {
+        chatViewModel.deleteChat(chatId,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+        onBackPress()
+    }
 
     private fun removeListeners() {
         binding?.back?.setOnClickListener(null)
