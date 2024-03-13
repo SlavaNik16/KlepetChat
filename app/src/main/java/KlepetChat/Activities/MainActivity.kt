@@ -69,6 +69,28 @@ class MainActivity : AppCompatActivity() {
         chatViewModel.chats.observe(this) { getChats(it) }
         userViewModel.user.observe(this) { getUser(it) }
         userDataViewModel.userData.observe(this) { validateUser(it) }
+        chatViewModel.exists.observe(this){ getAnswerCreate(it) }
+    }
+
+    private fun getAnswerCreate(api: ApiResponse<Boolean>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                Toast.makeText(this@MainActivity, "Чат успешно создан!",Toast.LENGTH_SHORT).show()
+                var intent = intent
+                finish()
+                startActivity(intent)
+            }
+
+            is ApiResponse.Failure -> {
+                var chat = chats.firstOrNull{ x->x.name == "Избранное"} ?: return
+                navigateToFavorites(chat)
+            }
+
+
+            is ApiResponse.Loading -> {
+                return
+            }
+        }
     }
 
     private fun getChats(api: ApiResponse<MutableList<Chat>>) {
@@ -261,24 +283,55 @@ class MainActivity : AppCompatActivity() {
 
     private fun setMenuItem(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.nav_add_group -> {
-                Toast.makeText(this@MainActivity, "nav_add_group", Toast.LENGTH_SHORT).show()
-            }
-
-            R.id.nav_add_contact -> {
-                Toast.makeText(this@MainActivity, "nav_add_contact", Toast.LENGTH_SHORT).show()
-            }
-
+            R.id.nav_add_group -> onAddChat(true)
+            R.id.nav_add_contact -> onAddChat()
+            R.id.nav_add_favorites -> createFavorites()
             R.id.nav_settings -> navigateToProfile()
             R.id.nav_help -> {
                 Toast.makeText(this@MainActivity, "nav_help", Toast.LENGTH_SHORT).show()
             }
-
-            R.id.nav_exit -> {
-                exitAuth()
-            }
+            R.id.nav_exit -> exitAuth()
         }
         return true
+    }
+    private fun createFavorites(){
+        chatViewModel.postFavorites(user.id, object : ICoroutinesErrorHandler{
+            override fun onError(message: String) {
+
+            }
+        })
+    }
+
+    private fun navigateToFavorites(chat: Chat){
+        val intent =
+            Intent(this@MainActivity, ChatFavoritesActivity::class.java)
+        intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
+        intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
+        startActivity(intent)
+        finish()
+    }
+    private fun navigateToContact(chat:Chat){
+        val intent = Intent(this@MainActivity, ChatContactActivity::class.java)
+        intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
+        intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
+        intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
+        intent.putExtra(Constants.KEY_USER_PHONE_OTHER, chat.phones[0])
+        startActivity(intent)
+        finish()
+    }
+    private fun navigateToGroup(chat:Chat){
+        val intent = Intent(this@MainActivity, ChatGroupActivity::class.java)
+        intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
+        intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
+        intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
+        var arrayList: ArrayList<String> = arrayListOf()
+        for (item in chat.phones) {
+            arrayList.add(item)
+        }
+        intent.putStringArrayListExtra(Constants.KEY_CHAT_PEOPLE, arrayList)
+        intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
+        startActivity(intent)
+        finish()
     }
 
     private fun onRecyclerAttachState(): RecyclerView.OnChildAttachStateChangeListener {
@@ -291,35 +344,17 @@ class MainActivity : AppCompatActivity() {
                     var chat = this@MainActivity.chats[position]
                     var intent = when (chat.chatType) {
                         ChatTypes.Contact -> {
-                            val intent = Intent(this@MainActivity, ChatContactActivity::class.java)
-                            intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
-                            intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
-                            intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
-                            intent.putExtra(Constants.KEY_USER_PHONE_OTHER, chat.phones[0])
+                            navigateToContact(chat)
                         }
 
                         ChatTypes.Favorites -> {
-                            val intent =
-                                Intent(this@MainActivity, ChatFavoritesActivity::class.java)
-                            intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
-                            intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
+                            navigateToFavorites(chat)
                         }
 
                         ChatTypes.Group -> {
-                            val intent = Intent(this@MainActivity, ChatGroupActivity::class.java)
-                            intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
-                            intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
-                            intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
-                            var arrayList: ArrayList<String> = arrayListOf()
-                            for (item in chat.phones) {
-                                arrayList.add(item)
-                            }
-                            intent.putStringArrayListExtra(Constants.KEY_CHAT_PEOPLE, arrayList)
-                            intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
+                            navigateToGroup(chat)
                         }
                     }
-                    startActivity(intent)
-                    finish()
                 }
             }
 
@@ -329,8 +364,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onAddChat() {
+    private fun onAddChat(isOpenGroup:Boolean = false) {
         val intent = Intent(this@MainActivity, ChooseActivity::class.java)
+        intent.putExtra(Constants.KEY_IS_OPEN_GROUP, isOpenGroup)
         startActivity(intent)
         finish()
     }

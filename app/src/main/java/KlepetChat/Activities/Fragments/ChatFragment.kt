@@ -24,7 +24,7 @@ class ChatFragment : Fragment() {
     var binding: FragmentChatBinding? = null
     private val messageViewModel: MessageViewModel by activityViewModels()
     private val userDataViewModel: UserDataViewModel by activityViewModels()
-    private val signalRViewModel: SignalRViewModel by activityViewModels()
+    val signalRViewModel: SignalRViewModel by activityViewModels()
 
     var chatId: UUID = Constants.GUID_NULL
 

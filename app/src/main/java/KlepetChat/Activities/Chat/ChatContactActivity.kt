@@ -81,6 +81,19 @@ class ChatContactActivity : AppCompatActivity() {
                 .into(binding?.imageChat)
         }
         binding?.textDesc?.text = "Не в сети"
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        fragment.signalRViewModel.getConnection().on("Status", {connectionId, isStatus ->
+            runOnUiThread(Runnable {
+                if(connectionId != fragment.signalRViewModel.getConnection().connectionId) {
+                    binding?.textDesc?.text = if(isStatus) "В сети" else "Не в сети"
+                }
+            })
+
+        },String::class.java, Boolean::class.java)
     }
 
     private fun setListeners() {

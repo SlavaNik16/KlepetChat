@@ -57,6 +57,13 @@ class ChooseActivity : ComponentActivity() {
         setListeners()
         setObserve()
         getContactsOther()
+        init()
+    }
+    private fun init(){
+        var isOpenGroup  = intent?.extras?.getBoolean(Constants.KEY_IS_OPEN_GROUP) ?: false
+        if(isOpenGroup){
+            onAddGroup()
+        }
     }
 
     private fun getUsers(api: ApiResponse<MutableList<User>>) {

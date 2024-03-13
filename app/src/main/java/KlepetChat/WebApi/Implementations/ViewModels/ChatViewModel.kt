@@ -7,6 +7,7 @@ import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import okhttp3.ResponseBody
 import java.util.UUID
 import javax.inject.Inject
 
@@ -18,6 +19,7 @@ class ChatViewModel @Inject constructor(
     private val chatsResponse = MutableLiveData<ApiResponse<MutableList<Chat>>>()
     private val chatExists = MutableLiveData<ApiResponse<Boolean>>()
     private val chatResponse = MutableLiveData<ApiResponse<Chat>>()
+    private val chatBodyResponse = MutableLiveData<ApiResponse<ResponseBody>>()
     val chats = chatsResponse
     val exists = chatExists
     val chat = chatResponse
@@ -67,5 +69,11 @@ class ChatViewModel @Inject constructor(
         coroutineErrorHandler
     ) {
         chatRepository.postJoinGroup(id)
+    }
+    fun deleteChat(id: UUID, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+        chatBodyResponse,
+        coroutineErrorHandler
+    ) {
+        chatRepository.deleteChat(id)
     }
 }

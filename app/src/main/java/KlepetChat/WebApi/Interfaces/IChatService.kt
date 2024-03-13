@@ -1,7 +1,9 @@
 package KlepetChat.WebApi.Interfaces
 
 import KlepetChat.WebApi.Models.Response.Chat
+import okhttp3.ResponseBody
 import retrofit2.Response
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -30,5 +32,8 @@ interface IChatService {
 
     @POST("chat/join")
     suspend fun postJoinGroup(@Query("id") id: UUID): Response<Chat>
+
+    @DELETE("chat/{id}")
+    suspend fun deleteChat(@Path("id") id: UUID): Response<ResponseBody>
 
 }
