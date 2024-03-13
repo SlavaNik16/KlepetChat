@@ -10,6 +10,7 @@ import KlepetChat.WebApi.Models.Request.UserRegister
 import KlepetChat.WebApi.Models.Response.User
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,6 +35,12 @@ class UserViewModel @Inject constructor(
         coroutineErrorHandler
     ) {
         userRepository.getContactsOther()
+    }
+    fun getAllUserByChatId(chatId: UUID, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+        usersResponse,
+        coroutineErrorHandler
+    ) {
+        userRepository.getAllUserByChatId(chatId)
     }
 
     fun putFIO(fio: FIO, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(

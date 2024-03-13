@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 this.chats = api.data
-                adapter = ChatViewItemAdapter(this, chats)
+                adapter = ChatViewItemAdapter(chats)
                 binding?.recyclerChat?.adapter = adapter
                 loading(false)
             }

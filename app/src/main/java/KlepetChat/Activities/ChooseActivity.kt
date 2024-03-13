@@ -70,7 +70,7 @@ class ChooseActivity : ComponentActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 this.users = api.data
-                adapter = UserViewItemAdapter(this, users)
+                adapter = UserViewItemAdapter(users)
                 binding?.contactRecycler?.adapter = adapter
             }
 

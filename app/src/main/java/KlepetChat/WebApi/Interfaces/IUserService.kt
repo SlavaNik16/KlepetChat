@@ -11,6 +11,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.util.UUID
 
 interface IUserService {
     @GET("user/{phone}")
@@ -18,6 +19,9 @@ interface IUserService {
 
     @GET("user/contacts")
     suspend fun getContactsOther(): Response<MutableList<User>>
+
+    @GET("user/all/{chatId}")
+    suspend fun getAllUserByChatId(@Path("chatId") chatId: UUID): Response<MutableList<User>>
 
     @PUT("user/fio")
     suspend fun putFIO(@Body fio: FIO): Response<User>

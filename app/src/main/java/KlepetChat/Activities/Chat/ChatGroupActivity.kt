@@ -2,6 +2,7 @@ package KlepetChat.Activities.Chat
 
 import ChatFragment
 import KlepetChat.Activities.Data.Constants
+import KlepetChat.Activities.DialogFragment.AlertDialogGroupChatProfile
 import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
@@ -94,7 +95,16 @@ class ChatGroupActivity : AppCompatActivity() {
     private fun setListeners() {
         binding?.back?.setOnClickListener { onBackPress() }
         binding?.butMenu?.setOnClickListener { onMenuPress() }
+        binding?.groupProfile?.setOnClickListener{ onProfileGroup() }
     }
+
+    private fun onProfileGroup() {
+        var image = intent?.extras?.getString(Constants.KEY_IMAGE_URL)
+        val alertDialogGroupChatProfile = AlertDialogGroupChatProfile.newInstance(chatId,
+            binding?.txtName?.text.toString(), image)
+        alertDialogGroupChatProfile.show(supportFragmentManager, "alertDialogGroupChatProfile")
+    }
+
     private fun onMenuPress() {
         popupMenu = PopupMenu(this@ChatGroupActivity, binding!!.butMenu)
         popupMenu?.menuInflater?.inflate(R.menu.group_menu, popupMenu?.menu)
@@ -152,6 +162,7 @@ class ChatGroupActivity : AppCompatActivity() {
     private fun removeListeners() {
         binding?.back?.setOnClickListener(null)
         binding?.butMenu?.setOnClickListener(null)
+        binding?.groupProfile?.setOnClickListener(null)
         popupMenu?.setOnMenuItemClickListener(null)
         popupMenu = null
     }

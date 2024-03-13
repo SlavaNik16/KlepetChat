@@ -1,8 +1,6 @@
 package KlepetChat.Adapters
 
 import KlepetChat.WebApi.Models.Response.User
-import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,17 +11,15 @@ import com.squareup.picasso.Picasso
 
 class UserViewItemAdapter() : RecyclerView.Adapter<UserViewItemAdapter.UserViewItemHolder>() {
 
-    lateinit var context: Context
     lateinit var chatViewItems: MutableList<User>
 
-    constructor(context: Context, chatViewItems: MutableList<User>) : this() {
-        this.context = context;
+    constructor(chatViewItems: MutableList<User>) : this() {
         this.chatViewItems = chatViewItems;
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewItemHolder {
         var chatView: View =
-            LayoutInflater.from(context).inflate(R.layout.user_view_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.user_view_item, parent, false)
         return UserViewItemHolder(chatView)
     }
 
@@ -31,7 +27,6 @@ class UserViewItemAdapter() : RecyclerView.Adapter<UserViewItemAdapter.UserViewI
         return chatViewItems.size
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: UserViewItemHolder, position: Int) {
         holder.binding.textName.text =
             "${chatViewItems[position].surname} ${chatViewItems[position].name}"
@@ -41,17 +36,15 @@ class UserViewItemAdapter() : RecyclerView.Adapter<UserViewItemAdapter.UserViewI
         }
 
         var picasso = Picasso.get()
-        if (chatViewItems[position].photo.isNullOrBlank()) {
+        if (!chatViewItems[position].photo.isNullOrBlank()) {
             picasso
-                .load(R.drawable.baseline_account_circle_24)
+                .load(chatViewItems[position].photo)
+                .placeholder(R.drawable.baseline_account_circle_24)
+                .error(R.drawable.baseline_account_circle_24)
                 .into(holder.binding.imageUser)
             return
         }
-        picasso
-            .load(chatViewItems[position].photo)
-            .placeholder(R.drawable.baseline_account_circle_24)
-            .error(R.drawable.baseline_account_circle_24)
-            .into(holder.binding.imageUser)
+        holder.binding.imageUser.setImageResource(R.drawable.baseline_account_circle_24)
     }
 
     class UserViewItemHolder : RecyclerView.ViewHolder {

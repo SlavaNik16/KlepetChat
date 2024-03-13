@@ -5,6 +5,7 @@ import KlepetChat.WebApi.Interfaces.IUserService
 import KlepetChat.WebApi.Models.Request.FIO
 import KlepetChat.WebApi.Models.Request.Login
 import KlepetChat.WebApi.Models.Request.UserRegister
+import java.util.UUID
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -16,6 +17,10 @@ class UserRepository @Inject constructor(
 
     fun getContactsOther() = ApiRequestFlowResponse {
         userService.getContactsOther()
+    }
+
+    fun getAllUserByChatId(chatId:UUID) = ApiRequestFlowResponse {
+        userService.getAllUserByChatId(chatId)
     }
 
     fun putFIO(fio: FIO) = ApiRequestFlowResponse {
