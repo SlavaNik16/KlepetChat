@@ -40,4 +40,5 @@
     <string name="deleted_chat">Удалить чат</string>
     <string name="delete_message">Удалить сообщения</string>
     <string name="add_favorites">Избранное</string>
+    <string name="exit_from_chat">Выйти из чата</string>
 </resources>

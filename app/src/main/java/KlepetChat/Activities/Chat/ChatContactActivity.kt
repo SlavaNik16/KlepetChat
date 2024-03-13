@@ -11,9 +11,12 @@ import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityChatContactBinding
@@ -32,7 +35,7 @@ class ChatContactActivity : AppCompatActivity() {
     private lateinit var phoneOther: String
 
     private lateinit var fragment: ChatFragment
-
+    private var popupMenu: PopupMenu? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatContactBinding.inflate(layoutInflater)
@@ -64,9 +67,11 @@ class ChatContactActivity : AppCompatActivity() {
             chatId = UUID.fromString(chatIdStr)
             fragment = ChatFragment.newInstance(chatId, ChatTypes.Contact)
             fragmentInstance(fragment)
+            binding?.butMenu?.visibility = View.VISIBLE
         } else {
             fragment = ChatFragment.newInstanceInit() { onInitChat() }
             fragmentInstance(fragment)
+            binding?.butMenu?.visibility = View.INVISIBLE
         }
 
         val txtName = argument?.getString(Constants.KEY_CHAT_NAME)
@@ -86,19 +91,51 @@ class ChatContactActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        fragment.signalRViewModel.getConnection().on("Status", {connectionId, isStatus ->
+        fragment.signalRViewModel.getConnection().on("Status", { connectionId, isStatus ->
             runOnUiThread(Runnable {
-                if(connectionId != fragment.signalRViewModel.getConnection().connectionId) {
-                    binding?.textDesc?.text = if(isStatus) "В сети" else "Не в сети"
+                if (connectionId != fragment.signalRViewModel.getConnection().connectionId) {
+                    binding?.textDesc?.text = if (isStatus) "В сети" else "Не в сети"
                 }
             })
 
-        },String::class.java, Boolean::class.java)
+        }, String::class.java, Boolean::class.java)
     }
 
     private fun setListeners() {
         binding?.back?.setOnClickListener { onBackPress() }
         binding?.butPhone?.setOnClickListener { onPhonePress() }
+        binding?.butMenu?.setOnClickListener { onMenuPress() }
+    }
+
+    private fun onMenuPress() {
+        popupMenu = PopupMenu(this@ChatContactActivity, binding!!.butMenu)
+        popupMenu?.menuInflater?.inflate(R.menu.contracts_menu, popupMenu?.menu)
+
+        popupMenu?.setOnMenuItemClickListener { onMenuItemClick(it) }
+        popupMenu?.show()
+    }
+
+    private fun onMenuItemClick(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.nav_clear -> {
+
+            }
+
+            R.id.nav_delete -> {
+                deletedChat()
+            }
+        }
+        return true
+    }
+
+    private fun deletedChat() {
+        chatViewModel.deleteChat(chatId,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+        onBackPress()
     }
 
     private fun onPhonePress() {
@@ -109,6 +146,9 @@ class ChatContactActivity : AppCompatActivity() {
     private fun removeListeners() {
         binding?.back?.setOnClickListener(null)
         binding?.butPhone?.setOnClickListener(null)
+        binding?.butMenu?.setOnClickListener(null)
+        popupMenu?.setOnMenuItemClickListener(null)
+        popupMenu = null
     }
 
     override fun onDestroy() {
@@ -146,6 +186,7 @@ class ChatContactActivity : AppCompatActivity() {
                 chatId = api.data.id
                 fragment.chatId = chatId
                 fragment.joinGroup()
+                binding?.butMenu?.visibility = View.VISIBLE
             }
 
             is ApiResponse.Failure -> {
