@@ -17,6 +17,7 @@ import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.User
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -287,12 +288,15 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_add_contact -> onAddChat()
             R.id.nav_add_favorites -> createFavorites()
             R.id.nav_settings -> navigateToProfile()
-            R.id.nav_help -> {
-                Toast.makeText(this@MainActivity, "nav_help", Toast.LENGTH_SHORT).show()
-            }
+            R.id.nav_help -> onHelp()
             R.id.nav_exit -> exitAuth()
         }
         return true
+    }
+    private fun onHelp(){
+        val browserIntent =
+            Intent(Intent.ACTION_VIEW, Uri.parse("https://telegram.org/faq"))
+        startActivity(browserIntent)
     }
     private fun createFavorites(){
         chatViewModel.postFavorites(user.id, object : ICoroutinesErrorHandler{
