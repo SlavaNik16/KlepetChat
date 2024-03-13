@@ -8,6 +8,7 @@ import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
+import KlepetChat.WebApi.Models.Response.Enums.RoleTypes
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -31,6 +32,7 @@ class ChatGroupActivity : AppCompatActivity() {
     private val chatViewModel: ChatViewModel by viewModels()
 
     private lateinit var chatId: UUID
+    private lateinit var roleType: String
 
     private lateinit var fragment: ChatFragment
     private var popupMenu: PopupMenu? = null
@@ -76,6 +78,8 @@ class ChatGroupActivity : AppCompatActivity() {
         val txtName = argument.getString(Constants.KEY_CHAT_NAME)
         binding?.txtName?.text = txtName
 
+        roleType = argument.getString(Constants.KEY_USER_ROLE).toString()
+
         val imageChat = argument.getString(Constants.KEY_IMAGE_URL)
         if (!imageChat.isNullOrBlank()) {
             Picasso.get()
@@ -94,14 +98,28 @@ class ChatGroupActivity : AppCompatActivity() {
     private fun onMenuPress() {
         popupMenu = PopupMenu(this@ChatGroupActivity, binding!!.butMenu)
         popupMenu?.menuInflater?.inflate(R.menu.group_menu, popupMenu?.menu)
-
+        isVisibleOnRoleType()
         popupMenu?.setOnMenuItemClickListener { onMenuItemClick(it) }
         popupMenu?.show()
     }
 
+    private fun isVisibleOnRoleType(){
+        when(roleType){
+            RoleTypes.User.name -> {
+                menuItem(true)
+            }
+            RoleTypes.Admin.name ->{
+                menuItem(false)
+            }
+        }
+    }
+    private fun menuItem(isTruth:Boolean){
+        popupMenu!!.menu.findItem(R.id.nav_exit_from_chat).isVisible = isTruth
+        popupMenu!!.menu.findItem(R.id.nav_delete).isVisible = !isTruth
+    }
     private fun onMenuItemClick(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.nav_clear -> {
+            R.id.nav_exit_from_chat -> {
 
             }
 

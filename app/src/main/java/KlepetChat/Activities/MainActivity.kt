@@ -334,6 +334,7 @@ class MainActivity : AppCompatActivity() {
         }
         intent.putStringArrayListExtra(Constants.KEY_CHAT_PEOPLE, arrayList)
         intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
+        intent.putExtra(Constants.KEY_USER_ROLE, chat.roleType.name)
         startActivity(intent)
         finish()
     }
