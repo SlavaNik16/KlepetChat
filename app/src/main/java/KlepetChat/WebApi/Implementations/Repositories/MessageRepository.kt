@@ -16,4 +16,8 @@ class MessageRepository @Inject constructor(
     fun createMessage(chatId: UUID, message: String) = ApiRequestFlowResponse {
         messageService.createMessage(chatId, message)
     }
+
+    fun deleteMessages(chatId: UUID) = ApiRequestFlowResponse {
+        messageService.deleteMessages(chatId)
+    }
 }

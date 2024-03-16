@@ -5,15 +5,19 @@ import KlepetChat.Activities.Data.Constants
 import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityChatContactBinding
@@ -27,12 +31,13 @@ class ChatContactActivity : AppCompatActivity() {
     private var binding: ActivityChatContactBinding? = null
 
     private val chatViewModel: ChatViewModel by viewModels()
+    private val messageViewModel: MessageViewModel by viewModels()
 
     private lateinit var chatId: UUID
     private lateinit var phoneOther: String
 
     private lateinit var fragment: ChatFragment
-
+    private var popupMenu: PopupMenu? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatContactBinding.inflate(layoutInflater)
@@ -64,9 +69,11 @@ class ChatContactActivity : AppCompatActivity() {
             chatId = UUID.fromString(chatIdStr)
             fragment = ChatFragment.newInstance(chatId, ChatTypes.Contact)
             fragmentInstance(fragment)
+            binding?.butMenu?.visibility = View.VISIBLE
         } else {
             fragment = ChatFragment.newInstanceInit() { onInitChat() }
             fragmentInstance(fragment)
+            binding?.butMenu?.visibility = View.INVISIBLE
         }
 
         val txtName = argument?.getString(Constants.KEY_CHAT_NAME)
@@ -80,12 +87,67 @@ class ChatContactActivity : AppCompatActivity() {
                 .error(R.drawable.baseline_account_circle_24)
                 .into(binding?.imageChat)
         }
-        binding?.textDesc?.text = "В сети"
+        binding?.textDesc?.text = "Не в сети"
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        fragment.signalRViewModel.getConnection().on("Status", { connectionId, isStatus ->
+            runOnUiThread(Runnable {
+                if (connectionId != fragment.signalRViewModel.getConnection().connectionId) {
+                    binding?.textDesc?.text = if (isStatus) "В сети" else "Не в сети"
+                }
+            })
+
+        }, String::class.java, Boolean::class.java)
     }
 
     private fun setListeners() {
         binding?.back?.setOnClickListener { onBackPress() }
         binding?.butPhone?.setOnClickListener { onPhonePress() }
+        binding?.butMenu?.setOnClickListener { onMenuPress() }
+    }
+
+    private fun onMenuPress() {
+        popupMenu = PopupMenu(this@ChatContactActivity, binding!!.butMenu)
+        popupMenu?.menuInflater?.inflate(R.menu.contracts_menu, popupMenu?.menu)
+
+        popupMenu?.setOnMenuItemClickListener { onMenuItemClick(it) }
+        popupMenu?.show()
+    }
+
+    private fun onMenuItemClick(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.nav_clear -> {
+                deletedMessages()
+            }
+
+            R.id.nav_delete -> {
+                deletedChat()
+            }
+        }
+        return true
+    }
+
+    private fun deletedMessages(){
+        messageViewModel.deleteMessages(chatId,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+        finish()
+        startActivity(intent)
+    }
+    private fun deletedChat() {
+        chatViewModel.deleteChat(chatId,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+        onBackPress()
     }
 
     private fun onPhonePress() {
@@ -96,6 +158,9 @@ class ChatContactActivity : AppCompatActivity() {
     private fun removeListeners() {
         binding?.back?.setOnClickListener(null)
         binding?.butPhone?.setOnClickListener(null)
+        binding?.butMenu?.setOnClickListener(null)
+        popupMenu?.setOnMenuItemClickListener(null)
+        popupMenu = null
     }
 
     override fun onDestroy() {
@@ -133,6 +198,7 @@ class ChatContactActivity : AppCompatActivity() {
                 chatId = api.data.id
                 fragment.chatId = chatId
                 fragment.joinGroup()
+                binding?.butMenu?.visibility = View.VISIBLE
             }
 
             is ApiResponse.Failure -> {

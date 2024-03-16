@@ -2,17 +2,22 @@ package KlepetChat.Activities.Chat
 
 import ChatFragment
 import KlepetChat.Activities.Data.Constants
+import KlepetChat.Activities.DialogFragment.AlertDialogGroupChatProfile
 import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
+import KlepetChat.WebApi.Models.Response.Enums.RoleTypes
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityChatGroupBinding
@@ -28,8 +33,10 @@ class ChatGroupActivity : AppCompatActivity() {
     private val chatViewModel: ChatViewModel by viewModels()
 
     private lateinit var chatId: UUID
+    private lateinit var roleType: String
 
     private lateinit var fragment: ChatFragment
+    private var popupMenu: PopupMenu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,13 +69,17 @@ class ChatGroupActivity : AppCompatActivity() {
         if (persons!!.contains(phone)) {
             fragment = ChatFragment.newInstance(chatId, ChatTypes.Group)
             fragmentInstance(fragment)
+            binding?.butMenu?.visibility = View.VISIBLE
         } else {
             fragment = ChatFragment.newInstanceInit() { onInitChat() }
             fragmentInstance(fragment)
+            binding?.butMenu?.visibility = View.INVISIBLE
         }
 
         val txtName = argument.getString(Constants.KEY_CHAT_NAME)
         binding?.txtName?.text = txtName
+
+        roleType = argument.getString(Constants.KEY_USER_ROLE).toString()
 
         val imageChat = argument.getString(Constants.KEY_IMAGE_URL)
         if (!imageChat.isNullOrBlank()) {
@@ -83,10 +94,77 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private fun setListeners() {
         binding?.back?.setOnClickListener { onBackPress() }
+        binding?.butMenu?.setOnClickListener { onMenuPress() }
+        binding?.groupProfile?.setOnClickListener{ onProfileGroup() }
+    }
+
+    private fun onProfileGroup() {
+        var image = intent?.extras?.getString(Constants.KEY_IMAGE_URL)
+        val alertDialogGroupChatProfile = AlertDialogGroupChatProfile.newInstance(chatId,
+            binding?.txtName?.text.toString(), image)
+        alertDialogGroupChatProfile.show(supportFragmentManager, "alertDialogGroupChatProfile")
+    }
+
+    private fun onMenuPress() {
+        popupMenu = PopupMenu(this@ChatGroupActivity, binding!!.butMenu)
+        popupMenu?.menuInflater?.inflate(R.menu.group_menu, popupMenu?.menu)
+        isVisibleOnRoleType()
+        popupMenu?.setOnMenuItemClickListener { onMenuItemClick(it) }
+        popupMenu?.show()
+    }
+
+    private fun isVisibleOnRoleType(){
+        when(roleType){
+            RoleTypes.User.name -> {
+                menuItem(true)
+            }
+            RoleTypes.Admin.name ->{
+                menuItem(false)
+            }
+        }
+    }
+    private fun menuItem(isTruth:Boolean){
+        popupMenu!!.menu.findItem(R.id.nav_exit_from_chat).isVisible = isTruth
+        popupMenu!!.menu.findItem(R.id.nav_delete).isVisible = !isTruth
+    }
+    private fun onMenuItemClick(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.nav_exit_from_chat -> {
+                exitFromChat()
+            }
+
+            R.id.nav_delete -> {
+                deletedChat()
+            }
+        }
+        return true
+    }
+
+    private fun exitFromChat(){
+        chatViewModel.postLeaveGroup(chatId,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+        onBackPress()
+    }
+    private fun deletedChat() {
+        chatViewModel.deleteChat(chatId,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+        onBackPress()
     }
 
     private fun removeListeners() {
         binding?.back?.setOnClickListener(null)
+        binding?.butMenu?.setOnClickListener(null)
+        binding?.groupProfile?.setOnClickListener(null)
+        popupMenu?.setOnMenuItemClickListener(null)
+        popupMenu = null
     }
 
     override fun onDestroy() {
@@ -124,6 +202,7 @@ class ChatGroupActivity : AppCompatActivity() {
                 chatId = api.data.id
                 fragment.chatId = chatId
                 fragment.joinGroup()
+                binding?.butMenu?.visibility = View.VISIBLE
             }
 
             is ApiResponse.Failure -> {

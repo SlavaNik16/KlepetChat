@@ -2,7 +2,6 @@ package KlepetChat.Adapters
 
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,17 +12,15 @@ import com.squareup.picasso.Picasso
 
 class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewItemHolder>() {
 
-    lateinit var context: Context
     lateinit var chatViewItems: MutableList<Chat>
 
-    constructor(context: Context, chatViewItems: MutableList<Chat>) : this() {
-        this.context = context;
+    constructor(chatViewItems: MutableList<Chat>) : this() {
         this.chatViewItems = chatViewItems;
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewItemHolder {
         var chatView: View =
-            LayoutInflater.from(context).inflate(R.layout.chat_view_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.chat_view_item, parent, false)
         return ChatViewItemHolder(chatView)
     }
 
