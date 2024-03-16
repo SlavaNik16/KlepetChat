@@ -41,25 +41,27 @@ class AlertDialogGroupChatProfile : DialogFragment() {
         return alert!!
     }
 
-    private fun init(){
+    private fun init() {
         binding?.name?.text = arguments?.getString(Constants.KEY_CHAT_NAME)
         Picasso.get().load(arguments?.getString(Constants.KEY_IMAGE_URL))
             .placeholder(R.drawable.baseline_account_circle_24)
             .error(R.drawable.baseline_account_circle_24)
             .into(binding?.imageUser)
     }
-    private fun getAllUsers(){
+
+    private fun getAllUsers() {
         userViewModel.getAllUserByChatId(chatId,
-            object : ICoroutinesErrorHandler{
+            object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
                 }
             })
     }
 
-    private fun setObserve(){
-        userViewModel.users.observe(this){ getUsers(it) }
+    private fun setObserve() {
+        userViewModel.users.observe(this) { getUsers(it) }
     }
+
     private fun getUsers(api: ApiResponse<MutableList<User>>) {
         when (api) {
             is ApiResponse.Success -> {
@@ -79,6 +81,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
             }
         }
     }
+
     private fun setListeners() {
         binding?.imageButtonBack?.setOnClickListener { onBackPress(alert!!) }
     }
@@ -101,13 +104,13 @@ class AlertDialogGroupChatProfile : DialogFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(id: UUID, title:String, photo:String? = "Empty") =
+        fun newInstance(id: UUID, title: String, photo: String? = "Empty") =
             AlertDialogGroupChatProfile().apply {
                 arguments = Bundle().apply {
                     chatId = id
                     this.putString(Constants.KEY_CHAT_NAME, title)
                     var image = photo
-                    if(photo.isNullOrBlank()){
+                    if (photo.isNullOrBlank()) {
                         image = "Empty"
                     }
                     this.putString(Constants.KEY_IMAGE_URL, image)
