@@ -33,10 +33,10 @@ class ChatContactActivity : AppCompatActivity() {
     private val chatViewModel: ChatViewModel by viewModels()
     private val messageViewModel: MessageViewModel by viewModels()
 
-    private lateinit var chatId: UUID
-    private lateinit var phoneOther: String
+    private var chatId: UUID? = null
+    private var phoneOther: String? = null
 
-    private lateinit var fragment: ChatFragment
+    private var fragment: ChatFragment? = null
     private var popupMenu: PopupMenu? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,12 +67,12 @@ class ChatContactActivity : AppCompatActivity() {
         val chatIdStr = argument?.getString(Constants.KEY_CHAT_ID)
         if (!chatIdStr.isNullOrBlank()) {
             chatId = UUID.fromString(chatIdStr)
-            fragment = ChatFragment.newInstance(chatId, ChatTypes.Contact)
-            fragmentInstance(fragment)
+            fragment = ChatFragment.newInstance(chatId!!, ChatTypes.Contact)
+            fragmentInstance(fragment!!)
             binding?.butMenu?.visibility = View.VISIBLE
         } else {
             fragment = ChatFragment.newInstanceInit() { onInitChat() }
-            fragmentInstance(fragment)
+            fragmentInstance(fragment!!)
             binding?.butMenu?.visibility = View.INVISIBLE
         }
 
@@ -93,9 +93,9 @@ class ChatContactActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        fragment.signalRViewModel.getConnection().on("Status", { connectionId, isStatus ->
+        fragment?.signalRViewModel?.getConnection()?.on("Status", { connectionId, isStatus ->
             runOnUiThread(Runnable {
-                if (connectionId != fragment.signalRViewModel.getConnection().connectionId) {
+                if (connectionId != fragment?.signalRViewModel?.getConnection()?.connectionId) {
                     binding?.textDesc?.text = if (isStatus) "В сети" else "Не в сети"
                 }
             })
@@ -131,7 +131,7 @@ class ChatContactActivity : AppCompatActivity() {
     }
 
     private fun deletedMessages(){
-        messageViewModel.deleteMessages(chatId,
+        messageViewModel.deleteMessages(chatId!!,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
@@ -141,7 +141,7 @@ class ChatContactActivity : AppCompatActivity() {
         startActivity(intent)
     }
     private fun deletedChat() {
-        chatViewModel.deleteChat(chatId,
+        chatViewModel.deleteChat(chatId!!,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
@@ -162,17 +162,25 @@ class ChatContactActivity : AppCompatActivity() {
         popupMenu?.setOnMenuItemClickListener(null)
         popupMenu = null
     }
+    private fun removeComponent() {
+        popupMenu = null
+        chatId = null
+        phoneOther = null
+        fragment?.onDestroy()
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
         removeListeners()
-        fragment.onDestroy()
+        removeComponent()
+        this.viewModelStore.clear()
         binding = null
     }
 
     override fun onPause() {
         super.onPause()
-        fragment.leaveGroup()
+        fragment?.leaveGroup()
     }
 
     private fun onBackPress() {
@@ -182,7 +190,7 @@ class ChatContactActivity : AppCompatActivity() {
     }
 
     private fun onInitChat() {
-        chatViewModel.postContact(phoneOther,
+        chatViewModel.postContact(phoneOther!!,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
                     Toast.makeText(
@@ -196,8 +204,8 @@ class ChatContactActivity : AppCompatActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 chatId = api.data.id
-                fragment.chatId = chatId
-                fragment.joinGroup()
+                fragment?.chatId = chatId!!
+                fragment?.joinGroup()
                 binding?.butMenu?.visibility = View.VISIBLE
             }
 

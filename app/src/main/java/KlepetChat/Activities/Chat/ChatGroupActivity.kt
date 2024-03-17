@@ -34,9 +34,9 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private var chatId: UUID? = null
     private var phone: String? = null
-    private lateinit var roleType: RoleTypes
+    private var roleType: RoleTypes = RoleTypes.User
 
-    private lateinit var fragment: ChatFragment
+    private var fragment: ChatFragment? = null
     private var popupMenu: PopupMenu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,11 +69,11 @@ class ChatGroupActivity : AppCompatActivity() {
         chatId = UUID.fromString(chatIdStr)
         if (persons!!.contains(phone)) {
             fragment = ChatFragment.newInstance(chatId!!, ChatTypes.Group)
-            fragmentInstance(fragment)
+            fragmentInstance(fragment!!)
             binding?.butMenu?.visibility = View.VISIBLE
         } else {
             fragment = ChatFragment.newInstanceInit() { onInitChat() }
-            fragmentInstance(fragment)
+            fragmentInstance(fragment!!)
             binding?.butMenu?.visibility = View.INVISIBLE
         }
 
@@ -176,19 +176,20 @@ class ChatGroupActivity : AppCompatActivity() {
         popupMenu = null
         chatId = null
         phone = null
+        fragment?.onDestroy()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         removeListeners()
         removeComponent()
-        fragment.onDestroy()
+        this.viewModelStore.clear()
         binding = null
     }
 
     override fun onPause() {
         super.onPause()
-        fragment.leaveGroup()
+        fragment?.leaveGroup()
     }
 
     private fun onBackPress() {
@@ -212,8 +213,8 @@ class ChatGroupActivity : AppCompatActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 chatId = api.data.id
-                fragment.chatId = chatId!!
-                fragment.joinGroup()
+                fragment?.chatId = chatId!!
+                fragment?.joinGroup()
                 binding?.butMenu?.visibility = View.VISIBLE
             }
 
