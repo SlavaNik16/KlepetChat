@@ -19,10 +19,12 @@ class ChatViewModel @Inject constructor(
     private val chatsResponse = MutableLiveData<ApiResponse<MutableList<Chat>>>()
     private val chatExists = MutableLiveData<ApiResponse<Boolean>>()
     private val chatResponse = MutableLiveData<ApiResponse<Chat>>()
+    private val chatImageResponse = MutableLiveData<ApiResponse<Chat>>()
     private val chatBodyResponse = MutableLiveData<ApiResponse<ResponseBody>>()
     val chats = chatsResponse
     val exists = chatExists
     val chat = chatResponse
+    val chatImage = chatImageResponse
 
     fun getChats(coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         chatsResponse,
@@ -37,6 +39,14 @@ class ChatViewModel @Inject constructor(
     ) {
         chatRepository.getChatsByName(name)
     }
+
+    fun getChatByPhone(phoneOther: String, coroutineErrorHandler: ICoroutinesErrorHandler) =
+        BaseRequest(
+            chatResponse,
+            coroutineErrorHandler
+        ) {
+            chatRepository.getChatByPhone(phoneOther)
+        }
 
     fun postFavorites(userId: UUID, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         chatExists,
@@ -70,12 +80,22 @@ class ChatViewModel @Inject constructor(
     ) {
         chatRepository.postJoinGroup(id)
     }
+
     fun postLeaveGroup(id: UUID, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         chatExists,
         coroutineErrorHandler
     ) {
         chatRepository.postLeaveGroup(id)
     }
+
+    fun putEditPhoto(id: UUID, photo: String?, coroutineErrorHandler: ICoroutinesErrorHandler) =
+        BaseRequest(
+            chatImageResponse,
+            coroutineErrorHandler
+        ) {
+            chatRepository.putEditPhoto(id, photo)
+        }
+
     fun deleteChat(id: UUID, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         chatBodyResponse,
         coroutineErrorHandler

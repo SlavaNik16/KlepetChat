@@ -30,6 +30,14 @@ class UserViewModel @Inject constructor(
         userRepository.getByPhone(phone)
     }
 
+    fun getUsersByName(name: String, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+        usersResponse,
+        coroutineErrorHandler
+    ) {
+        userRepository.getUsersByName(name)
+    }
+
+
     fun getContactsOther(coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         usersResponse,
         coroutineErrorHandler

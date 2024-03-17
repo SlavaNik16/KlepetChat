@@ -3,6 +3,8 @@ package KlepetChat.Activities
 import KlepetChat.Activities.Chat.ChatContactActivity
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.UserViewItemAdapter
+import KlepetChat.Image.ImageContainer
+import KlepetChat.Utils.TextChangedListener
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.ImageViewModel
@@ -16,9 +18,12 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.provider.MediaStore.Images
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -34,9 +39,10 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
+import java.util.Timer
+import java.util.TimerTask
 
 
 @AndroidEntryPoint
@@ -50,6 +56,7 @@ class ChooseActivity : ComponentActivity() {
     private lateinit var users: MutableList<User>
     private var iamgeURL: String? = null
     private lateinit var file: File
+    private var isEdit = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChooseBinding.inflate(layoutInflater)
@@ -59,9 +66,10 @@ class ChooseActivity : ComponentActivity() {
         getContactsOther()
         init()
     }
-    private fun init(){
-        var isOpenGroup  = intent?.extras?.getBoolean(Constants.KEY_IS_OPEN_GROUP) ?: false
-        if(isOpenGroup){
+
+    private fun init() {
+        var isOpenGroup = intent?.extras?.getBoolean(Constants.KEY_IS_OPEN_GROUP) ?: false
+        if (isOpenGroup) {
             onAddGroup()
         }
     }
@@ -75,9 +83,7 @@ class ChooseActivity : ComponentActivity() {
             }
 
             is ApiResponse.Failure -> {
-                Toast.makeText(
-                    this@ChooseActivity, "Ошибка! ${api.message}", Toast.LENGTH_SHORT
-                ).show()
+                return
             }
 
             is ApiResponse.Loading -> {
@@ -138,12 +144,74 @@ class ChooseActivity : ComponentActivity() {
         binding?.contactRecycler?.adapter = null
         binding?.contactRecycler?.layoutManager = null
         binding?.contactRecycler?.recycledViewPool?.clear()
+        binding?.inputSearch?.addTextChangedListener(null)
     }
 
     private fun setListeners() {
         binding?.back?.setOnClickListener { onBackPress() }
         binding?.addGroup?.setOnClickListener { onAddGroup() }
         binding?.contactRecycler?.addOnChildAttachStateChangeListener(onContactRecyclerAttach())
+        binding?.butSearch?.setOnClickListener { setSearchUsers() }
+        binding?.inputSearch?.addTextChangedListener(addTextSearchChange())
+    }
+    private fun addTextSearchChange(): TextWatcher {
+        return object : TextChangedListener<EditText>(binding?.inputSearch!!) {
+            private var timer = Timer()
+            private val DELAY: Long = 500
+            override fun onTextChanged(target: EditText, s: Editable?) {
+                if (target.text.isNullOrBlank()) {
+                    if (isEdit) {
+                        getContactsOther()
+                    }
+                    return
+                }
+                timer.cancel()
+                timer = Timer()
+                timer.schedule(
+                    object : TimerTask() {
+                        override fun run() {
+                            runOnUiThread {
+                                resultTextSearch()
+                            }
+                        }
+                    },
+                    DELAY
+                )
+            }
+
+        }
+    }
+    private fun resultTextSearch() {
+        isEdit = true
+        userViewModel.getUsersByName(binding?.inputSearch?.text.toString(),
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    Toast.makeText(
+                        this@ChooseActivity, "Error! ${message}\n", Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+
+    private fun setSearchUsers() {
+        var modeTag = binding?.butSearch?.tag.toString()
+        if (modeTag == Constants.KEY_TAG_SEARCH) {
+            isEdit = false
+            binding?.butSearch?.tag = Constants.KEY_TAG_SEARCHOFF
+            binding?.butSearch?.setImageResource(R.drawable.ic_close_white)
+            binding?.inputSearch?.visibility = View.VISIBLE
+            binding?.addGroup?.visibility = View.GONE
+        } else {
+            binding?.butSearch?.tag = Constants.KEY_TAG_SEARCH
+            binding?.butSearch?.setImageResource(R.drawable.ic_search)
+            binding?.inputSearch?.visibility = View.GONE
+            binding?.inputSearch?.setText(String())
+            binding?.addGroup?.visibility = View.VISIBLE
+            if (getSystemService(Context.INPUT_METHOD_SERVICE) is InputMethodManager) {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(window.decorView.windowToken, 0)
+            }
+        }
     }
 
     private fun onContactRecyclerAttach(): RecyclerView.OnChildAttachStateChangeListener {
@@ -155,9 +223,9 @@ class ChooseActivity : ComponentActivity() {
                     var user = this@ChooseActivity.users[position]
                     val intent = Intent(this@ChooseActivity, ChatContactActivity::class.java)
                     intent.putExtra(Constants.KEY_USER_PHONE_OTHER, user.phone)
-                    intent.putExtra(Constants.KEY_CHAT_ID, Constants.GUID_NULL)
                     intent.putExtra(Constants.KEY_CHAT_NAME, user.name)
                     intent.putExtra(Constants.KEY_IMAGE_URL, user.photo)
+                    startActivity(intent)
                     startActivity(intent)
                     finish()
                 }
@@ -188,6 +256,8 @@ class ChooseActivity : ComponentActivity() {
         dialog.setPositiveButton("Создать",
             DialogInterface.OnClickListener { dialog: DialogInterface?, _ ->
                 if (dialogBinding?.groupField?.text.isNullOrBlank()) {
+                    Toast.makeText(this, "Имя не должно быть пустым!!!",
+                        Toast.LENGTH_SHORT).show()
                     return@OnClickListener
                 }
                 chatViewModel.postGroup(
@@ -225,8 +295,8 @@ class ChooseActivity : ComponentActivity() {
                 }
                 dialogBinding?.imageChat?.setImageBitmap(bitmap)
 
-                val tempUri: Uri = getImageUri(applicationContext, bitmap!!)
-                file = File(getRealPathFromURI(tempUri))
+                val tempUri: Uri = ImageContainer.getImageUri(applicationContext, bitmap!!)
+                file = File(ImageContainer.getRealPathFromURI(this, tempUri))
                 val requestFile =
                     RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
                 val filePart =
@@ -248,23 +318,4 @@ class ChooseActivity : ComponentActivity() {
             })
     }
 
-    fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
-        val bytes = ByteArrayOutputStream()
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
-        return Uri.parse(path)
-    }
-
-    fun getRealPathFromURI(uri: Uri?): String {
-        val cursor = contentResolver.query(uri!!, null, null, null, null)
-        var largeImagePath = ""
-        try {
-            cursor!!.moveToFirst()
-            val idx = cursor.getColumnIndex(Images.ImageColumns.DATA)
-            largeImagePath = cursor.getString(idx)
-        } finally {
-            cursor?.close()
-        }
-        return largeImagePath
-    }
 }

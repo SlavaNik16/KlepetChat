@@ -1,14 +1,19 @@
 package KlepetChat.Activities
 
+import KlepetChat.Activities.Chat.ChatContactActivity
+import KlepetChat.Activities.Data.Constants
 import KlepetChat.DataSore.Models.UserData
+import KlepetChat.Image.ImageContainer
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.AuthViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.ImageViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Request.FIO
 import KlepetChat.WebApi.Models.Request.Login
+import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Token
 import KlepetChat.WebApi.Models.Response.User
 import android.content.Context
@@ -19,6 +24,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
+import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -37,7 +43,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 
@@ -51,6 +56,7 @@ class ProfileActivity : ComponentActivity() {
     private val userViewModel: UserViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
     private val imageViewModel: ImageViewModel by viewModels()
+    private val chatViewModel: ChatViewModel by viewModels()
     private lateinit var user: User
     private lateinit var password: String
     private lateinit var file: File
@@ -60,6 +66,7 @@ class ProfileActivity : ComponentActivity() {
         setContentView(binding?.root)
         setListeners()
         setObserve()
+        getView()
         getUser()
 
     }
@@ -69,6 +76,7 @@ class ProfileActivity : ComponentActivity() {
         userViewModel.userEditPhone.observe(this) { getUserEditPhoneApi(it) }
         authViewModel.token.observe(this) { getAccessToken(it) }
         imageViewModel.img.observe(this) { getHttpImage(it) }
+        chatViewModel.chat.observe(this) { AnyChatSend(it) }
     }
 
     private fun getHttpImage(api: ApiResponse<ResponseBody>) {
@@ -163,14 +171,23 @@ class ProfileActivity : ComponentActivity() {
         }
     }
 
+    private fun getView() {
+        var isView = intent.extras?.getBoolean(Constants.KEY_PROFILE_VIEW)
+        viewProfile(isView!!)
+    }
+    private fun viewProfile(isView:Boolean){
+         binding?.inputMessageAboutMe?.isEnabled = !isView
+         binding?.imageUser?.isEnabled = !isView
+         binding?.editPhone?.isEnabled = !isView
+         binding?.editNickname?.isEnabled = !isView
+         binding?.editName?.isEnabled = !isView
+         binding?.butSend?.visibility = if(!isView) View.GONE else View.VISIBLE
+    }
+
+
     private fun getUser() {
-        userDataViewModel.userData.observe(this) {
-            if (it?.accessToken.isNullOrBlank() && it?.phone.isNullOrBlank()) {
-                exitAuth()
-                return@observe
-            }
-            onUserSend(it!!.phone)
-        }
+        var phone = intent.extras?.getString(Constants.KEY_USER_PHONE)
+        onUserSend(phone!!)
     }
 
     override fun onDestroy() {
@@ -189,6 +206,7 @@ class ProfileActivity : ComponentActivity() {
         binding?.editNickname?.setOnClickListener(null)
         binding?.inputMessageAboutMe?.onFocusChangeListener = null
         binding?.form?.setOnClickListener(null)
+        binding?.butSend?.setOnClickListener(null)
     }
 
     private fun setListeners() {
@@ -199,6 +217,49 @@ class ProfileActivity : ComponentActivity() {
         binding?.editNickname?.setOnClickListener { onEditNickname() }
         binding?.inputMessageAboutMe?.onFocusChangeListener = onChangeFocusAboutMe()
         binding?.form?.setOnClickListener { onClickForm() }
+        binding?.butSend?.setOnClickListener { onSendMessage() }
+    }
+
+    private fun onSendMessage() {
+        chatViewModel.getChatByPhone(user.phone,
+            object : ICoroutinesErrorHandler{
+            override fun onError(message: String) {
+
+            }
+        })
+    }
+    private fun AnyChatSend(api: ApiResponse<Chat>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                navigateToContactInChat(api.data)
+            }
+
+            is ApiResponse.Failure -> {
+                navigateToContactInUser()
+            }
+
+            is ApiResponse.Loading -> {
+                return
+            }
+        }
+    }
+
+    private fun navigateToContactInChat(chat: Chat){
+        val intent = Intent(this@ProfileActivity, ChatContactActivity::class.java)
+        intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
+        intent.putExtra(Constants.KEY_CHAT_NAME, "${user.surname} ${user.name}")
+        intent.putExtra(Constants.KEY_IMAGE_URL, user.photo)
+        intent.putExtra(Constants.KEY_USER_PHONE_OTHER, user.phone)
+        startActivity(intent)
+        finish()
+    }
+    private fun navigateToContactInUser(){
+        val intent = Intent(this@ProfileActivity, ChatContactActivity::class.java)
+        intent.putExtra(Constants.KEY_CHAT_NAME, user.name)
+        intent.putExtra(Constants.KEY_IMAGE_URL, user.photo)
+        intent.putExtra(Constants.KEY_USER_PHONE_OTHER, user.phone)
+        startActivity(intent)
+        finish()
     }
 
 
@@ -421,8 +482,8 @@ class ProfileActivity : ComponentActivity() {
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
-                val tempUri: Uri = getImageUri(applicationContext, bitmap!!)
-                file = File(getRealPathFromURI(tempUri))
+                val tempUri: Uri = ImageContainer.getImageUri(applicationContext, bitmap!!)
+                file = File(ImageContainer.getRealPathFromURI(this, tempUri))
                 val requestFile =
                     RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
                 val filePart =
@@ -443,26 +504,6 @@ class ProfileActivity : ComponentActivity() {
             })
     }
 
-    fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
-        val bytes = ByteArrayOutputStream()
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path =
-            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
-        return Uri.parse(path)
-    }
-
-    fun getRealPathFromURI(uri: Uri?): String {
-        val cursor = contentResolver.query(uri!!, null, null, null, null)
-        var largeImagePath = ""
-        try {
-            cursor!!.moveToFirst()
-            val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            largeImagePath = cursor.getString(idx)
-        } finally {
-            cursor?.close()
-        }
-        return largeImagePath
-    }
 
     private fun exitAuth() {
         userDataViewModel.ClearUserData()

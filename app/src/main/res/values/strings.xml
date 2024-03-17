@@ -42,4 +42,5 @@
     <string name="add_favorites">Избранное</string>
     <string name="exit_from_chat">Выйти из чата</string>
     <string name="participant">Участники</string>
+    <string name="add_chat">Создание чата</string>
 </resources>

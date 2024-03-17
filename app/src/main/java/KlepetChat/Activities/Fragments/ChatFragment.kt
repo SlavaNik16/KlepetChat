@@ -27,11 +27,11 @@ class ChatFragment : Fragment() {
     val signalRViewModel: SignalRViewModel by activityViewModels()
 
     var chatId: UUID = Constants.GUID_NULL
-
-    private lateinit var phone: String
     private var chatType: ChatTypes = ChatTypes.Favorites
-    private lateinit var messages: MutableList<Message>
-    private lateinit var chatAdapter: ChatAdapter
+
+    private var phone: String? = null
+    private var messages: MutableList<Message>? = null
+    private var chatAdapter: ChatAdapter? = null
 
     private lateinit var initChat: () -> Unit
 
@@ -143,17 +143,24 @@ class ChatFragment : Fragment() {
         binding?.sendMessage?.setOnClickListener(null)
         binding?.buttonInitChat?.setOnClickListener(null)
         binding?.sendEmoticon?.setOnClickListener(null)
-        messages.clear()
         binding?.recyclerChat?.adapter = null
         binding?.recyclerChat?.layoutManager = null
         binding?.recyclerChat?.recycledViewPool?.clear()
+    }
+    private fun removeComponent(){
+        messages = null
+        chatAdapter = null
+        phone = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
         removeListeners()
+        removeComponent()
         binding = null
     }
+
+
 
 
     private fun getMessage(api: ApiResponse<Message>) {
@@ -177,13 +184,13 @@ class ChatFragment : Fragment() {
 
     private fun EventUpdateMessages(message: Message? = null) {
         if (message != null) {
-            messages.add(message)
+            messages?.add(message)
         }
-        messages.sortBy { it.createdAt }
-        if (messages.size != 0) {
-            chatAdapter = ChatAdapter(messages, phone)
+        messages?.sortBy { it.createdAt }
+        if (messages?.size != 0) {
+            chatAdapter = ChatAdapter(messages!!, phone!!)
             binding?.recyclerChat?.adapter = chatAdapter
-            chatAdapter.notifyDataSetChanged()
+            chatAdapter?.notifyDataSetChanged()
         }
     }
 

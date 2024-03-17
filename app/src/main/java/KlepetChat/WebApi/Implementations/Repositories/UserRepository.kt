@@ -15,6 +15,10 @@ class UserRepository @Inject constructor(
         userService.getByPhone(phone)
     }
 
+    fun getUsersByName(name: String) = ApiRequestFlowResponse {
+        userService.getUsersByName(name)
+    }
+
     fun getContactsOther() = ApiRequestFlowResponse {
         userService.getContactsOther()
     }

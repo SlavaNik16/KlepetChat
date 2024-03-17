@@ -22,11 +22,13 @@ import java.util.UUID
 @AndroidEntryPoint
 class ChatFavoritesActivity : AppCompatActivity() {
     private var binding: ActivityChatFavoritesBinding? = null
-    private lateinit var chatId: UUID
-    private lateinit var fragment: ChatFragment
     private val chatViewModel: ChatViewModel by viewModels()
     private val messageViewModel: MessageViewModel by viewModels()
+
+    private var chatId: UUID? = null
+    private var fragment: ChatFragment? = null
     private var popupMenu: PopupMenu? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatFavoritesBinding.inflate(layoutInflater)
@@ -50,8 +52,8 @@ class ChatFavoritesActivity : AppCompatActivity() {
 
         val chatIdStr = argument?.getString(Constants.KEY_CHAT_ID)
         chatId = UUID.fromString(chatIdStr)
-        fragment = ChatFragment.newInstance(chatId)
-        fragmentInstance(fragment)
+        fragment = ChatFragment.newInstance(chatId!!)
+        fragmentInstance(fragment!!)
 
         val txtName = argument?.getString(Constants.KEY_CHAT_NAME)
         binding?.txtName?.text = txtName
@@ -87,7 +89,7 @@ class ChatFavoritesActivity : AppCompatActivity() {
     }
 
     private fun deletedMessages() {
-        messageViewModel.deleteMessages(chatId,
+        messageViewModel.deleteMessages(chatId!!,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
@@ -98,7 +100,7 @@ class ChatFavoritesActivity : AppCompatActivity() {
     }
 
     private fun deletedChat() {
-        chatViewModel.deleteChat(chatId,
+        chatViewModel.deleteChat(chatId!!,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
@@ -111,13 +113,18 @@ class ChatFavoritesActivity : AppCompatActivity() {
         binding?.back?.setOnClickListener(null)
         binding?.butMenu?.setOnClickListener(null)
         popupMenu?.setOnMenuItemClickListener(null)
+    }
+    private fun removeComponent() {
         popupMenu = null
+        chatId = null
+        fragment?.onDestroy()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         removeListeners()
-        fragment.onDestroy()
+        removeComponent()
+        this.viewModelStore.clear()
         binding = null
     }
 

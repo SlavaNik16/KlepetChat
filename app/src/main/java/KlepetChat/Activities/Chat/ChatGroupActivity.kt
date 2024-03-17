@@ -28,14 +28,15 @@ import java.util.UUID
 
 @AndroidEntryPoint
 class ChatGroupActivity : AppCompatActivity() {
-    private var binding: ActivityChatGroupBinding? = null
+    var binding: ActivityChatGroupBinding? = null
 
     private val chatViewModel: ChatViewModel by viewModels()
 
-    private lateinit var chatId: UUID
-    private lateinit var roleType: String
+    private var chatId: UUID? = null
+    private var phone: String? = null
+    private var roleType: RoleTypes = RoleTypes.User
 
-    private lateinit var fragment: ChatFragment
+    private var fragment: ChatFragment? = null
     private var popupMenu: PopupMenu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,23 +64,28 @@ class ChatGroupActivity : AppCompatActivity() {
 
         val persons = argument?.getStringArrayList(Constants.KEY_CHAT_PEOPLE)
         binding?.textDesc?.text = "${persons?.count()} подписчик(-a)"
-        val phone = argument?.getString(Constants.KEY_USER_PHONE)
+        phone = argument?.getString(Constants.KEY_USER_PHONE)
         val chatIdStr = argument?.getString(Constants.KEY_CHAT_ID)
         chatId = UUID.fromString(chatIdStr)
         if (persons!!.contains(phone)) {
-            fragment = ChatFragment.newInstance(chatId, ChatTypes.Group)
-            fragmentInstance(fragment)
+            fragment = ChatFragment.newInstance(chatId!!, ChatTypes.Group)
+            fragmentInstance(fragment!!)
             binding?.butMenu?.visibility = View.VISIBLE
         } else {
             fragment = ChatFragment.newInstanceInit() { onInitChat() }
-            fragmentInstance(fragment)
+            fragmentInstance(fragment!!)
             binding?.butMenu?.visibility = View.INVISIBLE
         }
 
         val txtName = argument.getString(Constants.KEY_CHAT_NAME)
         binding?.txtName?.text = txtName
 
-        roleType = argument.getString(Constants.KEY_USER_ROLE).toString()
+        var roleTypeStr = argument.getString(Constants.KEY_USER_ROLE).toString()
+        roleType = when(roleTypeStr){
+            RoleTypes.User.name -> RoleTypes.User
+            RoleTypes.Admin.name ->  RoleTypes.Admin
+            else -> RoleTypes.User
+        }
 
         val imageChat = argument.getString(Constants.KEY_IMAGE_URL)
         if (!imageChat.isNullOrBlank()) {
@@ -100,9 +106,10 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private fun onProfileGroup() {
         var image = intent?.extras?.getString(Constants.KEY_IMAGE_URL)
-        val alertDialogGroupChatProfile = AlertDialogGroupChatProfile.newInstance(chatId,
-            binding?.txtName?.text.toString(), image)
+        val alertDialogGroupChatProfile = AlertDialogGroupChatProfile.newInstance(
+            chatId!!, phone!!, binding?.txtName?.text.toString(), roleType, image)
         alertDialogGroupChatProfile.show(supportFragmentManager, "alertDialogGroupChatProfile")
+
     }
 
     private fun onMenuPress() {
@@ -115,10 +122,10 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private fun isVisibleOnRoleType(){
         when(roleType){
-            RoleTypes.User.name -> {
+            RoleTypes.User -> {
                 menuItem(true)
             }
-            RoleTypes.Admin.name ->{
+            RoleTypes.Admin ->{
                 menuItem(false)
             }
         }
@@ -141,7 +148,7 @@ class ChatGroupActivity : AppCompatActivity() {
     }
 
     private fun exitFromChat(){
-        chatViewModel.postLeaveGroup(chatId,
+        chatViewModel.postLeaveGroup(chatId!!,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
@@ -150,7 +157,7 @@ class ChatGroupActivity : AppCompatActivity() {
         onBackPress()
     }
     private fun deletedChat() {
-        chatViewModel.deleteChat(chatId,
+        chatViewModel.deleteChat(chatId!!,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
@@ -164,19 +171,25 @@ class ChatGroupActivity : AppCompatActivity() {
         binding?.butMenu?.setOnClickListener(null)
         binding?.groupProfile?.setOnClickListener(null)
         popupMenu?.setOnMenuItemClickListener(null)
+    }
+    private fun removeComponent(){
         popupMenu = null
+        chatId = null
+        phone = null
+        fragment?.onDestroy()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         removeListeners()
-        fragment.onDestroy()
+        removeComponent()
+        this.viewModelStore.clear()
         binding = null
     }
 
     override fun onPause() {
         super.onPause()
-        fragment.leaveGroup()
+        fragment?.leaveGroup()
     }
 
     private fun onBackPress() {
@@ -186,7 +199,7 @@ class ChatGroupActivity : AppCompatActivity() {
     }
 
     private fun onInitChat() {
-        chatViewModel.postJoinGroup(chatId,
+        chatViewModel.postJoinGroup(chatId!!,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
                     Toast.makeText(
@@ -200,8 +213,8 @@ class ChatGroupActivity : AppCompatActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 chatId = api.data.id
-                fragment.chatId = chatId
-                fragment.joinGroup()
+                fragment?.chatId = chatId!!
+                fragment?.joinGroup()
                 binding?.butMenu?.visibility = View.VISIBLE
             }
 

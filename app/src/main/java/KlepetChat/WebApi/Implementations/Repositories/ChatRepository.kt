@@ -17,6 +17,10 @@ class ChatRepository @Inject constructor(
         chatService.getChatsByName(name)
     }
 
+    fun getChatByPhone(phoneOther: String) = ApiRequestFlowResponse {
+        chatService.getChatByPhone(phoneOther)
+    }
+
     fun postFavorites(userId: UUID) = ApiRequestFlowResponse {
         chatService.postFavorites(userId)
     }
@@ -32,9 +36,15 @@ class ChatRepository @Inject constructor(
     fun postJoinGroup(id: UUID) = ApiRequestFlowResponse {
         chatService.postJoinGroup(id)
     }
+
     fun postLeaveGroup(id: UUID) = ApiRequestFlowResponse {
         chatService.postLeaveGroup(id)
     }
+
+    fun putEditPhoto(id: UUID, photo: String?) = ApiRequestFlowResponse {
+        chatService.putEditPhoto(id, photo)
+    }
+
     fun deleteChat(id: UUID) = ApiRequestFlowResponse {
         chatService.deleteChat(id)
     }

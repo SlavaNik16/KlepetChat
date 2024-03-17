@@ -12,6 +12,7 @@
         android:background="@color/white"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/blue_2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -29,17 +30,40 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_margin="20dp"
-                android:background="@drawable/ic_arrow_back" />
+                android:background="@drawable/baseline_arrow_back_24" />
+
         </LinearLayout>
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Создание чата"
+            android:text="@string/add_chat"
             android:textSize="24sp"
+            android:textColor="@color/white"
             android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/back"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/inputSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_chat_input"
+            android:gravity="left"
+            android:hint="@string/search"
+            android:imeOptions="actionDone"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:paddingStart="1dp"
+            android:paddingEnd="1dp"
+            android:textAlignment="gravity"
+            android:textColor="@color/black"
+            android:visibility="gone"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/butSearch"
             app:layout_constraintStart_toEndOf="@+id/back"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,7 +72,8 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/ic_baseline_search"
+            android:tag="search"
+            android:src="@drawable/ic_search"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -84,7 +109,6 @@
         android:id="@+id/contactRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
