@@ -122,6 +122,11 @@ class AlertDialogGroupChatProfile : DialogFragment() {
             is ApiResponse.Success -> {
                 var imageHttp = api.data.string()
                 putEditPhotoChat(imageHttp)
+                var activity = requireActivity()
+                if(activity is ChatGroupActivity){
+                    var chatGroupActivity = activity as ChatGroupActivity
+                    chatGroupActivity.intent?.putExtra(Constants.KEY_IMAGE_URL, imageHttp)
+                }
                 if (file?.exists() == true) {
                     file?.delete()
                 }

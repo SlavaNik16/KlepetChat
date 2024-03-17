@@ -17,6 +17,9 @@ interface IUserService {
     @GET("user/{phone}")
     suspend fun getByPhone(@Path("phone") phone: String): Response<User>
 
+    @GET("user/search/{name}")
+    suspend fun getUsersByName(@Path("name") name: String): Response<MutableList<User>>
+
     @GET("user/contacts")
     suspend fun getContactsOther(): Response<MutableList<User>>
 
