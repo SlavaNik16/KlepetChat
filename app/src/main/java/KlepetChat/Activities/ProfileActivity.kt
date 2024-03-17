@@ -175,13 +175,14 @@ class ProfileActivity : ComponentActivity() {
         var isView = intent.extras?.getBoolean(Constants.KEY_PROFILE_VIEW)
         viewProfile(isView!!)
     }
-    private fun viewProfile(isView:Boolean){
-         binding?.inputMessageAboutMe?.isEnabled = !isView
-         binding?.imageUser?.isEnabled = !isView
-         binding?.editPhone?.isEnabled = !isView
-         binding?.editNickname?.isEnabled = !isView
-         binding?.editName?.isEnabled = !isView
-         binding?.butSend?.visibility = if(!isView) View.GONE else View.VISIBLE
+
+    private fun viewProfile(isView: Boolean) {
+        binding?.inputMessageAboutMe?.isEnabled = !isView
+        binding?.imageUser?.isEnabled = !isView
+        binding?.editPhone?.isEnabled = !isView
+        binding?.editNickname?.isEnabled = !isView
+        binding?.editName?.isEnabled = !isView
+        binding?.butSend?.visibility = if (!isView) View.GONE else View.VISIBLE
     }
 
 
@@ -222,12 +223,13 @@ class ProfileActivity : ComponentActivity() {
 
     private fun onSendMessage() {
         chatViewModel.getChatByPhone(user.phone,
-            object : ICoroutinesErrorHandler{
-            override fun onError(message: String) {
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
 
-            }
-        })
+                }
+            })
     }
+
     private fun AnyChatSend(api: ApiResponse<Chat>) {
         when (api) {
             is ApiResponse.Success -> {
@@ -244,7 +246,7 @@ class ProfileActivity : ComponentActivity() {
         }
     }
 
-    private fun navigateToContactInChat(chat: Chat){
+    private fun navigateToContactInChat(chat: Chat) {
         val intent = Intent(this@ProfileActivity, ChatContactActivity::class.java)
         intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
         intent.putExtra(Constants.KEY_CHAT_NAME, "${user.surname} ${user.name}")
@@ -253,7 +255,8 @@ class ProfileActivity : ComponentActivity() {
         startActivity(intent)
         finish()
     }
-    private fun navigateToContactInUser(){
+
+    private fun navigateToContactInUser() {
         val intent = Intent(this@ProfileActivity, ChatContactActivity::class.java)
         intent.putExtra(Constants.KEY_CHAT_NAME, user.name)
         intent.putExtra(Constants.KEY_IMAGE_URL, user.photo)

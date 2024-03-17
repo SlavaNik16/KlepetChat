@@ -70,20 +70,20 @@ class MainActivity : AppCompatActivity() {
         chatViewModel.chats.observe(this) { getChats(it) }
         userViewModel.user.observe(this) { getUser(it) }
         userDataViewModel.userData.observe(this) { validateUser(it) }
-        chatViewModel.exists.observe(this){ getAnswerCreate(it) }
+        chatViewModel.exists.observe(this) { getAnswerCreate(it) }
     }
 
     private fun getAnswerCreate(api: ApiResponse<Boolean>) {
         when (api) {
             is ApiResponse.Success -> {
-                Toast.makeText(this@MainActivity, "Чат успешно создан!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, "Чат успешно создан!", Toast.LENGTH_SHORT).show()
                 var intent = intent
                 finish()
                 startActivity(intent)
             }
 
             is ApiResponse.Failure -> {
-                var chat = chats.firstOrNull{ x->x.name == "Избранное"} ?: return
+                var chat = chats.firstOrNull { x -> x.name == "Избранное" } ?: return
                 navigateToFavorites(chat)
             }
 
@@ -293,20 +293,22 @@ class MainActivity : AppCompatActivity() {
         }
         return true
     }
-    private fun onHelp(){
+
+    private fun onHelp() {
         val browserIntent =
             Intent(Intent.ACTION_VIEW, Uri.parse("https://telegram.org/faq"))
         startActivity(browserIntent)
     }
-    private fun createFavorites(){
-        chatViewModel.postFavorites(user.id, object : ICoroutinesErrorHandler{
+
+    private fun createFavorites() {
+        chatViewModel.postFavorites(user.id, object : ICoroutinesErrorHandler {
             override fun onError(message: String) {
 
             }
         })
     }
 
-    private fun navigateToFavorites(chat: Chat){
+    private fun navigateToFavorites(chat: Chat) {
         val intent =
             Intent(this@MainActivity, ChatFavoritesActivity::class.java)
         intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
@@ -314,7 +316,8 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-    private fun navigateToContact(chat:Chat){
+
+    private fun navigateToContact(chat: Chat) {
         val intent = Intent(this@MainActivity, ChatContactActivity::class.java)
         intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
         intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
@@ -323,7 +326,8 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-    private fun navigateToGroup(chat:Chat){
+
+    private fun navigateToGroup(chat: Chat) {
         val intent = Intent(this@MainActivity, ChatGroupActivity::class.java)
         intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
         intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
@@ -369,7 +373,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onAddChat(isOpenGroup:Boolean = false) {
+    private fun onAddChat(isOpenGroup: Boolean = false) {
         val intent = Intent(this@MainActivity, ChooseActivity::class.java)
         intent.putExtra(Constants.KEY_IS_OPEN_GROUP, isOpenGroup)
         startActivity(intent)
@@ -378,8 +382,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateToProfile() {
         val intent = Intent(this@MainActivity, ProfileActivity::class.java)
-        intent.putExtra(Constants.KEY_PROFILE_VIEW,false)
-        intent.putExtra(Constants.KEY_USER_PHONE,user.phone)
+        intent.putExtra(Constants.KEY_PROFILE_VIEW, false)
+        intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
         startActivity(intent)
         finish()
     }

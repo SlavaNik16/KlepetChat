@@ -52,7 +52,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
     private var chatId: UUID? = null
     private var phone: String? = null
     private var file: File? = null
-    private var roleType: RoleTypes =RoleTypes.User
+    private var roleType: RoleTypes = RoleTypes.User
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -123,7 +123,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
                 var imageHttp = api.data.string()
                 putEditPhotoChat(imageHttp)
                 var activity = requireActivity()
-                if(activity is ChatGroupActivity){
+                if (activity is ChatGroupActivity) {
                     var chatGroupActivity = activity as ChatGroupActivity
                     chatGroupActivity.intent?.putExtra(Constants.KEY_IMAGE_URL, imageHttp)
                 }
@@ -175,9 +175,10 @@ class AlertDialogGroupChatProfile : DialogFragment() {
 
     private fun setListeners() {
         binding?.imageButtonBack?.setOnClickListener { onBackPress(alert!!) }
-        binding?.imageUser?.setOnClickListener {  onImageClick() }
+        binding?.imageUser?.setOnClickListener { onImageClick() }
         binding?.contactRecycler?.addOnChildAttachStateChangeListener(onRecyclerAttachState())
     }
+
     private fun onRecyclerAttachState(): RecyclerView.OnChildAttachStateChangeListener {
         return object : RecyclerView.OnChildAttachStateChangeListener {
 
@@ -196,8 +197,8 @@ class AlertDialogGroupChatProfile : DialogFragment() {
     }
 
     private fun onImageClick() {
-        if(roleType != RoleTypes.Admin) {
-            Toast.makeText(requireActivity(), "Недостаточно прав!!!",Toast.LENGTH_SHORT).show()
+        if (roleType != RoleTypes.Admin) {
+            Toast.makeText(requireActivity(), "Недостаточно прав!!!", Toast.LENGTH_SHORT).show()
             return
         }
         var photoPickerIntent =
@@ -212,7 +213,8 @@ class AlertDialogGroupChatProfile : DialogFragment() {
         getAction.unregister()
 
     }
-    private fun removeComponent(){
+
+    private fun removeComponent() {
         users = null
         file = null
         adapter = null
@@ -221,7 +223,8 @@ class AlertDialogGroupChatProfile : DialogFragment() {
         binding?.contactRecycler?.layoutManager = null
         binding?.contactRecycler?.recycledViewPool?.clear()
     }
-    private fun removeObserve(){
+
+    private fun removeObserve() {
         userViewModel = null
         imageViewModel = null
         chatViewModel = null
@@ -261,7 +264,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
                 }
                 binding?.imageUser?.setImageBitmap(bitmap)
                 var activity = requireActivity()
-                if(activity is ChatGroupActivity){
+                if (activity is ChatGroupActivity) {
                     var chatGroupActivity = activity as ChatGroupActivity
                     chatGroupActivity.binding?.imageChat?.setImageBitmap(bitmap)
                 }
@@ -291,18 +294,24 @@ class AlertDialogGroupChatProfile : DialogFragment() {
             requireActivity(), "Идет загрузка фото!", Toast.LENGTH_LONG
         ).show()
     }
+
     private fun navigateToProfile(user: User) {
         val intent = Intent(requireActivity(), ProfileActivity::class.java)
-        intent.putExtra(Constants.KEY_PROFILE_VIEW,user.phone != phone)
-        intent.putExtra(Constants.KEY_USER_PHONE,user.phone)
+        intent.putExtra(Constants.KEY_PROFILE_VIEW, user.phone != phone)
+        intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
         startActivity(intent)
     }
 
 
-
     companion object {
         @JvmStatic
-        fun newInstance(id: UUID,ph:String, title: String, role:RoleTypes = RoleTypes.User, photo: String? = "Empty") =
+        fun newInstance(
+            id: UUID,
+            ph: String,
+            title: String,
+            role: RoleTypes = RoleTypes.User,
+            photo: String? = "Empty",
+        ) =
             AlertDialogGroupChatProfile().apply {
                 arguments = Bundle().apply {
                     chatId = id

@@ -36,6 +36,7 @@ interface IChatService {
 
     @POST("chat/join/{id}")
     suspend fun postJoinGroup(@Path("id") id: UUID): Response<Chat>
+
     @POST("chat/leave/{id}")
     suspend fun postLeaveGroup(@Path("id") id: UUID): Response<Boolean>
 

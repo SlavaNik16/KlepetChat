@@ -23,7 +23,7 @@ class UserRepository @Inject constructor(
         userService.getContactsOther()
     }
 
-    fun getAllUserByChatId(chatId:UUID) = ApiRequestFlowResponse {
+    fun getAllUserByChatId(chatId: UUID) = ApiRequestFlowResponse {
         userService.getAllUserByChatId(chatId)
     }
 

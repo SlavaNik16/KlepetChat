@@ -81,9 +81,9 @@ class ChatGroupActivity : AppCompatActivity() {
         binding?.txtName?.text = txtName
 
         var roleTypeStr = argument.getString(Constants.KEY_USER_ROLE).toString()
-        roleType = when(roleTypeStr){
+        roleType = when (roleTypeStr) {
             RoleTypes.User.name -> RoleTypes.User
-            RoleTypes.Admin.name ->  RoleTypes.Admin
+            RoleTypes.Admin.name -> RoleTypes.Admin
             else -> RoleTypes.User
         }
 
@@ -101,13 +101,14 @@ class ChatGroupActivity : AppCompatActivity() {
     private fun setListeners() {
         binding?.back?.setOnClickListener { onBackPress() }
         binding?.butMenu?.setOnClickListener { onMenuPress() }
-        binding?.groupProfile?.setOnClickListener{ onProfileGroup() }
+        binding?.groupProfile?.setOnClickListener { onProfileGroup() }
     }
 
     private fun onProfileGroup() {
         var image = intent?.extras?.getString(Constants.KEY_IMAGE_URL)
         val alertDialogGroupChatProfile = AlertDialogGroupChatProfile.newInstance(
-            chatId!!, phone!!, binding?.txtName?.text.toString(), roleType, image)
+            chatId!!, phone!!, binding?.txtName?.text.toString(), roleType, image
+        )
         alertDialogGroupChatProfile.show(supportFragmentManager, "alertDialogGroupChatProfile")
 
     }
@@ -120,20 +121,23 @@ class ChatGroupActivity : AppCompatActivity() {
         popupMenu?.show()
     }
 
-    private fun isVisibleOnRoleType(){
-        when(roleType){
+    private fun isVisibleOnRoleType() {
+        when (roleType) {
             RoleTypes.User -> {
                 menuItem(true)
             }
-            RoleTypes.Admin ->{
+
+            RoleTypes.Admin -> {
                 menuItem(false)
             }
         }
     }
-    private fun menuItem(isTruth:Boolean){
+
+    private fun menuItem(isTruth: Boolean) {
         popupMenu!!.menu.findItem(R.id.nav_exit_from_chat).isVisible = isTruth
         popupMenu!!.menu.findItem(R.id.nav_delete).isVisible = !isTruth
     }
+
     private fun onMenuItemClick(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.nav_exit_from_chat -> {
@@ -147,7 +151,7 @@ class ChatGroupActivity : AppCompatActivity() {
         return true
     }
 
-    private fun exitFromChat(){
+    private fun exitFromChat() {
         chatViewModel.postLeaveGroup(chatId!!,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
@@ -156,6 +160,7 @@ class ChatGroupActivity : AppCompatActivity() {
             })
         onBackPress()
     }
+
     private fun deletedChat() {
         chatViewModel.deleteChat(chatId!!,
             object : ICoroutinesErrorHandler {
@@ -172,7 +177,8 @@ class ChatGroupActivity : AppCompatActivity() {
         binding?.groupProfile?.setOnClickListener(null)
         popupMenu?.setOnMenuItemClickListener(null)
     }
-    private fun removeComponent(){
+
+    private fun removeComponent() {
         popupMenu = null
         chatId = null
         phone = null

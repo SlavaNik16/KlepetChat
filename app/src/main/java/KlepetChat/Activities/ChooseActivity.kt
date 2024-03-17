@@ -154,6 +154,7 @@ class ChooseActivity : ComponentActivity() {
         binding?.butSearch?.setOnClickListener { setSearchUsers() }
         binding?.inputSearch?.addTextChangedListener(addTextSearchChange())
     }
+
     private fun addTextSearchChange(): TextWatcher {
         return object : TextChangedListener<EditText>(binding?.inputSearch!!) {
             private var timer = Timer()
@@ -181,6 +182,7 @@ class ChooseActivity : ComponentActivity() {
 
         }
     }
+
     private fun resultTextSearch() {
         isEdit = true
         userViewModel.getUsersByName(binding?.inputSearch?.text.toString(),
@@ -256,8 +258,10 @@ class ChooseActivity : ComponentActivity() {
         dialog.setPositiveButton("Создать",
             DialogInterface.OnClickListener { dialog: DialogInterface?, _ ->
                 if (dialogBinding?.groupField?.text.isNullOrBlank()) {
-                    Toast.makeText(this, "Имя не должно быть пустым!!!",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this, "Имя не должно быть пустым!!!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     return@OnClickListener
                 }
                 chatViewModel.postGroup(

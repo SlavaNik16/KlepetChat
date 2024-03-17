@@ -147,7 +147,8 @@ class ChatFragment : Fragment() {
         binding?.recyclerChat?.layoutManager = null
         binding?.recyclerChat?.recycledViewPool?.clear()
     }
-    private fun removeComponent(){
+
+    private fun removeComponent() {
         messages = null
         chatAdapter = null
         phone = null
@@ -159,8 +160,6 @@ class ChatFragment : Fragment() {
         removeComponent()
         binding = null
     }
-
-
 
 
     private fun getMessage(api: ApiResponse<Message>) {

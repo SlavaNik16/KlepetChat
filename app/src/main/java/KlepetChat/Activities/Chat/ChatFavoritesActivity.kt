@@ -114,6 +114,7 @@ class ChatFavoritesActivity : AppCompatActivity() {
         binding?.butMenu?.setOnClickListener(null)
         popupMenu?.setOnMenuItemClickListener(null)
     }
+
     private fun removeComponent() {
         popupMenu = null
         chatId = null

@@ -130,7 +130,7 @@ class ChatContactActivity : AppCompatActivity() {
         return true
     }
 
-    private fun deletedMessages(){
+    private fun deletedMessages() {
         messageViewModel.deleteMessages(chatId!!,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
@@ -140,6 +140,7 @@ class ChatContactActivity : AppCompatActivity() {
         finish()
         startActivity(intent)
     }
+
     private fun deletedChat() {
         chatViewModel.deleteChat(chatId!!,
             object : ICoroutinesErrorHandler {
@@ -162,6 +163,7 @@ class ChatContactActivity : AppCompatActivity() {
         popupMenu?.setOnMenuItemClickListener(null)
         popupMenu = null
     }
+
     private fun removeComponent() {
         popupMenu = null
         chatId = null

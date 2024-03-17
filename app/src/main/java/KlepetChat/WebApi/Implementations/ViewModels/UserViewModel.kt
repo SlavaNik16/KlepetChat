@@ -44,12 +44,14 @@ class UserViewModel @Inject constructor(
     ) {
         userRepository.getContactsOther()
     }
-    fun getAllUserByChatId(chatId: UUID, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
-        usersResponse,
-        coroutineErrorHandler
-    ) {
-        userRepository.getAllUserByChatId(chatId)
-    }
+
+    fun getAllUserByChatId(chatId: UUID, coroutineErrorHandler: ICoroutinesErrorHandler) =
+        BaseRequest(
+            usersResponse,
+            coroutineErrorHandler
+        ) {
+            userRepository.getAllUserByChatId(chatId)
+        }
 
     fun putFIO(fio: FIO, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         userResponse,
