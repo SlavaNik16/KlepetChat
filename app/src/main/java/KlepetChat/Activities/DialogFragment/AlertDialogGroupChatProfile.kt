@@ -2,31 +2,52 @@ package KlepetChat.Activities.DialogFragment
 
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.UserViewItemAdapter
+import KlepetChat.Image.ImageContainer
 import KlepetChat.WebApi.Implementations.ApiResponse
+import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.ImageViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
+import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.User
 import android.app.Dialog
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.AlertDialogGroupChatProfileBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import java.io.File
+import java.io.IOException
 import java.util.UUID
 
 @AndroidEntryPoint
 class AlertDialogGroupChatProfile : DialogFragment() {
     private var binding: AlertDialogGroupChatProfileBinding? = null
-    private val userViewModel: UserViewModel by activityViewModels()
     private var alert: AlertDialog? = null
-    private lateinit var adapter: RecyclerView.Adapter<UserViewItemAdapter.UserViewItemHolder>
-    private lateinit var users: MutableList<User>
-    private lateinit var chatId: UUID
+    private var userViewModel: UserViewModel? = null
+    private var imageViewModel: ImageViewModel? = null
+    private var chatViewModel: ChatViewModel? = null
+    private var adapter: RecyclerView.Adapter<UserViewItemAdapter.UserViewItemHolder>? = null
+    private var users: MutableList<User>? = null
+    private var chatId: UUID? = null
+    private var file: File? = null
+
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var alertDialog = AlertDialog.Builder(requireActivity())
         var view =
@@ -50,7 +71,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
     }
 
     private fun getAllUsers() {
-        userViewModel.getAllUserByChatId(chatId,
+        userViewModel?.getAllUserByChatId(chatId!!,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
@@ -59,14 +80,71 @@ class AlertDialogGroupChatProfile : DialogFragment() {
     }
 
     private fun setObserve() {
-        userViewModel.users.observe(this) { getUsers(it) }
+
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        userViewModel?.users?.observe(requireActivity()) { getUsers(it) }
+        imageViewModel = ViewModelProvider(this)[ImageViewModel::class.java]
+        imageViewModel?.img?.observe(requireActivity()) { getHttpImage(it) }
+        chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
+        chatViewModel?.chatImage?.observe(requireActivity()) { getChat(it) }
+    }
+
+    private fun getChat(api: ApiResponse<Chat>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                Toast.makeText(
+                    requireActivity(), "Фото успешно сохранено!", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    requireActivity(), "Ошибка! ${api.message}", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                return
+            }
+        }
+    }
+
+    private fun getHttpImage(api: ApiResponse<ResponseBody>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                var imageHttp = api.data.string()
+                putEditPhotoChat(imageHttp)
+                if (file?.exists() == true) {
+                    file?.delete()
+                }
+            }
+
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    requireActivity(), "Ошибка! ${api.message}", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                return
+            }
+        }
+    }
+
+    private fun putEditPhotoChat(photo: String?) {
+        chatViewModel?.putEditPhoto(chatId!!, photo,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
     }
 
     private fun getUsers(api: ApiResponse<MutableList<User>>) {
         when (api) {
             is ApiResponse.Success -> {
                 this.users = api.data
-                adapter = UserViewItemAdapter(users)
+                adapter = UserViewItemAdapter(users!!)
                 binding?.contactRecycler?.adapter = adapter
             }
 
@@ -84,10 +162,36 @@ class AlertDialogGroupChatProfile : DialogFragment() {
 
     private fun setListeners() {
         binding?.imageButtonBack?.setOnClickListener { onBackPress(alert!!) }
+        binding?.imageUser?.setOnClickListener { onImageClick() }
+    }
+
+    private fun onImageClick() {
+        var photoPickerIntent =
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        photoPickerIntent.setType("image/*")
+        getAction.launch(photoPickerIntent)
     }
 
     private fun removeListeners() {
         binding?.imageButtonBack?.setOnClickListener(null)
+        binding?.imageUser?.setOnClickListener(null)
+        getAction.unregister()
+
+    }
+    private fun removeComponent(){
+        users = null
+        file = null
+        adapter = null
+        chatId = null
+        binding?.contactRecycler?.adapter = null
+        binding?.contactRecycler?.layoutManager = null
+        binding?.contactRecycler?.recycledViewPool?.clear()
+    }
+    private fun removeObserve(){
+        userViewModel = null
+        imageViewModel = null
+        chatViewModel = null
+        this.viewModelStore.clear()
     }
 
     private fun onBackPress(alertDialog: AlertDialog) {
@@ -97,8 +201,56 @@ class AlertDialogGroupChatProfile : DialogFragment() {
     override fun onDestroy() {
         super.onDestroy()
         removeListeners()
+        removeComponent()
         alert = null
         binding = null
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        removeObserve()
+    }
+
+
+    private val getAction =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            var bitmap: Bitmap? = null
+            if (it.resultCode == ComponentActivity.RESULT_OK) {
+                val selectedImage = it?.data?.data
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(
+                        requireActivity().contentResolver,
+                        selectedImage
+                    )
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                binding?.imageUser?.setImageBitmap(bitmap)
+
+                val tempUri: Uri = ImageContainer.getImageUri(requireContext(), bitmap!!)
+                file = File(ImageContainer.getRealPathFromURI(requireActivity(), tempUri))
+                val requestFile =
+                    RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file!!)
+                val filePart =
+                    MultipartBody.Part.createFormData("file", file!!.name, requestFile)
+                postImg(filePart)
+
+            }
+        }
+
+    private fun postImg(file: MultipartBody.Part) {
+        imageViewModel?.postImg(file,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    Toast.makeText(
+                        requireActivity(), "Ошибка $message",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+        Toast.makeText(
+            requireActivity(), "Идет загрузка фото!", Toast.LENGTH_LONG
+        ).show()
     }
 
 

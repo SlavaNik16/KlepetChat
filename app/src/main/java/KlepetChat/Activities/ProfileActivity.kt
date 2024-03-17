@@ -1,6 +1,7 @@
 package KlepetChat.Activities
 
 import KlepetChat.DataSore.Models.UserData
+import KlepetChat.Image.ImageContainer
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.AuthViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.ImageViewModel
@@ -37,7 +38,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 
@@ -421,8 +421,8 @@ class ProfileActivity : ComponentActivity() {
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
-                val tempUri: Uri = getImageUri(applicationContext, bitmap!!)
-                file = File(getRealPathFromURI(tempUri))
+                val tempUri: Uri = ImageContainer.getImageUri(applicationContext, bitmap!!)
+                file = File(ImageContainer.getRealPathFromURI(this, tempUri))
                 val requestFile =
                     RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
                 val filePart =
@@ -443,26 +443,6 @@ class ProfileActivity : ComponentActivity() {
             })
     }
 
-    fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
-        val bytes = ByteArrayOutputStream()
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path =
-            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
-        return Uri.parse(path)
-    }
-
-    fun getRealPathFromURI(uri: Uri?): String {
-        val cursor = contentResolver.query(uri!!, null, null, null, null)
-        var largeImagePath = ""
-        try {
-            cursor!!.moveToFirst()
-            val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            largeImagePath = cursor.getString(idx)
-        } finally {
-            cursor?.close()
-        }
-        return largeImagePath
-    }
 
     private fun exitAuth() {
         userDataViewModel.ClearUserData()

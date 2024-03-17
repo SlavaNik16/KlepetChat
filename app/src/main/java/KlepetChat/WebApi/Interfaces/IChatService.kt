@@ -6,6 +6,7 @@ import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.UUID
@@ -34,6 +35,12 @@ interface IChatService {
     suspend fun postJoinGroup(@Path("id") id: UUID): Response<Chat>
     @POST("chat/leave/{id}")
     suspend fun postLeaveGroup(@Path("id") id: UUID): Response<Boolean>
+
+    @PUT("chat/photo")
+    suspend fun putEditPhoto(
+        @Query("id") id: UUID,
+        @Query("photo") photo: String?,
+    ): Response<Chat>
 
     @DELETE("chat/{id}")
     suspend fun deleteChat(@Path("id") id: UUID): Response<ResponseBody>

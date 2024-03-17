@@ -3,20 +3,19 @@ package KlepetChat.Activities
 import KlepetChat.Activities.Chat.ChatContactActivity
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.UserViewItemAdapter
+import KlepetChat.Image.ImageContainer
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.ImageViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.User
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.provider.MediaStore.Images
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -34,7 +33,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 
@@ -59,9 +57,10 @@ class ChooseActivity : ComponentActivity() {
         getContactsOther()
         init()
     }
-    private fun init(){
-        var isOpenGroup  = intent?.extras?.getBoolean(Constants.KEY_IS_OPEN_GROUP) ?: false
-        if(isOpenGroup){
+
+    private fun init() {
+        var isOpenGroup = intent?.extras?.getBoolean(Constants.KEY_IS_OPEN_GROUP) ?: false
+        if (isOpenGroup) {
             onAddGroup()
         }
     }
@@ -188,6 +187,8 @@ class ChooseActivity : ComponentActivity() {
         dialog.setPositiveButton("Создать",
             DialogInterface.OnClickListener { dialog: DialogInterface?, _ ->
                 if (dialogBinding?.groupField?.text.isNullOrBlank()) {
+                    Toast.makeText(this, "Имя не должно быть пустым!!!",
+                        Toast.LENGTH_SHORT).show()
                     return@OnClickListener
                 }
                 chatViewModel.postGroup(
@@ -225,8 +226,8 @@ class ChooseActivity : ComponentActivity() {
                 }
                 dialogBinding?.imageChat?.setImageBitmap(bitmap)
 
-                val tempUri: Uri = getImageUri(applicationContext, bitmap!!)
-                file = File(getRealPathFromURI(tempUri))
+                val tempUri: Uri = ImageContainer.getImageUri(applicationContext, bitmap!!)
+                file = File(ImageContainer.getRealPathFromURI(this, tempUri))
                 val requestFile =
                     RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
                 val filePart =
@@ -248,23 +249,4 @@ class ChooseActivity : ComponentActivity() {
             })
     }
 
-    fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
-        val bytes = ByteArrayOutputStream()
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
-        return Uri.parse(path)
-    }
-
-    fun getRealPathFromURI(uri: Uri?): String {
-        val cursor = contentResolver.query(uri!!, null, null, null, null)
-        var largeImagePath = ""
-        try {
-            cursor!!.moveToFirst()
-            val idx = cursor.getColumnIndex(Images.ImageColumns.DATA)
-            largeImagePath = cursor.getString(idx)
-        } finally {
-            cursor?.close()
-        }
-        return largeImagePath
-    }
 }

@@ -32,9 +32,15 @@ class ChatRepository @Inject constructor(
     fun postJoinGroup(id: UUID) = ApiRequestFlowResponse {
         chatService.postJoinGroup(id)
     }
+
     fun postLeaveGroup(id: UUID) = ApiRequestFlowResponse {
         chatService.postLeaveGroup(id)
     }
+
+    fun putEditPhoto(id: UUID, photo: String?) = ApiRequestFlowResponse {
+        chatService.putEditPhoto(id, photo)
+    }
+
     fun deleteChat(id: UUID) = ApiRequestFlowResponse {
         chatService.deleteChat(id)
     }
