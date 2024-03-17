@@ -28,12 +28,12 @@ import java.util.UUID
 
 @AndroidEntryPoint
 class ChatGroupActivity : AppCompatActivity() {
-    private var binding: ActivityChatGroupBinding? = null
+    var binding: ActivityChatGroupBinding? = null
 
     private val chatViewModel: ChatViewModel by viewModels()
 
     private lateinit var chatId: UUID
-    private lateinit var roleType: String
+    private lateinit var roleType: RoleTypes
 
     private lateinit var fragment: ChatFragment
     private var popupMenu: PopupMenu? = null
@@ -79,7 +79,12 @@ class ChatGroupActivity : AppCompatActivity() {
         val txtName = argument.getString(Constants.KEY_CHAT_NAME)
         binding?.txtName?.text = txtName
 
-        roleType = argument.getString(Constants.KEY_USER_ROLE).toString()
+        var roleTypeStr = argument.getString(Constants.KEY_USER_ROLE).toString()
+        roleType = when(roleTypeStr){
+            RoleTypes.User.name -> RoleTypes.User
+            RoleTypes.Admin.name ->  RoleTypes.Admin
+            else -> RoleTypes.User
+        }
 
         val imageChat = argument.getString(Constants.KEY_IMAGE_URL)
         if (!imageChat.isNullOrBlank()) {
@@ -101,8 +106,9 @@ class ChatGroupActivity : AppCompatActivity() {
     private fun onProfileGroup() {
         var image = intent?.extras?.getString(Constants.KEY_IMAGE_URL)
         val alertDialogGroupChatProfile = AlertDialogGroupChatProfile.newInstance(chatId,
-            binding?.txtName?.text.toString(), image)
+            binding?.txtName?.text.toString(), roleType, image)
         alertDialogGroupChatProfile.show(supportFragmentManager, "alertDialogGroupChatProfile")
+
     }
 
     private fun onMenuPress() {
@@ -115,10 +121,10 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private fun isVisibleOnRoleType(){
         when(roleType){
-            RoleTypes.User.name -> {
+            RoleTypes.User -> {
                 menuItem(true)
             }
-            RoleTypes.Admin.name ->{
+            RoleTypes.Admin ->{
                 menuItem(false)
             }
         }

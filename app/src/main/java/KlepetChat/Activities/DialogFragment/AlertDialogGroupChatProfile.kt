@@ -1,5 +1,6 @@
 package KlepetChat.Activities.DialogFragment
 
+import KlepetChat.Activities.Chat.ChatGroupActivity
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.UserViewItemAdapter
 import KlepetChat.Image.ImageContainer
@@ -9,6 +10,7 @@ import KlepetChat.WebApi.Implementations.ViewModels.ImageViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
+import KlepetChat.WebApi.Models.Response.Enums.RoleTypes
 import KlepetChat.WebApi.Models.Response.User
 import android.app.Dialog
 import android.content.Intent
@@ -16,6 +18,8 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -46,6 +50,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
     private var users: MutableList<User>? = null
     private var chatId: UUID? = null
     private var file: File? = null
+    private var roleType: RoleTypes =RoleTypes.User
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -92,6 +97,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
     private fun getChat(api: ApiResponse<Chat>) {
         when (api) {
             is ApiResponse.Success -> {
+
                 Toast.makeText(
                     requireActivity(), "Фото успешно сохранено!", Toast.LENGTH_SHORT
                 ).show()
@@ -162,10 +168,31 @@ class AlertDialogGroupChatProfile : DialogFragment() {
 
     private fun setListeners() {
         binding?.imageButtonBack?.setOnClickListener { onBackPress(alert!!) }
-        binding?.imageUser?.setOnClickListener { onImageClick() }
+        binding?.imageUser?.setOnClickListener {  onImageClick() }
+        binding?.contactRecycler?.addOnChildAttachStateChangeListener(onRecyclerAttachState())
+    }
+    private fun onRecyclerAttachState(): RecyclerView.OnChildAttachStateChangeListener {
+        return object : RecyclerView.OnChildAttachStateChangeListener {
+
+            override fun onChildViewAttachedToWindow(view: View) {
+                var position =
+                    binding?.contactRecycler?.findContainingViewHolder(view)!!.adapterPosition
+                view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
+                    Toast.makeText(requireActivity(), users?.get(position)?.name, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onChildViewDetachedFromWindow(view: View) {
+                return
+            }
+        }
     }
 
     private fun onImageClick() {
+        if(roleType != RoleTypes.Admin) {
+            Toast.makeText(requireActivity(), "Недостаточно прав!!!",Toast.LENGTH_SHORT).show()
+            return
+        }
         var photoPickerIntent =
             Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         photoPickerIntent.setType("image/*")
@@ -226,6 +253,11 @@ class AlertDialogGroupChatProfile : DialogFragment() {
                     e.printStackTrace()
                 }
                 binding?.imageUser?.setImageBitmap(bitmap)
+                var activity = requireActivity()
+                if(activity is ChatGroupActivity){
+                    var chatGroupActivity = activity as ChatGroupActivity
+                    chatGroupActivity.binding?.imageChat?.setImageBitmap(bitmap)
+                }
 
                 val tempUri: Uri = ImageContainer.getImageUri(requireContext(), bitmap!!)
                 file = File(ImageContainer.getRealPathFromURI(requireActivity(), tempUri))
@@ -254,9 +286,10 @@ class AlertDialogGroupChatProfile : DialogFragment() {
     }
 
 
+
     companion object {
         @JvmStatic
-        fun newInstance(id: UUID, title: String, photo: String? = "Empty") =
+        fun newInstance(id: UUID, title: String, role:RoleTypes = RoleTypes.User, photo: String? = "Empty") =
             AlertDialogGroupChatProfile().apply {
                 arguments = Bundle().apply {
                     chatId = id
@@ -266,6 +299,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
                         image = "Empty"
                     }
                     this.putString(Constants.KEY_IMAGE_URL, image)
+                    roleType = role
                 }
             }
 
