@@ -40,6 +40,14 @@ class ChatViewModel @Inject constructor(
         chatRepository.getChatsByName(name)
     }
 
+    fun getChatByPhone(phoneOther: String, coroutineErrorHandler: ICoroutinesErrorHandler) =
+        BaseRequest(
+            chatResponse,
+            coroutineErrorHandler
+        ) {
+            chatRepository.getChatByPhone(phoneOther)
+        }
+
     fun postFavorites(userId: UUID, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         chatExists,
         coroutineErrorHandler

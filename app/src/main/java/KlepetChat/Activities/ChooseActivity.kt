@@ -154,9 +154,9 @@ class ChooseActivity : ComponentActivity() {
                     var user = this@ChooseActivity.users[position]
                     val intent = Intent(this@ChooseActivity, ChatContactActivity::class.java)
                     intent.putExtra(Constants.KEY_USER_PHONE_OTHER, user.phone)
-                    intent.putExtra(Constants.KEY_CHAT_ID, Constants.GUID_NULL)
                     intent.putExtra(Constants.KEY_CHAT_NAME, user.name)
                     intent.putExtra(Constants.KEY_IMAGE_URL, user.photo)
+                    startActivity(intent)
                     startActivity(intent)
                     finish()
                 }

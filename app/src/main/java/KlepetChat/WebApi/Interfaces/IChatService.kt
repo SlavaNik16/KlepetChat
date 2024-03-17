@@ -19,6 +19,9 @@ interface IChatService {
     @GET("chat/{name}")
     suspend fun getChatsByName(@Path("name") name: String): Response<MutableList<Chat>>
 
+    @GET("chat/get/contact/{phoneOther}")
+    suspend fun getChatByPhone(@Path("phoneOther") phoneOther: String): Response<Chat>
+
     @POST("chat/favorites")
     suspend fun postFavorites(@Query("userId") userId: UUID): Response<Boolean>
 

@@ -347,7 +347,7 @@ class MainActivity : AppCompatActivity() {
                     binding?.recyclerChat?.findContainingViewHolder(view)!!.adapterPosition
                 view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
                     var chat = this@MainActivity.chats[position]
-                    var intent = when (chat.chatType) {
+                    when (chat.chatType) {
                         ChatTypes.Contact -> {
                             navigateToContact(chat)
                         }
@@ -378,6 +378,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateToProfile() {
         val intent = Intent(this@MainActivity, ProfileActivity::class.java)
+        intent.putExtra(Constants.KEY_PROFILE_VIEW,false)
+        intent.putExtra(Constants.KEY_USER_PHONE,user.phone)
         startActivity(intent)
         finish()
     }

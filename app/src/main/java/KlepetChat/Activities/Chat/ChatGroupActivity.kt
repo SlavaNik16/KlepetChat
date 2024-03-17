@@ -32,7 +32,8 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private val chatViewModel: ChatViewModel by viewModels()
 
-    private lateinit var chatId: UUID
+    private var chatId: UUID? = null
+    private var phone: String? = null
     private lateinit var roleType: RoleTypes
 
     private lateinit var fragment: ChatFragment
@@ -63,11 +64,11 @@ class ChatGroupActivity : AppCompatActivity() {
 
         val persons = argument?.getStringArrayList(Constants.KEY_CHAT_PEOPLE)
         binding?.textDesc?.text = "${persons?.count()} подписчик(-a)"
-        val phone = argument?.getString(Constants.KEY_USER_PHONE)
+        phone = argument?.getString(Constants.KEY_USER_PHONE)
         val chatIdStr = argument?.getString(Constants.KEY_CHAT_ID)
         chatId = UUID.fromString(chatIdStr)
         if (persons!!.contains(phone)) {
-            fragment = ChatFragment.newInstance(chatId, ChatTypes.Group)
+            fragment = ChatFragment.newInstance(chatId!!, ChatTypes.Group)
             fragmentInstance(fragment)
             binding?.butMenu?.visibility = View.VISIBLE
         } else {
@@ -105,8 +106,8 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private fun onProfileGroup() {
         var image = intent?.extras?.getString(Constants.KEY_IMAGE_URL)
-        val alertDialogGroupChatProfile = AlertDialogGroupChatProfile.newInstance(chatId,
-            binding?.txtName?.text.toString(), roleType, image)
+        val alertDialogGroupChatProfile = AlertDialogGroupChatProfile.newInstance(
+            chatId!!, phone!!, binding?.txtName?.text.toString(), roleType, image)
         alertDialogGroupChatProfile.show(supportFragmentManager, "alertDialogGroupChatProfile")
 
     }
@@ -147,7 +148,7 @@ class ChatGroupActivity : AppCompatActivity() {
     }
 
     private fun exitFromChat(){
-        chatViewModel.postLeaveGroup(chatId,
+        chatViewModel.postLeaveGroup(chatId!!,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
@@ -156,7 +157,7 @@ class ChatGroupActivity : AppCompatActivity() {
         onBackPress()
     }
     private fun deletedChat() {
-        chatViewModel.deleteChat(chatId,
+        chatViewModel.deleteChat(chatId!!,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
@@ -170,12 +171,17 @@ class ChatGroupActivity : AppCompatActivity() {
         binding?.butMenu?.setOnClickListener(null)
         binding?.groupProfile?.setOnClickListener(null)
         popupMenu?.setOnMenuItemClickListener(null)
+    }
+    private fun removeComponent(){
         popupMenu = null
+        chatId = null
+        phone = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
         removeListeners()
+        removeComponent()
         fragment.onDestroy()
         binding = null
     }
@@ -192,7 +198,7 @@ class ChatGroupActivity : AppCompatActivity() {
     }
 
     private fun onInitChat() {
-        chatViewModel.postJoinGroup(chatId,
+        chatViewModel.postJoinGroup(chatId!!,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
                     Toast.makeText(
@@ -206,7 +212,7 @@ class ChatGroupActivity : AppCompatActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 chatId = api.data.id
-                fragment.chatId = chatId
+                fragment.chatId = chatId!!
                 fragment.joinGroup()
                 binding?.butMenu?.visibility = View.VISIBLE
             }

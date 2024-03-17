@@ -17,6 +17,10 @@ class ChatRepository @Inject constructor(
         chatService.getChatsByName(name)
     }
 
+    fun getChatByPhone(phoneOther: String) = ApiRequestFlowResponse {
+        chatService.getChatByPhone(phoneOther)
+    }
+
     fun postFavorites(userId: UUID) = ApiRequestFlowResponse {
         chatService.postFavorites(userId)
     }

@@ -2,6 +2,7 @@ package KlepetChat.Activities.DialogFragment
 
 import KlepetChat.Activities.Chat.ChatGroupActivity
 import KlepetChat.Activities.Data.Constants
+import KlepetChat.Activities.ProfileActivity
 import KlepetChat.Adapters.UserViewItemAdapter
 import KlepetChat.Image.ImageContainer
 import KlepetChat.WebApi.Implementations.ApiResponse
@@ -49,6 +50,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
     private var adapter: RecyclerView.Adapter<UserViewItemAdapter.UserViewItemHolder>? = null
     private var users: MutableList<User>? = null
     private var chatId: UUID? = null
+    private var phone: String? = null
     private var file: File? = null
     private var roleType: RoleTypes =RoleTypes.User
 
@@ -178,7 +180,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
                 var position =
                     binding?.contactRecycler?.findContainingViewHolder(view)!!.adapterPosition
                 view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
-                    Toast.makeText(requireActivity(), users?.get(position)?.name, Toast.LENGTH_SHORT).show()
+                    navigateToProfile(users!!.get(position))
                 }
             }
 
@@ -284,15 +286,22 @@ class AlertDialogGroupChatProfile : DialogFragment() {
             requireActivity(), "Идет загрузка фото!", Toast.LENGTH_LONG
         ).show()
     }
+    private fun navigateToProfile(user: User) {
+        val intent = Intent(requireActivity(), ProfileActivity::class.java)
+        intent.putExtra(Constants.KEY_PROFILE_VIEW,user.phone != phone)
+        intent.putExtra(Constants.KEY_USER_PHONE,user.phone)
+        startActivity(intent)
+    }
 
 
 
     companion object {
         @JvmStatic
-        fun newInstance(id: UUID, title: String, role:RoleTypes = RoleTypes.User, photo: String? = "Empty") =
+        fun newInstance(id: UUID,ph:String, title: String, role:RoleTypes = RoleTypes.User, photo: String? = "Empty") =
             AlertDialogGroupChatProfile().apply {
                 arguments = Bundle().apply {
                     chatId = id
+                    phone = ph
                     this.putString(Constants.KEY_CHAT_NAME, title)
                     var image = photo
                     if (photo.isNullOrBlank()) {
