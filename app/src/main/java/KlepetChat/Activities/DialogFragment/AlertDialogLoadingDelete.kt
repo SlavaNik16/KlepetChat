@@ -3,11 +3,13 @@ package KlepetChat.Activities.DialogFragment
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.RoleTypes
 import android.app.Dialog
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
@@ -24,6 +26,7 @@ class AlertDialogLoadingDelete : DialogFragment() {
     private var binding: AlertDialogLoadingBinding? = null
     private var chatViewModel: ChatViewModel? = null
     private var messageViewModel: MessageViewModel? = null
+    private var userViewModel: UserViewModel? = null
     private var password: String? = null
     private var chats: MutableList<Chat>? = null
     private var index: Int = 0
@@ -33,15 +36,70 @@ class AlertDialogLoadingDelete : DialogFragment() {
         var dialog: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         dialog.setTitle("Удаление данных")
         dialog.setMessage("Внимание! Не выключайте экран!!!")
+        dialog.setCancelable(false)
         var view =
             layoutInflater.inflate(R.layout.alert_dialog_loading, null)
         binding = AlertDialogLoadingBinding.bind(view)
         dialog.setView(view)
         var alert = dialog.create()
+        alert.setCanceledOnTouchOutside(false)
         LoadingEdit(0, "Начинается удаление аккаунта")
+        setListeners()
         setObserve()
         getChats()
         return alert
+    }
+
+    private fun setListeners() {
+        binding?.butYes?.setOnClickListener { deleteAcc() }
+        binding?.butNo?.setOnClickListener { canselDeleteAcc() }
+    }
+    private fun setObserve() {
+        chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
+        chatViewModel?.chats?.observe(requireActivity()) { getChatsApi(it) }
+        chatViewModel?.deleteChat?.observe(requireActivity()) { deleteChatApi(it) }
+        chatViewModel?.exists?.observe(requireActivity()) { leaveGroupApi(it) }
+        messageViewModel = ViewModelProvider(this)[MessageViewModel::class.java]
+        messageViewModel?.exist?.observe(requireActivity()) { deleteMessageApi(it) }
+    }
+    private fun removeListeners() {
+        binding?.butYes?.setOnClickListener(null)
+        binding?.butNo?.setOnClickListener(null)
+    }
+
+    private fun removeComponent() {
+        password= null
+        chats = null
+    }
+
+    private fun removeObserve() {
+        userViewModel = null
+        messageViewModel = null
+        chatViewModel = null
+        this.viewModelStore.clear()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        removeListeners()
+        removeComponent()
+        binding = null
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        removeObserve()
+    }
+
+    private fun canselDeleteAcc() {
+        dismiss()
+    }
+
+    private fun deleteAcc() {
+        visibleButYesNo(false)
+    }
+    private fun visibleButYesNo(visible:Boolean){
+        binding?.butYesNo?.visibility = if(visible) View.VISIBLE else View.GONE
     }
 
     private fun LoadingEdit(percent: Int, text: String) {
@@ -85,14 +143,7 @@ class AlertDialogLoadingDelete : DialogFragment() {
     }
 
 
-    private fun setObserve() {
-        chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
-        chatViewModel?.chats?.observe(requireActivity()) { getChatsApi(it) }
-        chatViewModel?.deleteChat?.observe(requireActivity()) { deleteChatApi(it) }
-        chatViewModel?.exists?.observe(requireActivity()) { leaveGroupApi(it) }
-        messageViewModel = ViewModelProvider(this)[MessageViewModel::class.java]
-        messageViewModel?.exist?.observe(requireActivity()) { deleteMessageApi(it) }
-    }
+
 
     private fun getChatsApi(api: ApiResponse<MutableList<Chat>>) {
         when (api) {
@@ -136,7 +187,8 @@ class AlertDialogLoadingDelete : DialogFragment() {
 
     private fun deleteUser(){
         if(++index >= chats!!.count()){
-            LoadingEdit(80, "Удаление данных пользователя...")
+            LoadingEdit(binding?.loadingBar?.progress!!, "Вы точно уверены, что хотите удалить аккаунт!!!")
+            visibleButYesNo(true)
             return
         }
         var chat = chats?.get(index)
@@ -196,7 +248,7 @@ class AlertDialogLoadingDelete : DialogFragment() {
             deleteUser()
         }
         var i = binding?.loadingBar?.progress!!;
-        resultBar = (75 - i) / countChats
+        resultBar = (((75 - i) / countChats)/2)
         index = 0
         var chat = chats[index]
         deleteMessage(chat.id)
