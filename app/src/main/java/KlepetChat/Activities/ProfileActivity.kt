@@ -93,7 +93,7 @@ class ProfileActivity : AppCompatActivity() {
 
             is ApiResponse.Failure -> {
                 Toast.makeText(
-                    this@ProfileActivity, "${api.message}", Toast.LENGTH_SHORT
+                    this@ProfileActivity, "Вы ввели неверный пароль!!!", Toast.LENGTH_SHORT
                 ).show()
             }
 
