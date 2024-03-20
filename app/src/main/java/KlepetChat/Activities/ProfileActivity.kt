@@ -38,7 +38,6 @@ import com.example.klepetchat.databinding.ActivityProfileBinding
 import com.example.klepetchat.databinding.AlertDialogEditFioBinding
 import com.example.klepetchat.databinding.AlertDialogEditNicknameBinding
 import com.example.klepetchat.databinding.AlertDialogEditPhoneBinding
-import com.example.klepetchat.databinding.AlertDialogLoadingBinding
 import com.example.klepetchat.databinding.AlertDialogPasswordValidateBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,7 +54,6 @@ class ProfileActivity : AppCompatActivity() {
     private var bindingEditNickname: AlertDialogEditNicknameBinding? = null
     private var bindingEditPhone: AlertDialogEditPhoneBinding? = null
     private var bindingEditFIO: AlertDialogEditFioBinding? = null
-    private var bindingLoading: AlertDialogLoadingBinding? = null
     private val userDataViewModel: UserDataViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
