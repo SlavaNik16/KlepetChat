@@ -25,6 +25,7 @@ class UserViewModel @Inject constructor(
     val user = userResponse
     val userEditPhone = userPhoneResponse
     val users = usersResponse
+    val validate = validateResponse
 
     fun validateUser(password: String, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         validateResponse,

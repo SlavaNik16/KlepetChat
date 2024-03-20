@@ -2,6 +2,7 @@ package KlepetChat.Activities
 
 import KlepetChat.Activities.Chat.ChatContactActivity
 import KlepetChat.Activities.Data.Constants
+import KlepetChat.Activities.DialogFragment.AlertDialogLoadingDelete
 import KlepetChat.DataSore.Models.UserData
 import KlepetChat.Image.ImageContainer
 import KlepetChat.WebApi.Implementations.ApiResponse
@@ -28,15 +29,16 @@ import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityProfileBinding
 import com.example.klepetchat.databinding.AlertDialogEditFioBinding
 import com.example.klepetchat.databinding.AlertDialogEditNicknameBinding
 import com.example.klepetchat.databinding.AlertDialogEditPhoneBinding
+import com.example.klepetchat.databinding.AlertDialogLoadingBinding
 import com.example.klepetchat.databinding.AlertDialogPasswordValidateBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,12 +50,12 @@ import java.io.File
 import java.io.IOException
 
 @AndroidEntryPoint
-class ProfileActivity : ComponentActivity() {
+class ProfileActivity : AppCompatActivity() {
     private var binding: ActivityProfileBinding? = null
     private var bindingEditNickname: AlertDialogEditNicknameBinding? = null
     private var bindingEditPhone: AlertDialogEditPhoneBinding? = null
     private var bindingEditFIO: AlertDialogEditFioBinding? = null
-    private var bindingPassword: AlertDialogPasswordValidateBinding? = null
+    private var bindingLoading: AlertDialogLoadingBinding? = null
     private val userDataViewModel: UserDataViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
@@ -79,8 +81,27 @@ class ProfileActivity : ComponentActivity() {
         authViewModel.token.observe(this) { getAccessToken(it) }
         imageViewModel.img.observe(this) { getHttpImage(it) }
         chatViewModel.chat.observe(this) { AnyChatSend(it) }
+        userViewModel.validate.observe(this) { getValidate(it) }
     }
 
+
+    private fun getValidate(api: ApiResponse<ResponseBody>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                onLoadingDeleteAcc()
+            }
+
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    this@ProfileActivity, "${api.message}", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                return
+            }
+        }
+    }
     private fun getHttpImage(api: ApiResponse<ResponseBody>) {
         when (api) {
             is ApiResponse.Success -> {
@@ -226,31 +247,45 @@ class ProfileActivity : ComponentActivity() {
     }
 
     private fun onDeleteAcc() {
-//        var dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-//        var view =
-//            LayoutInflater.from(dialog.context).inflate(R.layout.alert_dialog_password_validate, null)
-//        bindingPassword = AlertDialogPasswordValidateBinding.bind(view)
-//        dialog.setView(view)
-//        dialog.setNegativeButton("Отменить",
-//            DialogInterface.OnClickListener { dialog: DialogInterface?, _ ->
-//                dialog?.dismiss()
-//            })
-//        dialog.setPositiveButton("Сохранить",
-//            DialogInterface.OnClickListener { dialog: DialogInterface?, _ ->
-//                if (bindingPassword?.passwordField?.text.isNullOrBlank()
-//                ) {
-//                    Toast.makeText(
-//                        this@ProfileActivity, "Фамилия и имя, не должны быть пустыми!!!",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    return@OnClickListener
-//                }
-//                putFIO(
-//                    bindingEditFIO?.surnameField?.text.toString(),
-//                    bindingEditFIO?.nameField?.text.toString()
-//                )
-//            })
-//        dialog.show()
+        var dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+        var view =
+            LayoutInflater.from(dialog.context).inflate(R.layout.alert_dialog_password_validate, null)
+        var bindingPassword = AlertDialogPasswordValidateBinding.bind(view)
+        dialog.setView(view)
+        dialog.setNegativeButton("Отменить",
+            DialogInterface.OnClickListener { dialog: DialogInterface?, _ ->
+                dialog?.dismiss()
+            })
+        dialog.setPositiveButton("Сохранить",
+            DialogInterface.OnClickListener { dialog: DialogInterface?, _ ->
+                if (bindingPassword.passwordField.length() < 8) {
+                    Toast.makeText(
+                        applicationContext, "Слишком маленький пароль (не меньше 8)",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@OnClickListener
+                }
+                password = bindingPassword.passwordField.text.toString()
+                getValidateUser(password)
+            })
+        dialog.show()
+    }
+
+    private fun onLoadingDeleteAcc() {
+        val alertDialogLoadingDelete =
+            AlertDialogLoadingDelete.newInstance( password)
+        alertDialogLoadingDelete.show(supportFragmentManager, "alertDialogLoadingDelete")
+    }
+
+
+
+    private fun getValidateUser(password: String){
+        userViewModel.validateUser(password,
+            object : ICoroutinesErrorHandler{
+                override fun onError(message: String) {
+
+                }
+            })
     }
 
     private fun onSendMessage() {
