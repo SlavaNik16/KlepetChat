@@ -12,4 +12,8 @@ class TokenRepository @Inject constructor(
         tokenService.postCreate(phone)
     }
 
+    fun deleteToken() = ApiRequestFlowResponse {
+        tokenService.deleteToken()
+    }
+
 }

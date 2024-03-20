@@ -54,4 +54,8 @@ class UserRepository @Inject constructor(
     fun postCreate(userRegister: UserRegister) = ApiRequestFlowResponse {
         userService.postCreate(userRegister)
     }
+
+    fun deleteUser(password: String) = ApiRequestFlowResponse {
+        userService.deleteUser(password)
+    }
 }

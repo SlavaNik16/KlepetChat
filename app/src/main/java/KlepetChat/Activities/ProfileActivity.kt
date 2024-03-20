@@ -273,7 +273,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun onLoadingDeleteAcc() {
         val alertDialogLoadingDelete =
-            AlertDialogLoadingDelete.newInstance( password)
+            AlertDialogLoadingDelete.newInstance( password, "${user.surname} ${user.name}")
         alertDialogLoadingDelete.show(supportFragmentManager, "alertDialogLoadingDelete")
     }
 

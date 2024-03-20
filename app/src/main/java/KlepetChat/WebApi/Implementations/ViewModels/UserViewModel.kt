@@ -107,5 +107,13 @@ class UserViewModel @Inject constructor(
             userRepository.postCreate(userRegister)
         }
 
+    fun deleteUser(password: String, coroutineErrorHandler: ICoroutinesErrorHandler) =
+        BaseRequest(
+            validateResponse,
+            coroutineErrorHandler
+        ) {
+            userRepository.deleteUser(password)
+        }
+
 
 }
