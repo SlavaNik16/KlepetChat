@@ -37,6 +37,7 @@ import com.example.klepetchat.databinding.ActivityProfileBinding
 import com.example.klepetchat.databinding.AlertDialogEditFioBinding
 import com.example.klepetchat.databinding.AlertDialogEditNicknameBinding
 import com.example.klepetchat.databinding.AlertDialogEditPhoneBinding
+import com.example.klepetchat.databinding.AlertDialogPasswordValidateBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -52,6 +53,7 @@ class ProfileActivity : ComponentActivity() {
     private var bindingEditNickname: AlertDialogEditNicknameBinding? = null
     private var bindingEditPhone: AlertDialogEditPhoneBinding? = null
     private var bindingEditFIO: AlertDialogEditFioBinding? = null
+    private var bindingPassword: AlertDialogPasswordValidateBinding? = null
     private val userDataViewModel: UserDataViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
@@ -183,6 +185,7 @@ class ProfileActivity : ComponentActivity() {
         binding?.editNickname?.isEnabled = !isView
         binding?.editName?.isEnabled = !isView
         binding?.butSend?.visibility = if (!isView) View.GONE else View.VISIBLE
+        binding?.butDeleteAcc?.visibility = if(isView) View.GONE else View.VISIBLE
     }
 
 
@@ -219,6 +222,35 @@ class ProfileActivity : ComponentActivity() {
         binding?.inputMessageAboutMe?.onFocusChangeListener = onChangeFocusAboutMe()
         binding?.form?.setOnClickListener { onClickForm() }
         binding?.butSend?.setOnClickListener { onSendMessage() }
+        binding?.butDeleteAcc?.setOnClickListener { onDeleteAcc() }
+    }
+
+    private fun onDeleteAcc() {
+//        var dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+//        var view =
+//            LayoutInflater.from(dialog.context).inflate(R.layout.alert_dialog_password_validate, null)
+//        bindingPassword = AlertDialogPasswordValidateBinding.bind(view)
+//        dialog.setView(view)
+//        dialog.setNegativeButton("Отменить",
+//            DialogInterface.OnClickListener { dialog: DialogInterface?, _ ->
+//                dialog?.dismiss()
+//            })
+//        dialog.setPositiveButton("Сохранить",
+//            DialogInterface.OnClickListener { dialog: DialogInterface?, _ ->
+//                if (bindingPassword?.passwordField?.text.isNullOrBlank()
+//                ) {
+//                    Toast.makeText(
+//                        this@ProfileActivity, "Фамилия и имя, не должны быть пустыми!!!",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    return@OnClickListener
+//                }
+//                putFIO(
+//                    bindingEditFIO?.surnameField?.text.toString(),
+//                    bindingEditFIO?.nameField?.text.toString()
+//                )
+//            })
+//        dialog.show()
     }
 
     private fun onSendMessage() {

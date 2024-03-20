@@ -11,6 +11,10 @@ import javax.inject.Inject
 class UserRepository @Inject constructor(
     private val userService: IUserService,
 ) {
+    fun validateUser(password: String) = ApiRequestFlowResponse {
+        userService.validateUser(password)
+    }
+
     fun getByPhone(phone: String) = ApiRequestFlowResponse {
         userService.getByPhone(phone)
     }
