@@ -2,6 +2,7 @@ package KlepetChat.Activities.DialogFragment
 
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.RoleTypes
@@ -14,13 +15,19 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.AlertDialogLoadingBinding
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.ResponseBody
+import java.util.UUID
 
 
 @AndroidEntryPoint
 class AlertDialogLoadingDelete : DialogFragment() {
     private var binding: AlertDialogLoadingBinding? = null
     private var chatViewModel: ChatViewModel? = null
+    private var messageViewModel: MessageViewModel? = null
     private var password: String? = null
+    private var chats: MutableList<Chat>? = null
+    private var index: Int = 0
+    private var resultBar: Int = 1
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var dialog: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
@@ -37,44 +44,57 @@ class AlertDialogLoadingDelete : DialogFragment() {
         return alert
     }
 
-    private fun LoadingEdit(percent:Int,  text:String){
-        binding?.loadingBar?.progress =percent
+    private fun LoadingEdit(percent: Int, text: String) {
+        binding?.loadingBar?.progress = percent
         binding?.loadingProc?.text = percent.toString()
         binding?.loadingText?.text = text
     }
-    private fun getChats(){
+
+    private fun getChats() {
         chatViewModel?.getChats(
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
-                    TODO("Not yet implemented")
+
                 }
             })
     }
-    /*
-    private fun deleteChat(chatId: UUID){
-        chatViewModel.deleteChat(chatId,
-            object : ICoroutinesErrorHandler{
+
+    private fun deleteChat(chatId: UUID) {
+        chatViewModel?.deleteChat(chatId,
+            object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
-                    TODO("Not yet implemented")
                 }
             })
     }
-    private fun deleteMessage(chatId: UUID){
-        messa.de(chatId,
-            object : ICoroutinesErrorHandler{
+
+    private fun leaveGroup(chatId: UUID) {
+        chatViewModel?.postLeaveGroup(chatId,
+            object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
-                    TODO("Not yet implemented")
+                }
+            })
+
+    }
+
+    private fun deleteMessage(chatId: UUID) {
+        messageViewModel?.deleteMessages(chatId,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
                 }
             })
     }
-    */
 
 
     private fun setObserve() {
         chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
         chatViewModel?.chats?.observe(requireActivity()) { getChatsApi(it) }
+        chatViewModel?.deleteChat?.observe(requireActivity()) { deleteChatApi(it) }
+        chatViewModel?.exists?.observe(requireActivity()) { leaveGroupApi(it) }
+        messageViewModel = ViewModelProvider(this)[MessageViewModel::class.java]
+        messageViewModel?.exist?.observe(requireActivity()) { deleteMessageApi(it) }
     }
-    private fun getChatsApi(api: ApiResponse<MutableList<Chat>>){
+
+    private fun getChatsApi(api: ApiResponse<MutableList<Chat>>) {
         when (api) {
             is ApiResponse.Success -> {
                 LoadingEdit(10, "Получение всех данных...")
@@ -92,27 +112,101 @@ class AlertDialogLoadingDelete : DialogFragment() {
             }
         }
     }
-    private fun deleteChats(chats:MutableList<Chat>){
-        var i = binding?.loadingBar?.progress!!;
-        var count = chats.count()
-        var result = (75 - i) / count
-        var text = String()
-        for (chat in chats){
-             i = binding?.loadingBar?.progress!!;
-            if(chat.roleType == RoleTypes.Admin){
-               text = "Удаление чата ${chat.name}..."
-            }else{
-                text = "Выход из чата ${chat.name}..."
+
+    private fun deleteChatApi(api: ApiResponse<ResponseBody>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                var i = binding?.loadingBar?.progress!!
+                LoadingEdit(i + resultBar, "Чат успешно удален!!!")
+                deleteUser()
             }
-            LoadingEdit(i + result, text)
-            Thread.sleep(1000)
+
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    requireActivity(), "${api.message}", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                var chat = chats?.get(index)
+                LoadingEdit(binding?.loadingBar?.progress!!, "Удаление чата ${chat!!.name}...")
+            }
         }
+    }
+
+    private fun deleteUser(){
+        if(++index >= chats!!.count()){
+            LoadingEdit(80, "Удаление данных пользователя...")
+            return
+        }
+        var chat = chats?.get(index)
+        deleteMessage(chat!!.id)
+    }
+    private fun leaveGroupApi(api: ApiResponse<Boolean>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                var i =binding?.loadingBar?.progress!!
+                LoadingEdit(i + resultBar, "Успешный выход из чата!!!")
+                deleteUser()
+            }
+
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    requireActivity(), "${api.message}", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                var chat = chats?.get(index)
+                LoadingEdit(binding?.loadingBar?.progress!!, "Выход из чата ${chat!!.name}...")
+            }
+        }
+    }
+
+    private fun deleteMessageApi(api: ApiResponse<ResponseBody>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                var i =binding?.loadingBar?.progress!!
+                var chat = chats?.get(index)
+                LoadingEdit(i + resultBar, "Все сообщения удалены!!!")
+                if (chat?.roleType == RoleTypes.Admin) {
+                    deleteChat(chat.id)
+                } else {
+                    leaveGroup(chat!!.id)
+                }
+            }
+
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    requireActivity(), "${api.message}", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                var chat = chats?.get(index)
+                LoadingEdit(binding?.loadingBar?.progress!!, "Удаление сообщений чата ${chat!!.name}...")
+            }
+        }
+    }
+
+    private fun deleteChats(chats: MutableList<Chat>) {
+        this.chats = chats
+        var countChats = chats.count()
+        if (countChats <= 0){
+            deleteUser()
+        }
+        var i = binding?.loadingBar?.progress!!;
+        resultBar = (75 - i) / countChats
+        index = 0
+        var chat = chats[index]
+        deleteMessage(chat.id)
+        return
     }
 
 
     companion object {
         @JvmStatic
-        fun newInstance(pas:String) =
+        fun newInstance(pas: String) =
             AlertDialogLoadingDelete().apply {
                 arguments = Bundle().apply {
                     password = pas
