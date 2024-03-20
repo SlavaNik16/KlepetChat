@@ -20,6 +20,7 @@ class MessageViewModel @Inject constructor(
     private val messagesResponseBody = MutableLiveData<ApiResponse<ResponseBody>>()
     val message = messageResponse
     val messages = messagesResponse
+    var exist = messagesResponseBody
 
 
     fun getMessagesWithChatId(chatId: UUID, coroutineErrorHandler: ICoroutinesErrorHandler) =
