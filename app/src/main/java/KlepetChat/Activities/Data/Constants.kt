@@ -21,6 +21,10 @@ class Constants {
         const val KEY_TAG_SEARCHOFF = "search_off"
 
         val GUID_NULL: UUID = UUID.fromString("00000000-0000-0000-0000-000000000000")
+
+        const val NOTIFICATION_ID = 99
+        const val CHANNEL_ID = "channel_id_const"
+        const val REQUEST_PERMISSION_POST_NOTIFICATION = 1
     }
 
 }
