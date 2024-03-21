@@ -44,7 +44,7 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
         var resourceTypeChat =
             when (chatViewItems[position].chatType) {
                 ChatTypes.Favorites -> {
-                    holder.binding?.imageChat?.setImageResource(R.drawable.favorites_icon)
+                    holder.binding?.imageChat?.setImageResource(R.drawable.ic_favorite)
                     R.drawable.ic_favourites
                 }
 

@@ -14,27 +14,29 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/dark_blue">
+        android:background="@color/white">
+
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/dark_blue"
+            android:background="@color/gray"
             android:orientation="horizontal"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/imageSearch"
-                android:tag="search"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="20dp"
-                android:src="@drawable/ic_search" />
+                android:src="@drawable/ic_search"
+                android:tag="search" />
 
             <EditText
                 android:id="@+id/inputSearch"
@@ -44,7 +46,6 @@
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/background_chat_input"
                 android:gravity="left"
-                android:visibility="gone"
                 android:hint="@string/search"
                 android:imeOptions="actionDone"
                 android:importantForAutofill="no"
@@ -52,15 +53,15 @@
                 android:paddingStart="1dp"
                 android:paddingEnd="1dp"
                 android:textAlignment="gravity"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:visibility="gone" />
         </androidx.appcompat.widget.Toolbar>
-
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerChat"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -94,6 +95,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:layout_marginTop="20dp"
-        app:menu="@menu/nav_menu"/>
+        android:visibility="visible"
+        app:menu="@menu/nav_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
