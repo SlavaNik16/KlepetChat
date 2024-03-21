@@ -61,14 +61,15 @@ class SignalRViewModel @Inject constructor(
         hubRepository.sendRegister(connectionId)
     }
 
-    fun sendNotification(
-        phone:String,
+    fun sendNotificationGroupContact(
+        phoneOther:String,
+        chatId: UUID,
         coroutineErrorHandler: ICoroutinesErrorHandler,
     ) = BaseRequest(
         hubResponse,
         coroutineErrorHandler
     ) {
-        hubRepository.sendNotification(phone)
+        hubRepository.sendNotificationGroupContact(phoneOther, chatId)
     }
 
     fun joinGroup(groupName: String){

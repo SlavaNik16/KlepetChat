@@ -68,12 +68,12 @@ class MainActivity : AppCompatActivity() {
         bindingHeader = NavHeaderBinding.bind(viewHeader)
         setContentView(binding?.root)
         CheckPermission()
+        registerNotification()
         signalRViewModel.getConnection().on("AnswerNotification", {
             runOnUiThread(Runnable {
-                registerNotification()
-                sendNotificationCreate()
+                sendNotificationCreate(it)
             })
-        },String::class.java)
+        },Chat::class.java)
 
         signalRViewModel.start()
         setListeners()
@@ -93,16 +93,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun registerNotification(){
-        notificationUtils?.registerNotification(user.phone)
+        notificationUtils?.registerNotification()
     }
-    private fun sendNotificationCreate(){
+    private fun sendNotificationCreate(chat:Chat){
         val intent = Intent(this, ProfileActivity::class.java).apply {
-            this.putExtra(Constants.KEY_PROFILE_VIEW, false)
-            this.putExtra(Constants.KEY_USER_PHONE, "89657683902")
+            this.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
+            this.putExtra(Constants.KEY_CHAT_NAME, chat.name)
+            this.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
+            this.putExtra(Constants.KEY_USER_PHONE_OTHER, chat.phones[0])
         }.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
-        notificationUtils?.sendNotificationCreate("Привет", "Мне захотелось тебе написать", pendingIntent)
+        notificationUtils?.sendNotificationCreate(chat.name + " написал тебе: ", chat.phones[0], pendingIntent)
     }
     private fun AddPermission(){
         ActivityCompat.requestPermissions(
@@ -125,7 +127,7 @@ class MainActivity : AppCompatActivity() {
                 if (grantResults.isNotEmpty()
                 && grantResults[0] === PackageManager.PERMISSION_GRANTED
             ) {
-                sendNotificationCreate()
+                Toast.makeText(this@MainActivity, "Уведомления включены!", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this@MainActivity, "Уведомления отключены!", Toast.LENGTH_SHORT).show()
             }

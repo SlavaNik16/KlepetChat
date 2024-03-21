@@ -29,8 +29,9 @@ interface IHubService {
     @POST("ChatHub/SendRegister/{connectionId}")
     suspend fun sendRegister(@Path("connectionId") connectionId:String): Response<ResponseBody>
 
-    @POST("ChatHub/SendNotification")
-    suspend fun sendNotification(
-        @Query("phone") phone: String
+    @POST("ChatHub/SendNotificationGroupContact")
+    suspend fun sendNotificationGroupContact(
+        @Query("phoneOther") phoneOther: String,
+        @Query("chatId") chatId: UUID,
     ): Response<ResponseBody>
 }

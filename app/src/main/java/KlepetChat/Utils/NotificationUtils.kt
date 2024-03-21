@@ -34,7 +34,7 @@ class NotificationUtils {
         notifications = HashMap<Int, Notification>()
     }
     
-    fun registerNotification(CHANNEL_NAME:String){
+    fun registerNotification(CHANNEL_NAME:String? = "test_channel_name"){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(Constants.CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
             manager?.createNotificationChannel(channel)
