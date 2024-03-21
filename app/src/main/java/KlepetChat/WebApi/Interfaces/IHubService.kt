@@ -33,5 +33,6 @@ interface IHubService {
     suspend fun sendNotificationGroupContact(
         @Query("phoneOther") phoneOther: String,
         @Query("chatId") chatId: UUID,
+        @Query("message") message: String
     ): Response<ResponseBody>
 }

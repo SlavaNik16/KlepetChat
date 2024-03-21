@@ -48,10 +48,12 @@ class ChatContactActivity : AppCompatActivity() {
         init()
 
     }
-    fun signalNotification(signalRViewModel: SignalRViewModel){
+
+    fun signalNotification(signalRViewModel: SignalRViewModel, message:String){
         signalRViewModel.sendNotificationGroupContact(
             phoneOther!!,
             chatId!!,
+            message,
             object : ICoroutinesErrorHandler{
                 override fun onError(message: String) {
 

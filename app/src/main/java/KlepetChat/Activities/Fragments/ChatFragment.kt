@@ -76,7 +76,7 @@ class ChatFragment : Fragment() {
                 if(chatType == ChatTypes.Contact){
                     if(requireActivity() is ChatContactActivity) {
                         var chatContact = requireActivity() as ChatContactActivity
-                        chatContact.signalNotification(signalRViewModel)
+                        chatContact.signalNotification(signalRViewModel, it.text)
                     }
                 }
             })

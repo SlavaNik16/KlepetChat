@@ -22,7 +22,6 @@
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-
                   <value value="C:\Users\ÐÐ¸ÐºÐ¾Ð»Ð°ÐµÐ² ÐÑÑÐµÑÐ»Ð°Ð²\.android\avd\Medium_Phone_API_33.avd" />
                 </Key>
               </deviceKey>
@@ -37,7 +36,6 @@
               </deviceKey>
             </Target>
           </runningDeviceTargetsSelectedWithDialog>
-
         </State>
       </entry>
     </value>
