@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         notificationUtils?.registerNotification()
     }
     private fun sendNotificationCreate(chat:Chat){
-        val intent = Intent(this, ProfileActivity::class.java).apply {
+        val intent = Intent(this, ChatContactActivity::class.java).apply {
             this.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
             this.putExtra(Constants.KEY_CHAT_NAME, chat.name)
             this.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
