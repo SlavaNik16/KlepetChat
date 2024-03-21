@@ -1,3 +1,4 @@
+
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.ChatAdapter
 import KlepetChat.DataSore.Models.UserData
@@ -9,6 +10,7 @@ import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.Message
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +18,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.klepetchat.databinding.FragmentChatBinding
+import com.vanniktech.emoji.EmojiPopup
 import java.util.UUID
-
-
 class ChatFragment : Fragment() {
 
     var binding: FragmentChatBinding? = null
@@ -32,6 +33,7 @@ class ChatFragment : Fragment() {
     private var phone: String? = null
     private var messages: MutableList<Message>? = null
     private var chatAdapter: ChatAdapter? = null
+    private var emojiPopup: EmojiPopup? = null
 
     private lateinit var initChat: () -> Unit
 
@@ -40,6 +42,7 @@ class ChatFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentChatBinding.inflate(inflater)
+        emojiPopup = EmojiPopup.Builder.fromRootView(binding?.root).build(binding!!.inputMessage);
         setListeners()
         setObserve()
         return binding!!.root
@@ -91,7 +94,17 @@ class ChatFragment : Fragment() {
     private fun setListeners() {
         binding?.sendMessage?.setOnClickListener { onSendMessage() }
         binding?.buttonInitChat?.setOnClickListener { initChat() }
-        binding?.sendEmoticon?.setOnClickListener { }
+        binding?.sendEmoticon?.setOnClickListener { sendEmotionAction() }
+    }
+
+    private fun sendEmotionAction(){
+        Log.d("Em", emojiPopup?.isShowing.toString())
+        if(emojiPopup?.isShowing == true){
+            emojiPopup?.dismiss()
+            return
+        }
+        emojiPopup?.toggle()
+
     }
 
 
@@ -152,6 +165,7 @@ class ChatFragment : Fragment() {
         messages = null
         chatAdapter = null
         phone = null
+        emojiPopup = null
     }
 
     override fun onDestroy() {
