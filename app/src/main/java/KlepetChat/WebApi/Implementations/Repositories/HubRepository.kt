@@ -20,4 +20,12 @@ class HubRepository @Inject constructor(
     fun sendMessage(chatId: UUID, message: String, groupName: String) = ApiRequestFlowResponse {
         hubService.sendMessage(chatId, message, groupName)
     }
+
+    fun sendRegister(connectionId:String) = ApiRequestFlowResponse {
+        hubService.sendRegister(connectionId)
+    }
+
+    fun sendNotification(phone:String) = ApiRequestFlowResponse {
+        hubService.sendNotification(phone)
+    }
 }

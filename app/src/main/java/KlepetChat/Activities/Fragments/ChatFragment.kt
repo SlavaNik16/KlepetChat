@@ -1,4 +1,5 @@
 
+import KlepetChat.Activities.Chat.ChatContactActivity
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.ChatAdapter
 import KlepetChat.DataSore.Models.UserData
@@ -72,6 +73,12 @@ class ChatFragment : Fragment() {
         requireActivity()
             .runOnUiThread(Runnable {
                 EventUpdateMessages(it)
+                if(chatType == ChatTypes.Contact){
+                    if(requireActivity() is ChatContactActivity) {
+                        var chatContact = requireActivity() as ChatContactActivity
+                        chatContact.signalNotification(signalRViewModel)
+                    }
+                }
             })
     }
 
@@ -85,7 +92,7 @@ class ChatFragment : Fragment() {
 
     fun joinGroup() {
         if (chatType != ChatTypes.Favorites) {
-            signalRViewModel.start(chatId.toString())
+            signalRViewModel.joinGroup(chatId.toString())
         }
         binding?.buttonInitChat?.visibility = View.GONE
         getMessages(chatId)
@@ -246,7 +253,7 @@ class ChatFragment : Fragment() {
     }
 
     fun leaveGroup() {
-        signalRViewModel.close(chatId.toString())
+        signalRViewModel.leaveGroup(chatId.toString())
     }
 
 
@@ -269,6 +276,5 @@ class ChatFragment : Fragment() {
                     putString(Constants.KEY_CHAT_ID, Constants.GUID_NULL.toString())
                 }
             }
-
     }
 }

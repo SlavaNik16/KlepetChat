@@ -9,6 +9,7 @@ import KlepetChat.DataSore.Models.UserData
 import KlepetChat.Utils.TextChangedListener
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
@@ -44,7 +45,7 @@ import java.util.TimerTask
 class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
     private var bindingHeader: NavHeaderBinding? = null
-
+    private val signalRViewModel: SignalRViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val userDataViewModel: UserDataViewModel by viewModels()
     private val chatViewModel: ChatViewModel by viewModels()
@@ -60,6 +61,12 @@ class MainActivity : AppCompatActivity() {
         var viewHeader = binding?.navigationView!!.inflateHeaderView(R.layout.nav_header)
         bindingHeader = NavHeaderBinding.bind(viewHeader)
         setContentView(binding?.root)
+        signalRViewModel.getConnection().on("AnswerNotification", {
+            runOnUiThread(Runnable {
+                Toast.makeText(this, "AnswerNotification: " + it, Toast.LENGTH_LONG).show()
+            })
+        },String::class.java)
+        signalRViewModel.start()
         setListeners()
         setObserve()
         initDrawLayout()

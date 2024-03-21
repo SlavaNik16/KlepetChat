@@ -51,13 +51,55 @@ class SignalRViewModel @Inject constructor(
         hubRepository.sendMessage(chatId, message, groupName)
     }
 
-    fun start(groupName: String) {
+    fun sendRegister(
+        connectionId:String,
+        coroutineErrorHandler: ICoroutinesErrorHandler,
+    ) = BaseRequest(
+        hubResponse,
+        coroutineErrorHandler
+    ) {
+        hubRepository.sendRegister(connectionId)
+    }
+
+    fun sendNotification(
+        phone:String,
+        coroutineErrorHandler: ICoroutinesErrorHandler,
+    ) = BaseRequest(
+        hubResponse,
+        coroutineErrorHandler
+    ) {
+        hubRepository.sendNotification(phone)
+    }
+
+    fun joinGroup(groupName: String){
+        joinGroup(
+            hubConnection.connectionId.toString(),
+            groupName,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+    }
+
+    fun leaveGroup(groupName: String){
+        leaveGroup(
+            hubConnection.connectionId.toString(),
+            groupName,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+    }
+
+
+    fun start() {
         try {
             if (hubConnection.connectionState == HubConnectionState.DISCONNECTED) {
                 hubConnection.start().blockingAwait()
-                joinGroup(
-                    hubConnection.connectionId.toString(),
-                    groupName,
+                sendRegister(
+                    hubConnection.connectionId,
                     object : ICoroutinesErrorHandler {
                         override fun onError(message: String) {
 
@@ -72,14 +114,6 @@ class SignalRViewModel @Inject constructor(
     fun close(groupName: String) {
         try {
             if (hubConnection.connectionState != HubConnectionState.DISCONNECTED) {
-                leaveGroup(
-                    hubConnection.connectionId.toString(),
-                    groupName,
-                    object : ICoroutinesErrorHandler {
-                        override fun onError(message: String) {
-
-                        }
-                    })
                 hubConnection.stop().blockingAwait()
             }
         } catch (ex: Exception) {

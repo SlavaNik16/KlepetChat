@@ -25,4 +25,12 @@ interface IHubService {
         @Query("chatId") chatId: UUID, @Query("message") message: String,
         @Query("groupName") groupName: String,
     ): Response<ResponseBody>
+
+    @POST("ChatHub/SendRegister/{connectionId}")
+    suspend fun sendRegister(@Path("connectionId") connectionId:String): Response<ResponseBody>
+
+    @POST("ChatHub/SendNotification")
+    suspend fun sendNotification(
+        @Query("phone") phone: String
+    ): Response<ResponseBody>
 }
