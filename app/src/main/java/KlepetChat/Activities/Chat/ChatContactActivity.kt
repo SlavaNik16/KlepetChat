@@ -48,6 +48,7 @@ class ChatContactActivity : AppCompatActivity() {
         init()
 
     }
+
     fun signalNotification(signalRViewModel: SignalRViewModel, message:String){
         signalRViewModel.sendNotificationGroupContact(
             phoneOther!!,
