@@ -13,9 +13,7 @@
         android:id="@+id/cardViewProfile"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:rotation="-26"
         android:scrollbarSize="5dp"
-        android:backgroundTint="@color/white"
         app:cardCornerRadius="60dp"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutЗPhone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +26,6 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/Empty"
             android:padding="25dp"
-            android:rotation="26"
             android:scaleType="centerCrop"
             android:scrollbarSize="2dp"
             android:src="@drawable/ic_logo"
@@ -103,8 +100,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/butEnter"
-        android:layout_width="298dp"
-        android:layout_height="70dp"
+        android:layout_width="290dp"
+        android:layout_height="60dp"
         android:layout_marginStart="110dp"
         android:layout_marginEnd="110dp"
         android:layout_marginBottom="156dp"
