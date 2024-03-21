@@ -6,17 +6,22 @@ import KlepetChat.Activities.Chat.ChatGroupActivity
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.ChatViewItemAdapter
 import KlepetChat.DataSore.Models.UserData
+import KlepetChat.Utils.NotificationUtils
 import KlepetChat.Utils.TextChangedListener
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.User
+import android.Manifest
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -30,6 +35,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityMainBinding
@@ -44,26 +50,88 @@ import java.util.TimerTask
 class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
     private var bindingHeader: NavHeaderBinding? = null
-
+    private val signalRViewModel: SignalRViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val userDataViewModel: UserDataViewModel by viewModels()
     private val chatViewModel: ChatViewModel by viewModels()
     private lateinit var adapter: RecyclerView.Adapter<ChatViewItemAdapter.ChatViewItemHolder>
-
     private var isEdit = false
     private lateinit var chats: MutableList<Chat>
     private lateinit var user: User
+    private var notificationUtils:NotificationUtils? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         var viewHeader = binding?.navigationView!!.inflateHeaderView(R.layout.nav_header)
+        notificationUtils = NotificationUtils().getInstance(this)
         bindingHeader = NavHeaderBinding.bind(viewHeader)
         setContentView(binding?.root)
+        CheckPermission()
+        registerNotification()
+        signalRViewModel.getConnection().on("AnswerNotification", {
+            runOnUiThread(Runnable {
+                sendNotificationCreate(it)
+            })
+        },Chat::class.java)
+
+        signalRViewModel.start()
         setListeners()
         setObserve()
         initDrawLayout()
         loading(true)
+    }
+
+    private fun CheckPermission(){
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            AddPermission()
+            return
+        }
+    }
+    private fun registerNotification(){
+        notificationUtils?.registerNotification()
+    }
+    private fun sendNotificationCreate(chat:Chat){
+        val intent = Intent(this, ProfileActivity::class.java).apply {
+            this.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
+            this.putExtra(Constants.KEY_CHAT_NAME, chat.name)
+            this.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
+            this.putExtra(Constants.KEY_USER_PHONE_OTHER, chat.phones[0])
+        }.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        notificationUtils?.sendNotificationCreate(chat.name + " написал тебе: ", chat.phones[0], pendingIntent)
+    }
+    private fun AddPermission(){
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf<String>(
+                Manifest.permission.POST_NOTIFICATIONS
+            ),
+            Constants.REQUEST_PERMISSION_POST_NOTIFICATION
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            Constants.REQUEST_PERMISSION_POST_NOTIFICATION ->
+                if (grantResults.isNotEmpty()
+                && grantResults[0] === PackageManager.PERMISSION_GRANTED
+            ) {
+                Toast.makeText(this@MainActivity, "Уведомления включены!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this@MainActivity, "Уведомления отключены!", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setObserve() {

@@ -6,6 +6,7 @@ import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
@@ -46,6 +47,16 @@ class ChatContactActivity : AppCompatActivity() {
         setObserve()
         init()
 
+    }
+    fun signalNotification(signalRViewModel: SignalRViewModel){
+        signalRViewModel.sendNotificationGroupContact(
+            phoneOther!!,
+            chatId!!,
+            object : ICoroutinesErrorHandler{
+                override fun onError(message: String) {
+
+                }
+            })
     }
 
     private fun setObserve() {

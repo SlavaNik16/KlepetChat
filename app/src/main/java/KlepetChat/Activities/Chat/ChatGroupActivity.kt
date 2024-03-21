@@ -6,6 +6,7 @@ import KlepetChat.Activities.DialogFragment.AlertDialogGroupChatProfile
 import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
@@ -31,6 +32,7 @@ class ChatGroupActivity : AppCompatActivity() {
     var binding: ActivityChatGroupBinding? = null
 
     private val chatViewModel: ChatViewModel by viewModels()
+    private val messageViewModel: MessageViewModel by viewModels()
 
     private var chatId: UUID? = null
     private var phone: String? = null
@@ -50,6 +52,7 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private fun setObserve() {
         chatViewModel.chat.observe(this) { getChat(it) }
+        messageViewModel.exist.observe(this) { deletedChat() }
     }
 
     private fun fragmentInstance(f: Fragment) {
@@ -145,7 +148,8 @@ class ChatGroupActivity : AppCompatActivity() {
             }
 
             R.id.nav_delete -> {
-                deletedChat()
+                deletedMessage()
+
             }
         }
         return true
@@ -161,6 +165,14 @@ class ChatGroupActivity : AppCompatActivity() {
         onBackPress()
     }
 
+    private fun deletedMessage(){
+        messageViewModel.deleteMessages(chatId!!,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+    }
     private fun deletedChat() {
         chatViewModel.deleteChat(chatId!!,
             object : ICoroutinesErrorHandler {

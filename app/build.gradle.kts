@@ -53,6 +53,8 @@ android {
 }
 
 dependencies {
+    implementation("com.vanniktech:emoji-google:0.7.0")
+
     implementation("com.microsoft.signalr:signalr:5.0.10")
     implementation("org.slf4j:slf4j-jdk14:1.7.25")
 

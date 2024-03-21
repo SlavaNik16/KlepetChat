@@ -10,6 +10,7 @@ import KlepetChat.WebApi.Models.Request.UserRegister
 import KlepetChat.WebApi.Models.Response.User
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import okhttp3.ResponseBody
 import java.util.UUID
 import javax.inject.Inject
 
@@ -20,9 +21,19 @@ class UserViewModel @Inject constructor(
     private val userResponse = MutableLiveData<ApiResponse<User>>()
     private val userPhoneResponse = MutableLiveData<ApiResponse<User>>()
     private val usersResponse = MutableLiveData<ApiResponse<MutableList<User>>>()
+    private val validateResponse = MutableLiveData<ApiResponse<ResponseBody>>()
     val user = userResponse
     val userEditPhone = userPhoneResponse
     val users = usersResponse
+    val validate = validateResponse
+
+    fun validateUser(password: String, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+        validateResponse,
+        coroutineErrorHandler
+    ) {
+        userRepository.validateUser(password)
+    }
+
     fun getByPhone(phone: String, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         userResponse,
         coroutineErrorHandler
@@ -94,6 +105,14 @@ class UserViewModel @Inject constructor(
             coroutineErrorHandler
         ) {
             userRepository.postCreate(userRegister)
+        }
+
+    fun deleteUser(password: String, coroutineErrorHandler: ICoroutinesErrorHandler) =
+        BaseRequest(
+            validateResponse,
+            coroutineErrorHandler
+        ) {
+            userRepository.deleteUser(password)
         }
 
 

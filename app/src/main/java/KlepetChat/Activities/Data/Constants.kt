@@ -4,6 +4,7 @@ import java.util.UUID
 
 class Constants {
     companion object {
+
         const val KEY_PROFILE_VIEW = "profile_view"
         const val KEY_USER_ROLE = "user_role"
         const val KEY_IS_OPEN_GROUP = "is_open_group"
@@ -20,6 +21,10 @@ class Constants {
         const val KEY_TAG_SEARCHOFF = "search_off"
 
         val GUID_NULL: UUID = UUID.fromString("00000000-0000-0000-0000-000000000000")
+
+        const val NOTIFICATION_ID = 99
+        const val CHANNEL_ID = "channel_id_const"
+        const val REQUEST_PERMISSION_POST_NOTIFICATION = 1
     }
 
 }

@@ -1,3 +1,5 @@
+
+import KlepetChat.Activities.Chat.ChatContactActivity
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.ChatAdapter
 import KlepetChat.DataSore.Models.UserData
@@ -9,6 +11,7 @@ import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.Message
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +19,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.klepetchat.databinding.FragmentChatBinding
+import com.vanniktech.emoji.EmojiPopup
 import java.util.UUID
-
-
 class ChatFragment : Fragment() {
 
     var binding: FragmentChatBinding? = null
@@ -32,6 +34,7 @@ class ChatFragment : Fragment() {
     private var phone: String? = null
     private var messages: MutableList<Message>? = null
     private var chatAdapter: ChatAdapter? = null
+    private var emojiPopup: EmojiPopup? = null
 
     private lateinit var initChat: () -> Unit
 
@@ -40,6 +43,7 @@ class ChatFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentChatBinding.inflate(inflater)
+        emojiPopup = EmojiPopup.Builder.fromRootView(binding?.root).build(binding!!.inputMessage);
         setListeners()
         setObserve()
         return binding!!.root
@@ -69,6 +73,12 @@ class ChatFragment : Fragment() {
         requireActivity()
             .runOnUiThread(Runnable {
                 EventUpdateMessages(it)
+                if(chatType == ChatTypes.Contact){
+                    if(requireActivity() is ChatContactActivity) {
+                        var chatContact = requireActivity() as ChatContactActivity
+                        chatContact.signalNotification(signalRViewModel)
+                    }
+                }
             })
     }
 
@@ -82,7 +92,7 @@ class ChatFragment : Fragment() {
 
     fun joinGroup() {
         if (chatType != ChatTypes.Favorites) {
-            signalRViewModel.start(chatId.toString())
+            signalRViewModel.joinGroup(chatId.toString())
         }
         binding?.buttonInitChat?.visibility = View.GONE
         getMessages(chatId)
@@ -91,7 +101,17 @@ class ChatFragment : Fragment() {
     private fun setListeners() {
         binding?.sendMessage?.setOnClickListener { onSendMessage() }
         binding?.buttonInitChat?.setOnClickListener { initChat() }
-        binding?.sendEmoticon?.setOnClickListener { }
+        binding?.sendEmoticon?.setOnClickListener { sendEmotionAction() }
+    }
+
+    private fun sendEmotionAction(){
+        Log.d("Em", emojiPopup?.isShowing.toString())
+        if(emojiPopup?.isShowing == true){
+            emojiPopup?.dismiss()
+            return
+        }
+        emojiPopup?.toggle()
+
     }
 
 
@@ -152,6 +172,7 @@ class ChatFragment : Fragment() {
         messages = null
         chatAdapter = null
         phone = null
+        emojiPopup = null
     }
 
     override fun onDestroy() {
@@ -232,7 +253,7 @@ class ChatFragment : Fragment() {
     }
 
     fun leaveGroup() {
-        signalRViewModel.close(chatId.toString())
+        signalRViewModel.leaveGroup(chatId.toString())
     }
 
 
@@ -255,6 +276,5 @@ class ChatFragment : Fragment() {
                     putString(Constants.KEY_CHAT_ID, Constants.GUID_NULL.toString())
                 }
             }
-
     }
 }

@@ -37,7 +37,6 @@ class SingletonModule {
         val URL_BASE = "http://klepetapi.somee.com/"
         val URL_IMG = "http://upload-soft.photolab.me/"
         val URL_SIGNALR = "http://klepetapi.somee.com/ch"
-        val URL_SIGNALR_CONTROLLER = "http://klepetapi.somee.com/ch"
     }
 
     @Singleton

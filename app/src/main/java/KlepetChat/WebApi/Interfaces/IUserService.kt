@@ -4,8 +4,10 @@ import KlepetChat.WebApi.Models.Request.FIO
 import KlepetChat.WebApi.Models.Request.Login
 import KlepetChat.WebApi.Models.Request.UserRegister
 import KlepetChat.WebApi.Models.Response.User
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -14,6 +16,9 @@ import retrofit2.http.Query
 import java.util.UUID
 
 interface IUserService {
+    @GET("user")
+    suspend fun validateUser(@Query("password") password: String): Response<ResponseBody>
+
     @GET("user/{phone}")
     suspend fun getByPhone(@Path("phone") phone: String): Response<User>
 
@@ -44,5 +49,7 @@ interface IUserService {
     @POST("user")
     suspend fun postCreate(@Body uerRegister: UserRegister): Response<User>
 
+    @DELETE("user")
+    suspend fun deleteUser(@Query("password") password: String): Response<ResponseBody>
 
 }

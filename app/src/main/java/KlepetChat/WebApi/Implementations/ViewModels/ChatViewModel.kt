@@ -25,6 +25,7 @@ class ChatViewModel @Inject constructor(
     val exists = chatExists
     val chat = chatResponse
     val chatImage = chatImageResponse
+    val deleteChat = chatBodyResponse
 
     fun getChats(coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         chatsResponse,
