@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         }.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
-        notificationUtils?.sendNotificationCreate(chat.name + " написал тебе: ", chat.phones[0], pendingIntent)
+        notificationUtils?.sendNotificationCreate(chat.name + " написал тебе: ", chat.lastMessage!!, pendingIntent)
     }
     private fun AddPermission(){
         ActivityCompat.requestPermissions(
