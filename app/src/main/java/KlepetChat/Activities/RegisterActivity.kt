@@ -38,10 +38,12 @@ class RegisterActivity : ComponentActivity() {
 
     private fun setListeners() {
         binding?.butReg?.setOnClickListener { onRegister() }
+        binding?.butBack?.setOnClickListener{navigateToAuthorization()}
     }
 
     private fun removeListeners() {
         binding?.butReg?.setOnClickListener(null)
+        binding?.butBack?.setOnClickListener(null)
     }
 
     private fun setObserve() {
