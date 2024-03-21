@@ -22,20 +22,40 @@
             android:layout_height="wrap_content"
             android:background="@color/dark_blue"
             android:orientation="horizontal"
-            android:theme = "@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/imageSearch"
+                android:tag="search"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/ic_search" />
+                android:src="@drawable/ic_search" />
 
+            <EditText
+                android:id="@+id/inputSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/background_chat_input"
+                android:gravity="left"
+                android:visibility="gone"
+                android:hint="@string/search"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:paddingStart="1dp"
+                android:paddingEnd="1dp"
+                android:textAlignment="gravity"
+                android:textColor="@color/black"/>
         </androidx.appcompat.widget.Toolbar>
+
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerChat"

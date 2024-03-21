@@ -11,19 +11,27 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.util.UUID
 
 interface IUserService {
     @GET("user/{phone}")
-    suspend fun getByPhone(@Path("phone") phone:String): Response<User>
+    suspend fun getByPhone(@Path("phone") phone: String): Response<User>
+
+    @GET("user/search/{name}")
+    suspend fun getUsersByName(@Path("name") name: String): Response<MutableList<User>>
 
     @GET("user/contacts")
-    suspend fun getContactsOther():Response<MutableList<User>>
+    suspend fun getContactsOther(): Response<MutableList<User>>
+
+    @GET("user/all/{chatId}")
+    suspend fun getAllUserByChatId(@Path("chatId") chatId: UUID): Response<MutableList<User>>
 
     @PUT("user/fio")
     suspend fun putFIO(@Body fio: FIO): Response<User>
 
     @PUT("user/aboutMe")
     suspend fun putAboutMe(@Query("aboutMe") aboutMe: String): Response<User>
+
     @PUT("user/nickname")
     suspend fun putNickname(@Query("nickname") nickname: String): Response<User>
 
@@ -34,7 +42,7 @@ interface IUserService {
     suspend fun putPhone(@Body login: Login): Response<User>
 
     @POST("user")
-    suspend fun postCreate(@Body uerRegister:UserRegister): Response<User>
+    suspend fun postCreate(@Body uerRegister: UserRegister): Response<User>
 
 
 }

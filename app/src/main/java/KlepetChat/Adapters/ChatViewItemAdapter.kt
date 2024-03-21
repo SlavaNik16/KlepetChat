@@ -2,7 +2,6 @@ package KlepetChat.Adapters
 
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +12,16 @@ import com.squareup.picasso.Picasso
 
 class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewItemHolder>() {
 
-    lateinit var context: Context
     lateinit var chatViewItems: MutableList<Chat>
 
-    constructor(context: Context, chatViewItems:MutableList<Chat>):this(){
-        this.context = context;
+    constructor(chatViewItems: MutableList<Chat>) : this() {
         this.chatViewItems = chatViewItems;
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewItemHolder {
-        var chatView: View = LayoutInflater.from(context).inflate(R.layout.chat_view_item, parent, false)
-        return  ChatViewItemHolder(chatView)
+        var chatView: View =
+            LayoutInflater.from(parent.context).inflate(R.layout.chat_view_item, parent, false)
+        return ChatViewItemHolder(chatView)
     }
 
     override fun getItemCount(): Int {
@@ -32,10 +31,10 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
     override fun onBindViewHolder(holder: ChatViewItemHolder, position: Int) {
         holder.binding?.textName?.text = chatViewItems[position].name
         holder.binding?.textDesc?.text = String()
-        if(!chatViewItems[position].lastMessage.isNullOrBlank()){
+        if (!chatViewItems[position].lastMessage.isNullOrBlank()) {
             holder.binding?.textDesc?.text = chatViewItems[position].lastMessage
         }
-        if(!chatViewItems[position].photo.isNullOrBlank()) {
+        if (!chatViewItems[position].photo.isNullOrBlank()) {
             Picasso.get()
                 .load(chatViewItems[position].photo)
                 .placeholder(R.drawable.baseline_account_circle_24)
@@ -43,11 +42,12 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
                 .into(holder.binding?.imageChat)
         }
         var resourceTypeChat =
-            when(chatViewItems[position].chatType){
+            when (chatViewItems[position].chatType) {
                 ChatTypes.Favorites -> {
                     holder.binding?.imageChat?.setImageResource(R.drawable.favorites_icon)
                     R.drawable.ic_favourites
                 }
+
                 ChatTypes.Contact -> R.drawable.ic_person_contact
                 ChatTypes.Group -> R.drawable.ic_add_groups
             }
@@ -55,9 +55,10 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
 
     }
 
-    class ChatViewItemHolder : RecyclerView.ViewHolder{
+    class ChatViewItemHolder : RecyclerView.ViewHolder {
         var binding: ChatViewItemBinding? = null
-        constructor(itemView: View):super(itemView){
+
+        constructor(itemView: View) : super(itemView) {
             binding = ChatViewItemBinding.bind(itemView)
         }
 

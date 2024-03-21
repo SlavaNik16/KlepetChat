@@ -15,23 +15,22 @@ import kotlinx.coroutines.withContext
  * Класс отлавливает и отображает ошибки в правильном потоке
  * И отменяет задание при необходимости
  */
-open class BaseViewModel : ViewModel(){
+open class BaseViewModel : ViewModel() {
     private var job: Job? = null
 
-    protected fun<T> BaseRequest
-    (
+    protected fun <T> BaseRequest(
         liveData: MutableLiveData<T>,
         errorHandler: ICoroutinesErrorHandler,
-        request: () -> Flow<T>
-    )
-    {
-        job = viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler {
-            _, error -> viewModelScope.launch(Dispatchers.Main) {
-                errorHandler.onError(error.localizedMessage ?:
-                "Произошла ошибка! Пожалуйста повторите снова.")
+        request: () -> Flow<T>,
+    ) {
+        job = viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, error ->
+            viewModelScope.launch(Dispatchers.Main) {
+                errorHandler.onError(
+                    error.localizedMessage ?: "Произошла ошибка! Пожалуйста повторите снова."
+                )
             }
         }) {
-            request().collect(){
+            request().collect() {
                 withContext(Dispatchers.Main) {
                     liveData.value = it
                 }
@@ -42,7 +41,7 @@ open class BaseViewModel : ViewModel(){
     override fun onCleared() {
         super.onCleared()
         job?.let {
-            if(it.isActive){
+            if (it.isActive) {
                 it.cancel()
             }
         }
