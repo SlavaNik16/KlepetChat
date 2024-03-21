@@ -26,7 +26,6 @@ import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.UUID
 
-
 @AndroidEntryPoint
 class ChatGroupActivity : AppCompatActivity() {
     var binding: ActivityChatGroupBinding? = null
