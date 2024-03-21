@@ -7,12 +7,11 @@
     tools:context="KlepetChat.Activities.Chat.ChatContactActivity">
 
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
-        android:layout_width="0dp"
-
-        android:layout_height="wrap_content"
+        android:layout_width="414dp"
+        android:layout_height="57dp"
+        android:background="#eef2e9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -30,30 +29,31 @@
                 android:id="@+id/imageView2"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_margin="20dp"
-                android:background="@drawable/ic_arrow_back" />
+                android:layout_margin="10dp"
+                android:background="@drawable/ic_back" />
         </LinearLayout>
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imageChat"
+            android:id="@+id/butMenu"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/baseline_account_circle_24"
-            app:civ_border_width="2dp"
-            app:civ_border_color="@color/black"
+
+
+            android:layout_marginStart="360dp"
+            android:src="@drawable/ic_chat_user"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/back"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toStartOf="@+id/back"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.444" />
 
         <LinearLayout
             android:id="@+id/linearLayout4"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_margin="10dp"
+            android:layout_width="94dp"
+            android:layout_height="51dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/butPhone"
-            app:layout_constraintStart_toEndOf="@+id/imageChat"
+            app:layout_constraintEnd_toStartOf="@+id/butMenu"
+            app:layout_constraintStart_toEndOf="@+id/back"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
@@ -63,7 +63,8 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="TextView"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textDesc"
@@ -71,7 +72,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="TextView"
-                android:textColor="@color/black" />
+                android:textColor="@color/gray" />
 
         </LinearLayout>
 
@@ -79,20 +80,12 @@
             android:id="@+id/butPhone"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/ic_phone"
+            android:layout_marginStart="244dp"
+            android:background="@drawable/ic_calling"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/butMenu"
+            app:layout_constraintStart_toEndOf="@+id/back"
             app:layout_constraintTop_toTopOf="parent" />
-        <ImageView
-            android:id="@+id/butMenu"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/ic_dots"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -102,7 +95,9 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
