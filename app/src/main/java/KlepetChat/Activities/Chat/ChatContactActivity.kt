@@ -49,7 +49,10 @@ class ChatContactActivity : AppCompatActivity() {
 
     }
 
-    fun signalNotification(signalRViewModel: SignalRViewModel, message:String){
+    fun signalNotification(signalRViewModel: SignalRViewModel, message:String, isSend:Boolean){
+        if(!isSend){
+            return
+        }
         signalRViewModel.sendNotificationGroupContact(
             phoneOther!!,
             chatId!!,
