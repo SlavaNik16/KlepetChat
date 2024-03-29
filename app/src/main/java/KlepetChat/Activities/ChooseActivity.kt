@@ -26,10 +26,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityChooseBinding
@@ -46,7 +46,7 @@ import java.util.TimerTask
 
 
 @AndroidEntryPoint
-class ChooseActivity : ComponentActivity() {
+class ChooseActivity : AppCompatActivity() {
     private var binding: ActivityChooseBinding? = null
     private var dialogBinding: AlertDialogCreateGroupBinding? = null
     private val userViewModel: UserViewModel by viewModels()
@@ -240,8 +240,8 @@ class ChooseActivity : ComponentActivity() {
     }
 
     private fun onBackPress() {
-        var intent = Intent(this@ChooseActivity, MainActivity::class.java)
-        startActivity(intent)
+//        var intent = Intent(this@ChooseActivity, MainActivity::class.java)
+//        startActivity(intent)
         finish()
     }
 

@@ -7,7 +7,6 @@ import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Request.Login
-import KlepetChat.WebApi.Models.Response.Enums.StatusTypes
 import KlepetChat.WebApi.Models.Response.Token
 import android.content.Intent
 import android.os.Bundle
@@ -104,18 +103,9 @@ class AuthorizationActivity : ComponentActivity() {
 
     private fun navigateToMain(userData: UserData?) {
         if (!userData?.accessToken.isNullOrBlank()) {
-            putStatus()
             var intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
-    }
-    private fun putStatus(){
-        userViewModel.putStatus(StatusTypes.Online,
-            object : ICoroutinesErrorHandler{
-                override fun onError(message: String) {
-
-                }
-            })
     }
 }

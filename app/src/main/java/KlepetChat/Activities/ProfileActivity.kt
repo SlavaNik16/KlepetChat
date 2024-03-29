@@ -528,8 +528,8 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-        var intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+//        var intent = Intent(this, MainActivity::class.java)
+//        startActivity(intent)
         finish()
     }
 

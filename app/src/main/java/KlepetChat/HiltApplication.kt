@@ -1,6 +1,6 @@
 package KlepetChat
 
-import KlepetChat.Activities.MyActivityLifecycleCallbacks
+import KlepetChat.Activities.ActivitiesCallbacks.MyActivityLifecycleCallbacks
 import android.app.Application
 import com.vanniktech.emoji.EmojiManager
 import com.vanniktech.emoji.google.GoogleEmojiProvider
