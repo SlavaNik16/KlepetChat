@@ -7,6 +7,7 @@ import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Request.FIO
 import KlepetChat.WebApi.Models.Request.Login
 import KlepetChat.WebApi.Models.Request.UserRegister
+import KlepetChat.WebApi.Models.Response.Enums.StatusTypes
 import KlepetChat.WebApi.Models.Response.User
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -90,6 +91,13 @@ class UserViewModel @Inject constructor(
         coroutineErrorHandler
     ) {
         userRepository.putPhoto(photo)
+    }
+
+    fun putStatus(status: StatusTypes, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+        userResponse,
+        coroutineErrorHandler
+    ) {
+        userRepository.putStatus(status)
     }
 
     fun putPhone(login: Login, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(

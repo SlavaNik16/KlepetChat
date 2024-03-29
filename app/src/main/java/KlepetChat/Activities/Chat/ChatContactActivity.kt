@@ -2,7 +2,6 @@ package KlepetChat.Activities.Chat
 
 import ChatFragment
 import KlepetChat.Activities.Data.Constants
-import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
@@ -202,8 +201,8 @@ class ChatContactActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-        var intent = Intent(this@ChatContactActivity, MainActivity::class.java)
-        startActivity(intent)
+//        var intent = Intent(this@ChatContactActivity, MainActivity::class.java)
+//        startActivity(intent)
         finish()
     }
 

@@ -193,7 +193,7 @@ class MainActivity : AppCompatActivity() {
 
             is ApiResponse.Failure -> {
                 Toast.makeText(
-                    this@MainActivity, "Ошибка! $api.message", Toast.LENGTH_SHORT
+                    this@MainActivity, "Ошибка! Повторите вход!!!", Toast.LENGTH_SHORT
                 ).show()
                 exitAuth()
             }
@@ -202,6 +202,11 @@ class MainActivity : AppCompatActivity() {
                 return
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getChats()
     }
 
     private fun getChats() {
@@ -381,7 +386,7 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
         intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
         startActivity(intent)
-        finish()
+        //finish()
     }
 
     private fun navigateToContact(chat: Chat) {
@@ -391,7 +396,7 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
         intent.putExtra(Constants.KEY_USER_PHONE_OTHER, chat.phones[0])
         startActivity(intent)
-        finish()
+        //finish()
     }
 
     private fun navigateToGroup(chat: Chat) {
@@ -407,7 +412,7 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
         intent.putExtra(Constants.KEY_USER_ROLE, chat.roleType.name)
         startActivity(intent)
-        finish()
+        //finish()
     }
 
     private fun onRecyclerAttachState(): RecyclerView.OnChildAttachStateChangeListener {
@@ -444,7 +449,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this@MainActivity, ChooseActivity::class.java)
         intent.putExtra(Constants.KEY_IS_OPEN_GROUP, isOpenGroup)
         startActivity(intent)
-        finish()
+        //finish()
     }
 
     private fun navigateToProfile() {
@@ -452,7 +457,7 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_PROFILE_VIEW, false)
         intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
         startActivity(intent)
-        finish()
+        //finish()
     }
 
     private fun initNavigationViewHeader(user: User) {

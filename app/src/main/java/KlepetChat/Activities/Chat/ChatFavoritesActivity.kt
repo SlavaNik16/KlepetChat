@@ -2,11 +2,9 @@ package KlepetChat.Activities.Chat
 
 import ChatFragment
 import KlepetChat.Activities.Data.Constants
-import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -130,8 +128,8 @@ class ChatFavoritesActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-        var intent = Intent(this@ChatFavoritesActivity, MainActivity::class.java)
-        startActivity(intent)
+//        var intent = Intent(this@ChatFavoritesActivity, MainActivity::class.java)
+//        startActivity(intent)
         finish()
     }
 

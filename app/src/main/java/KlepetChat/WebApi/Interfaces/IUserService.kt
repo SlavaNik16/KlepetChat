@@ -3,6 +3,7 @@ package KlepetChat.WebApi.Interfaces
 import KlepetChat.WebApi.Models.Request.FIO
 import KlepetChat.WebApi.Models.Request.Login
 import KlepetChat.WebApi.Models.Request.UserRegister
+import KlepetChat.WebApi.Models.Response.Enums.StatusTypes
 import KlepetChat.WebApi.Models.Response.User
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -42,6 +43,9 @@ interface IUserService {
 
     @PUT("user/photo")
     suspend fun putPhoto(@Query("photo") photo: String): Response<User>
+
+    @PUT("user/status")
+    suspend fun putStatus(@Query("statusTypes") status: StatusTypes): Response<User>
 
     @PUT("user/phone")
     suspend fun putPhone(@Body login: Login): Response<User>
