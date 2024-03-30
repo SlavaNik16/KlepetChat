@@ -1,6 +1,7 @@
 package KlepetChat.Activities.Chat
 
 import ChatFragment
+import KlepetChat.Activities.Chat.Interface.IChatInputMessage
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
@@ -10,7 +11,6 @@ import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
-import KlepetChat.WebApi.Models.Response.Enums.StatusTypes
 import KlepetChat.WebApi.Models.Response.User
 import android.content.Intent
 import android.net.Uri
@@ -26,11 +26,13 @@ import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityChatContactBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Timer
+import java.util.TimerTask
 import java.util.UUID
 
 
 @AndroidEntryPoint
-class ChatContactActivity : AppCompatActivity() {
+class ChatContactActivity : AppCompatActivity(),IChatInputMessage {
     private var binding: ActivityChatContactBinding? = null
 
     private val chatViewModel: ChatViewModel by viewModels()
@@ -49,6 +51,10 @@ class ChatContactActivity : AppCompatActivity() {
         setObserve()
         init()
 
+    }
+
+    override fun onEditText(text: String) {
+        binding?.textDesc?.text = text
     }
 
     fun signalNotification(signalRViewModel: SignalRViewModel, message:String, isSend:Boolean){
@@ -111,21 +117,92 @@ class ChatContactActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        fragment?.signalRViewModel?.getConnection()?.on("StatusUsers", { users ->
+        statusOnline()
+        statusOffline()
+        statusPrint()
+    }
+
+    private fun statusOnline(){
+        fragment?.signalRViewModel?.getConnection()?.on("StatusUsersOnline", {user->
             runOnUiThread(Runnable {
-                try {
-                    binding?.textDesc?.text = if (users[1].status == StatusTypes.Online) "В сети" else "Не в сети"
-                }catch (e:Exception){
-                    e.printStackTrace()
+                binding?.textDesc?.text = "В сети"
+            })
+        }, User::class.java)
+    }
+    private fun statusOffline(){
+        fragment?.signalRViewModel?.getConnection()?.on("StatusUsersOffline", {user->
+            runOnUiThread(Runnable {
+                binding?.textDesc?.text = "Не в сети"
+            })
+        }, User::class.java)
+    }
+
+    private fun statusPrint(){
+        fragment?.signalRViewModel?.getConnection()?.on("StatusPrint", {user, isStart->
+            runOnUiThread(Runnable {
+                if(user.phone == phoneOther){
+                    statisPrint = isStart
+                   animationUpload()
                 }
             })
+        }, User::class.java, Boolean::class.java)
+    }
 
-        }, mutableListOf<User>()::class.java)
+    private var statisPrint = false
+    private fun animationUpload(){
+        runOnUiThread {
+            if(!statisPrint){
+                binding?.textDesc?.text = "В сети"
+                return@runOnUiThread
+            }
+            var timer = Timer()
+            var Delay: Long = 230
+            var DelayThirst: Long = 700
+            timer.schedule(
+                object : TimerTask() {
+                    override fun run() {
+                        binding?.textDesc?.text = "печатает."
+                    }
+                },
+                Delay
+            )
+            timer.schedule(
+                object : TimerTask() {
+                    override fun run() {
+                        binding?.textDesc?.text = "печатает.."
+                    }
+                },
+                Delay * 2
+            )
+            timer.schedule(
+                object : TimerTask() {
+                    override fun run() {
+                        binding?.textDesc?.text = "печатает..."
+                    }
+                },
+                Delay * 3
+            )
+
+            timer.schedule(
+                object : TimerTask() {
+                    override fun run() {
+                        if(!statisPrint){
+                            binding?.textDesc?.text = "В сети"
+                            return
+                        }
+                       animationUpload()
+                    }
+                },
+                DelayThirst
+            )
+        }
     }
 
     override fun onStop() {
         super.onStop()
-        fragment?.signalRViewModel?.getConnection()?.remove("StatusUsers")
+        fragment?.signalRViewModel?.getConnection()?.remove("StatusUsersOnline")
+        fragment?.signalRViewModel?.getConnection()?.remove("StatusUsersOffline")
+        fragment?.signalRViewModel?.getConnection()?.remove("StatusPrint")
     }
 
     private fun setListeners() {

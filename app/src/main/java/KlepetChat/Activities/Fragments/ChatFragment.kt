@@ -3,6 +3,7 @@ import KlepetChat.Activities.Chat.ChatContactActivity
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.ChatAdapter
 import KlepetChat.DataSore.Models.UserData
+import KlepetChat.Utils.TextChangedListener
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
@@ -11,14 +12,19 @@ import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.Message
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.klepetchat.databinding.FragmentChatBinding
 import com.vanniktech.emoji.EmojiPopup
+import java.util.Timer
+import java.util.TimerTask
 import java.util.UUID
 class ChatFragment : Fragment() {
 
@@ -101,6 +107,58 @@ class ChatFragment : Fragment() {
         binding?.sendMessage?.setOnClickListener { onSendMessage() }
         binding?.buttonInitChat?.setOnClickListener { initChat() }
         binding?.sendEmoticon?.setOnClickListener { sendEmotionAction() }
+        binding?.inputMessage?.addTextChangedListener(addTextMessageChange())
+    }
+    private fun addTextMessageChange(): TextWatcher {
+        return object : TextChangedListener<EditText>(binding?.inputMessage!!) {
+            private var timer = Timer()
+            private val Delay: Long = 75
+            private val DelayThink: Long = 1400
+            private var isStart = false
+            override fun onTextChanged(target: EditText, s: Editable?) {
+                timer.cancel()
+                timer = Timer()
+                timer.schedule(
+                    object : TimerTask() {
+                        override fun run() {
+                            if(!isStart) {
+                                printStatusTrue()
+                                isStart = true
+                            }
+                        }
+                    },
+                    Delay
+                )
+                timer.schedule(
+                    object : TimerTask() {
+                        override fun run() {
+                            printStatusFalse()
+                            isStart = false
+                        }
+                    },
+                    DelayThink
+                )
+            }
+        }
+    }
+
+    private fun printStatusTrue(){
+        signalRViewModel.printGroup(
+            chatId.toString(), true,
+            object : ICoroutinesErrorHandler{
+                override fun onError(message: String) {
+
+                }
+            })
+    }
+    private fun printStatusFalse(){
+        signalRViewModel.printGroup(
+            chatId.toString(), false,
+            object : ICoroutinesErrorHandler{
+                override fun onError(message: String) {
+
+                }
+            })
     }
 
     private fun sendEmotionAction(){

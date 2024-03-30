@@ -73,13 +73,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding?.root)
         CheckPermission()
         registerNotification()
-        signalRViewModel.getConnection().on("AnswerNotification", {
-            runOnUiThread(Runnable {
-                sendNotificationCreate(it)
-            })
-        },Chat::class.java)
-
-        signalRViewModel.start()
         setListeners()
         setObserve()
         initDrawLayout()
@@ -209,6 +202,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        signalRViewModel.getConnection().on("AnswerNotification", {
+            runOnUiThread(Runnable {
+                sendNotificationCreate(it)
+            })
+        },Chat::class.java)
+        signalRViewModel.start()
+    }
     override fun onResume() {
         super.onResume()
         if(isGetChat) {
@@ -218,6 +220,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
+        signalRViewModel.getConnection().remove("AnswerNotification")
         isGetChat = true
     }
 

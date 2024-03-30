@@ -26,6 +26,13 @@ interface IHubService {
         @Query("groupName") groupName: String,
     ): Response<ResponseBody>
 
+    @POST("ChatHub/PrintGroup/{groupName}")
+    suspend fun printGroup(
+        @Path("groupName") groupName: String,
+        @Query("isStart") isStart: Boolean,
+    ): Response<ResponseBody>
+
+
     @POST("ChatHub/SendRegister/{connectionId}")
     suspend fun sendRegister(@Path("connectionId") connectionId:String): Response<ResponseBody>
 
