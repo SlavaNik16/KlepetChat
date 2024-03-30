@@ -1,7 +1,6 @@
 package KlepetChat.Activities.Chat
 
 import ChatFragment
-import KlepetChat.Activities.Chat.Interface.IChatInputMessage
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Activities.DialogFragment.AlertDialogGroupChatProfile
 import KlepetChat.Activities.MainActivity
@@ -30,7 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.UUID
 
 @AndroidEntryPoint
-class ChatGroupActivity : AppCompatActivity(),IChatInputMessage {
+class ChatGroupActivity : AppCompatActivity() {
     var binding: ActivityChatGroupBinding? = null
 
     private val chatViewModel: ChatViewModel by viewModels()
@@ -50,9 +49,6 @@ class ChatGroupActivity : AppCompatActivity(),IChatInputMessage {
         setListeners()
         setObserve()
         init()
-    }
-    override fun onEditText(text: String) {
-        binding?.textDesc?.text = text
     }
     override fun onStart() {
         super.onStart()

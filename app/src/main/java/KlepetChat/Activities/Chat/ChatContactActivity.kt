@@ -1,7 +1,6 @@
 package KlepetChat.Activities.Chat
 
 import ChatFragment
-import KlepetChat.Activities.Chat.Interface.IChatInputMessage
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
@@ -32,7 +31,7 @@ import java.util.UUID
 
 
 @AndroidEntryPoint
-class ChatContactActivity : AppCompatActivity(),IChatInputMessage {
+class ChatContactActivity : AppCompatActivity() {
     private var binding: ActivityChatContactBinding? = null
 
     private val chatViewModel: ChatViewModel by viewModels()
@@ -53,9 +52,6 @@ class ChatContactActivity : AppCompatActivity(),IChatInputMessage {
 
     }
 
-    override fun onEditText(text: String) {
-        binding?.textDesc?.text = text
-    }
 
     fun signalNotification(signalRViewModel: SignalRViewModel, message:String, isSend:Boolean){
         if(!isSend){
