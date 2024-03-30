@@ -13,5 +13,5 @@ data class User(
     var photo: String?,
     val aboutMe: String?,
     @SerializedName("status")
-    val status: StatusTypes
+    val status: StatusTypes,
 )

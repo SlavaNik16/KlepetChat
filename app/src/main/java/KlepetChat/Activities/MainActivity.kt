@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
     private var isEdit = false
     private lateinit var chats: MutableList<Chat>
     private lateinit var user: User
-    private var notificationUtils:NotificationUtils? = null
+    private var notificationUtils: NotificationUtils? = null
 
     private var isGetChat = false
 
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         loading(true)
     }
 
-    private fun CheckPermission(){
+    private fun CheckPermission() {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.POST_NOTIFICATIONS
@@ -89,10 +89,12 @@ class MainActivity : AppCompatActivity() {
             return
         }
     }
-    private fun registerNotification(){
+
+    private fun registerNotification() {
         notificationUtils?.registerNotification()
     }
-    private fun sendNotificationCreate(chat:Chat){
+
+    private fun sendNotificationCreate(chat: Chat) {
         val intent = Intent(this, ChatContactActivity::class.java).apply {
             this.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
             this.putExtra(Constants.KEY_CHAT_NAME, chat.name)
@@ -100,9 +102,14 @@ class MainActivity : AppCompatActivity() {
             this.putExtra(Constants.KEY_USER_PHONE_OTHER, chat.phones[0])
         }.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-        notificationUtils?.sendNotificationCreate(chat.name + " написал тебе: ", chat.lastMessage!!, pendingIntent)
+        notificationUtils?.sendNotificationCreate(
+            chat.name + " написал тебе: ",
+            chat.lastMessage!!,
+            pendingIntent
+        )
     }
-    private fun AddPermission(){
+
+    private fun AddPermission() {
         ActivityCompat.requestPermissions(
             this,
             arrayOf<String>(
@@ -121,12 +128,14 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             Constants.REQUEST_PERMISSION_POST_NOTIFICATION ->
                 if (grantResults.isNotEmpty()
-                && grantResults[0] === PackageManager.PERMISSION_GRANTED
-            ) {
-                Toast.makeText(this@MainActivity, "Уведомления включены!", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this@MainActivity, "Уведомления отключены!", Toast.LENGTH_SHORT).show()
-            }
+                    && grantResults[0] === PackageManager.PERMISSION_GRANTED
+                ) {
+                    Toast.makeText(this@MainActivity, "Уведомления включены!", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    Toast.makeText(this@MainActivity, "Уведомления отключены!", Toast.LENGTH_SHORT)
+                        .show()
+                }
         }
     }
 
@@ -186,7 +195,7 @@ class MainActivity : AppCompatActivity() {
                 user = api.data
                 initNavigationViewHeader(user)
                 getChats()
-                isGetChat =false
+                isGetChat = false
             }
 
             is ApiResponse.Failure -> {
@@ -208,12 +217,13 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread(Runnable {
                 sendNotificationCreate(it)
             })
-        },Chat::class.java)
+        }, Chat::class.java)
         signalRViewModel.start()
     }
+
     override fun onResume() {
         super.onResume()
-        if(isGetChat) {
+        if (isGetChat) {
             getChats()
         }
     }
@@ -503,12 +513,13 @@ class MainActivity : AppCompatActivity() {
         finish()
         userDataViewModel.ClearUserData()
     }
-    private fun putStatusOffline(){
+
+    private fun putStatusOffline() {
         userViewModel.putStatus(
             StatusTypes.Offline,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
-                    Log.d("Activity","Не поменял статус Offline")
+                    Log.d("Activity", "Не поменял статус Offline")
                 }
             })
     }

@@ -20,15 +20,17 @@ class HubRepository @Inject constructor(
     fun sendMessage(chatId: UUID, message: String, groupName: String) = ApiRequestFlowResponse {
         hubService.sendMessage(chatId, message, groupName)
     }
-    fun printGroup(groupName: String, isStart:Boolean) = ApiRequestFlowResponse {
-        hubService.printGroup(groupName,isStart)
+
+    fun printGroup(groupName: String, isStart: Boolean) = ApiRequestFlowResponse {
+        hubService.printGroup(groupName, isStart)
     }
 
-    fun sendRegister(connectionId:String) = ApiRequestFlowResponse {
+    fun sendRegister(connectionId: String) = ApiRequestFlowResponse {
         hubService.sendRegister(connectionId)
     }
 
-    fun sendNotificationGroupContact(phoneOther:String, chatId: UUID, message:String) = ApiRequestFlowResponse {
-        hubService.sendNotificationGroupContact(phoneOther,chatId, message)
-    }
+    fun sendNotificationGroupContact(phoneOther: String, chatId: UUID, message: String) =
+        ApiRequestFlowResponse {
+            hubService.sendNotificationGroupContact(phoneOther, chatId, message)
+        }
 }

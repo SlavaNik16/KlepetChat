@@ -53,15 +53,15 @@ class ChatContactActivity : AppCompatActivity() {
     }
 
 
-    fun signalNotification(signalRViewModel: SignalRViewModel, message:String, isSend:Boolean){
-        if(!isSend){
+    fun signalNotification(signalRViewModel: SignalRViewModel, message: String, isSend: Boolean) {
+        if (!isSend) {
             return
         }
         signalRViewModel.sendNotificationGroupContact(
             phoneOther!!,
             chatId!!,
             message,
-            object : ICoroutinesErrorHandler{
+            object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
                 }
@@ -118,36 +118,37 @@ class ChatContactActivity : AppCompatActivity() {
         statusPrint()
     }
 
-    private fun statusOnline(){
-        fragment?.signalRViewModel?.getConnection()?.on("StatusUsersOnline", {user->
+    private fun statusOnline() {
+        fragment?.signalRViewModel?.getConnection()?.on("StatusUsersOnline", { user ->
             runOnUiThread(Runnable {
                 binding?.textDesc?.text = "В сети"
             })
         }, User::class.java)
     }
-    private fun statusOffline(){
-        fragment?.signalRViewModel?.getConnection()?.on("StatusUsersOffline", {user->
+
+    private fun statusOffline() {
+        fragment?.signalRViewModel?.getConnection()?.on("StatusUsersOffline", { user ->
             runOnUiThread(Runnable {
                 binding?.textDesc?.text = "Не в сети"
             })
         }, User::class.java)
     }
 
-    private fun statusPrint(){
-        fragment?.signalRViewModel?.getConnection()?.on("StatusPrint", {user, isStart->
+    private fun statusPrint() {
+        fragment?.signalRViewModel?.getConnection()?.on("StatusPrint", { user, isStart ->
             runOnUiThread(Runnable {
-                if(user.phone == phoneOther){
+                if (user.phone == phoneOther) {
                     statisPrint = isStart
-                   animationUpload()
+                    animationUpload()
                 }
             })
         }, User::class.java, Boolean::class.java)
     }
 
     private var statisPrint = false
-    private fun animationUpload(){
+    private fun animationUpload() {
         runOnUiThread {
-            if(!statisPrint){
+            if (!statisPrint) {
                 binding?.textDesc?.text = "В сети"
                 return@runOnUiThread
             }
@@ -182,11 +183,11 @@ class ChatContactActivity : AppCompatActivity() {
             timer.schedule(
                 object : TimerTask() {
                     override fun run() {
-                        if(!statisPrint){
+                        if (!statisPrint) {
                             binding?.textDesc?.text = "В сети"
                             return
                         }
-                       animationUpload()
+                        animationUpload()
                     }
                 },
                 DelayThirst

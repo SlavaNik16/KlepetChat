@@ -36,10 +36,15 @@ class AuthorizationActivity : ComponentActivity() {
 
     private fun saveUserData(api: ApiResponse<Token>) {
         when (api) {
-            is ApiResponse.Failure -> Toast.makeText(this, api.message,
-                Toast.LENGTH_SHORT).show()
-            ApiResponse.Loading -> Toast.makeText(this,
-                "Пожалуйста подождите!", Toast.LENGTH_SHORT).show()
+            is ApiResponse.Failure -> Toast.makeText(
+                this, api.message,
+                Toast.LENGTH_SHORT
+            ).show()
+
+            ApiResponse.Loading -> Toast.makeText(
+                this,
+                "Пожалуйста подождите!", Toast.LENGTH_SHORT
+            ).show()
 
             is ApiResponse.Success -> {
                 userDataViewModel.SaveUserData(

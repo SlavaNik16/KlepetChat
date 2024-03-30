@@ -96,7 +96,7 @@ class AlertDialogLoadingDelete : DialogFragment() {
         messageViewModel = null
         chatViewModel = null
         tokenViewModel = null
-        userDataViewModel= null
+        userDataViewModel = null
         this.viewModelStore.clear()
     }
 
@@ -120,6 +120,7 @@ class AlertDialogLoadingDelete : DialogFragment() {
         visibleButYesNo(false)
         deleteUserAcc()
     }
+
     private fun deleteUserAcc() {
         userViewModel?.deleteUser(password!!,
             object : ICoroutinesErrorHandler {
@@ -135,7 +136,6 @@ class AlertDialogLoadingDelete : DialogFragment() {
                 }
             })
     }
-
 
 
     private fun visibleButYesNo(visible: Boolean) {

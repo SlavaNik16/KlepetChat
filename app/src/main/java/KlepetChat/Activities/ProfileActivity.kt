@@ -100,6 +100,7 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun getHttpImage(api: ApiResponse<ResponseBody>) {
         when (api) {
             is ApiResponse.Success -> {
@@ -204,7 +205,7 @@ class ProfileActivity : AppCompatActivity() {
         binding?.editNickname?.isEnabled = !isView
         binding?.editName?.isEnabled = !isView
         binding?.butSend?.visibility = if (!isView) View.GONE else View.VISIBLE
-        binding?.butDeleteAcc?.visibility = if(isView) View.GONE else View.VISIBLE
+        binding?.butDeleteAcc?.visibility = if (isView) View.GONE else View.VISIBLE
     }
 
 
@@ -247,7 +248,8 @@ class ProfileActivity : AppCompatActivity() {
     private fun onDeleteAcc() {
         var dialog: AlertDialog.Builder = AlertDialog.Builder(this)
         var view =
-            LayoutInflater.from(dialog.context).inflate(R.layout.alert_dialog_password_validate, null)
+            LayoutInflater.from(dialog.context)
+                .inflate(R.layout.alert_dialog_password_validate, null)
         var bindingPassword = AlertDialogPasswordValidateBinding.bind(view)
         dialog.setView(view)
         dialog.setNegativeButton("Отменить",
@@ -271,15 +273,14 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun onLoadingDeleteAcc() {
         val alertDialogLoadingDelete =
-            AlertDialogLoadingDelete.newInstance( password, "${user.surname} ${user.name}")
+            AlertDialogLoadingDelete.newInstance(password, "${user.surname} ${user.name}")
         alertDialogLoadingDelete.show(supportFragmentManager, "alertDialogLoadingDelete")
     }
 
 
-
-    private fun getValidateUser(password: String){
+    private fun getValidateUser(password: String) {
         userViewModel.validateUser(password,
-            object : ICoroutinesErrorHandler{
+            object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
                 }

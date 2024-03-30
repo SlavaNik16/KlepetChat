@@ -52,7 +52,7 @@ class SignalRViewModel @Inject constructor(
     }
 
     fun sendRegister(
-        connectionId:String,
+        connectionId: String,
         coroutineErrorHandler: ICoroutinesErrorHandler,
     ) = BaseRequest(
         hubResponse,
@@ -62,9 +62,9 @@ class SignalRViewModel @Inject constructor(
     }
 
     fun sendNotificationGroupContact(
-        phoneOther:String,
+        phoneOther: String,
         chatId: UUID,
-        message:String,
+        message: String,
         coroutineErrorHandler: ICoroutinesErrorHandler,
     ) = BaseRequest(
         hubResponse,
@@ -75,16 +75,16 @@ class SignalRViewModel @Inject constructor(
 
     fun printGroup(
         groupName: String,
-        isStart:Boolean,
+        isStart: Boolean,
         coroutineErrorHandler: ICoroutinesErrorHandler,
     ) = BaseRequest(
         hubResponse,
         coroutineErrorHandler
     ) {
-        hubRepository.printGroup(groupName,isStart)
+        hubRepository.printGroup(groupName, isStart)
     }
 
-    fun joinGroup(groupName: String){
+    fun joinGroup(groupName: String) {
         joinGroup(
             hubConnection.connectionId.toString(),
             groupName,
@@ -95,7 +95,7 @@ class SignalRViewModel @Inject constructor(
             })
     }
 
-    fun leaveGroup(groupName: String){
+    fun leaveGroup(groupName: String) {
         leaveGroup(
             hubConnection.connectionId.toString(),
             groupName,
@@ -106,7 +106,7 @@ class SignalRViewModel @Inject constructor(
             })
     }
 
-    fun printGroup(groupName: String, isStart: Boolean){
+    fun printGroup(groupName: String, isStart: Boolean) {
         printGroup(
             groupName,
             isStart,

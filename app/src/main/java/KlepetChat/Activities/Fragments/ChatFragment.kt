@@ -1,4 +1,3 @@
-
 import KlepetChat.Activities.Chat.ChatContactActivity
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.ChatAdapter
@@ -26,6 +25,7 @@ import com.vanniktech.emoji.EmojiPopup
 import java.util.Timer
 import java.util.TimerTask
 import java.util.UUID
+
 class ChatFragment : Fragment() {
 
     var binding: FragmentChatBinding? = null
@@ -78,8 +78,8 @@ class ChatFragment : Fragment() {
         requireActivity()
             .runOnUiThread(Runnable {
                 EventUpdateMessages(it)
-                if(chatType == ChatTypes.Contact){
-                    if(requireActivity() is ChatContactActivity) {
+                if (chatType == ChatTypes.Contact) {
+                    if (requireActivity() is ChatContactActivity) {
                         var chatContact = requireActivity() as ChatContactActivity
                         chatContact.signalNotification(signalRViewModel, it.text, it.phone == phone)
                     }
@@ -109,6 +109,7 @@ class ChatFragment : Fragment() {
         binding?.sendEmoticon?.setOnClickListener { sendEmotionAction() }
         binding?.inputMessage?.addTextChangedListener(addTextMessageChange())
     }
+
     private fun addTextMessageChange(): TextWatcher {
         return object : TextChangedListener<EditText>(binding?.inputMessage!!) {
             private var timer = Timer()
@@ -121,7 +122,7 @@ class ChatFragment : Fragment() {
                 timer.schedule(
                     object : TimerTask() {
                         override fun run() {
-                            if(!isStart) {
+                            if (!isStart) {
                                 printStatusTrue()
                                 isStart = true
                             }
@@ -142,27 +143,28 @@ class ChatFragment : Fragment() {
         }
     }
 
-    private fun printStatusTrue(){
+    private fun printStatusTrue() {
         signalRViewModel.printGroup(
             chatId.toString(), true,
-            object : ICoroutinesErrorHandler{
+            object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
                 }
             })
     }
-    private fun printStatusFalse(){
+
+    private fun printStatusFalse() {
         signalRViewModel.printGroup(
             chatId.toString(), false,
-            object : ICoroutinesErrorHandler{
+            object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
                 }
             })
     }
 
-    private fun sendEmotionAction(){
-        if(emojiPopup?.isShowing == true){
+    private fun sendEmotionAction() {
+        if (emojiPopup?.isShowing == true) {
             emojiPopup?.dismiss()
             return
         }

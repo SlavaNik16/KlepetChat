@@ -50,13 +50,15 @@ class ChatGroupActivity : AppCompatActivity() {
         setObserve()
         init()
     }
+
     override fun onStart() {
         super.onStart()
         fragment?.signalRViewModel?.getConnection()?.on("StatusUsers", { users ->
             runOnUiThread(Runnable {
                 try {
-                    binding?.textDesc?.text = if (users[1].status == StatusTypes.Online) "В сети" else "Не в сети"
-                }catch (e:Exception){
+                    binding?.textDesc?.text =
+                        if (users[1].status == StatusTypes.Online) "В сети" else "Не в сети"
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             })
@@ -184,7 +186,7 @@ class ChatGroupActivity : AppCompatActivity() {
         onBackPress()
     }
 
-    private fun deletedMessage(){
+    private fun deletedMessage() {
         messageViewModel.deleteMessages(chatId!!,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
@@ -192,6 +194,7 @@ class ChatGroupActivity : AppCompatActivity() {
                 }
             })
     }
+
     private fun deletedChat() {
         chatViewModel.deleteChat(chatId!!,
             object : ICoroutinesErrorHandler {

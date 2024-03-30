@@ -47,6 +47,7 @@ class UserRepository @Inject constructor(
     fun putPhoto(photo: String) = ApiRequestFlowResponse {
         userService.putPhoto(photo)
     }
+
     fun putStatus(status: StatusTypes) = ApiRequestFlowResponse {
         userService.putStatus(status)
     }

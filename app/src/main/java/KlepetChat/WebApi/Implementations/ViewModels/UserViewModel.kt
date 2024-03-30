@@ -30,12 +30,13 @@ class UserViewModel @Inject constructor(
     val users = usersResponse
     val validate = validateResponse
 
-    fun validateUser(password: String, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
-        validateResponse,
-        coroutineErrorHandler
-    ) {
-        userRepository.validateUser(password)
-    }
+    fun validateUser(password: String, coroutineErrorHandler: ICoroutinesErrorHandler) =
+        BaseRequest(
+            validateResponse,
+            coroutineErrorHandler
+        ) {
+            userRepository.validateUser(password)
+        }
 
     fun getByPhone(phone: String, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         userResponse,
@@ -95,12 +96,13 @@ class UserViewModel @Inject constructor(
         userRepository.putPhoto(photo)
     }
 
-    fun putStatus(status: StatusTypes, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
-        userStatusResponse,
-        coroutineErrorHandler
-    ) {
-        userRepository.putStatus(status)
-    }
+    fun putStatus(status: StatusTypes, coroutineErrorHandler: ICoroutinesErrorHandler) =
+        BaseRequest(
+            userStatusResponse,
+            coroutineErrorHandler
+        ) {
+            userRepository.putStatus(status)
+        }
 
     fun putPhone(login: Login, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         userPhoneResponse,
