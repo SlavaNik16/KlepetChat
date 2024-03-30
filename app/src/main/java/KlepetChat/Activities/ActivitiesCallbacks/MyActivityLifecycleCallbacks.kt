@@ -1,5 +1,6 @@
 package KlepetChat.Activities.ActivitiesCallbacks
 
+import KlepetChat.Activities.AuthorizationActivity
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Enums.StatusTypes
@@ -17,15 +18,18 @@ class MyActivityLifecycleCallbacks : ActivityLifecycleCallbacks {
     private var status:StatusTypes  =StatusTypes.Offline
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         Log.e("Activity","onActivityCreated:" + activity.getLocalClassName());
+        if(activity is AuthorizationActivity && status == StatusTypes.Online){
+           status = StatusTypes.Offline
+        }
     }
 
     override fun onActivityStarted(activity: Activity) {
+        Log.e("Activity","onActivityStarted:" + activity.getLocalClassName());
         ++countActivity
         if(activity is AppCompatActivity) {
             userViewModel = ViewModelProvider(activity)[UserViewModel::class.java]
             isEnter()
         }
-        Log.e("Activity","onActivityStarted:" + activity.getLocalClassName());
     }
 
     override fun onActivityResumed(activity: Activity) {
@@ -38,12 +42,12 @@ class MyActivityLifecycleCallbacks : ActivityLifecycleCallbacks {
     }
 
     override fun onActivityStopped(activity: Activity) {
+        Log.e("Activity","onActivityStopped:" + activity.getLocalClassName());
         --countActivity
         if(activity is AppCompatActivity) {
             userViewModel = ViewModelProvider(activity)[UserViewModel::class.java]
             isExit()
         }
-        Log.e("Activity","onActivityStopped:" + activity.getLocalClassName());
     }
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
@@ -72,7 +76,7 @@ class MyActivityLifecycleCallbacks : ActivityLifecycleCallbacks {
             StatusTypes.Offline,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
-
+                    Log.d("Activity","Не поменял статус Offline")
                 }
             })
        status = StatusTypes.Offline
@@ -83,7 +87,7 @@ class MyActivityLifecycleCallbacks : ActivityLifecycleCallbacks {
             StatusTypes.Online,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
-
+                   Log.d("Activity","Не поменял статус Online")
                 }
             })
         status = StatusTypes.Online

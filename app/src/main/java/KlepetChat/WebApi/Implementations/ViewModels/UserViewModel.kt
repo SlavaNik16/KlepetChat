@@ -20,11 +20,13 @@ class UserViewModel @Inject constructor(
     private val userRepository: UserRepository,
 ) : BaseViewModel() {
     private val userResponse = MutableLiveData<ApiResponse<User>>()
+    private val userStatusResponse = MutableLiveData<ApiResponse<User>>()
     private val userPhoneResponse = MutableLiveData<ApiResponse<User>>()
     private val usersResponse = MutableLiveData<ApiResponse<MutableList<User>>>()
     private val validateResponse = MutableLiveData<ApiResponse<ResponseBody>>()
     val user = userResponse
     val userEditPhone = userPhoneResponse
+    val userEditStatus = userStatusResponse
     val users = usersResponse
     val validate = validateResponse
 
@@ -94,7 +96,7 @@ class UserViewModel @Inject constructor(
     }
 
     fun putStatus(status: StatusTypes, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
-        userResponse,
+        userStatusResponse,
         coroutineErrorHandler
     ) {
         userRepository.putStatus(status)

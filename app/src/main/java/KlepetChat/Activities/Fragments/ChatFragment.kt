@@ -11,7 +11,6 @@ import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.Message
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -105,7 +104,6 @@ class ChatFragment : Fragment() {
     }
 
     private fun sendEmotionAction(){
-        Log.d("Em", emojiPopup?.isShowing.toString())
         if(emojiPopup?.isShowing == true){
             emojiPopup?.dismiss()
             return

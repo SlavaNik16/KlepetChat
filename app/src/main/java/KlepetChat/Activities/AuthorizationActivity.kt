@@ -4,7 +4,6 @@ import KlepetChat.DataSore.Models.UserData
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.AuthViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
-import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Request.Login
 import KlepetChat.WebApi.Models.Response.Token
@@ -22,7 +21,6 @@ class AuthorizationActivity : ComponentActivity() {
     private var binding: AuthorizationBinding? = null
     private val authViewModel: AuthViewModel by viewModels()
     private val userDataViewModel: UserDataViewModel by viewModels()
-    private val userViewModel: UserViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = AuthorizationBinding.inflate(layoutInflater)

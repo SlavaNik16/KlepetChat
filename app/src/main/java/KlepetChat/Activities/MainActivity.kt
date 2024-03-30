@@ -16,6 +16,7 @@ import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
+import KlepetChat.WebApi.Models.Response.Enums.StatusTypes
 import KlepetChat.WebApi.Models.Response.User
 import android.Manifest
 import android.app.PendingIntent
@@ -26,6 +27,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -482,9 +484,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun exitAuth() {
-        userDataViewModel.ClearUserData()
+        putStatusOffline()
         var intent = Intent(this, AuthorizationActivity::class.java)
         startActivity(intent)
         finish()
+        userDataViewModel.ClearUserData()
     }
+    private fun putStatusOffline(){
+        userViewModel.putStatus(
+            StatusTypes.Offline,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    Log.d("Activity","Не поменял статус Offline")
+                }
+            })
+    }
+
 }
