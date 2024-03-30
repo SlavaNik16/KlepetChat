@@ -2,6 +2,7 @@ package KlepetChat.Activities.Chat
 
 import ChatFragment
 import KlepetChat.Activities.Data.Constants
+import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
@@ -9,6 +10,8 @@ import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
+import KlepetChat.WebApi.Models.Response.Enums.StatusTypes
+import KlepetChat.WebApi.Models.Response.User
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -108,14 +111,16 @@ class ChatContactActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        fragment?.signalRViewModel?.getConnection()?.on("Status", { connectionId, isStatus ->
+        fragment?.signalRViewModel?.getConnection()?.on("StatusUsers", { users ->
             runOnUiThread(Runnable {
-                if (connectionId != fragment?.signalRViewModel?.getConnection()?.connectionId) {
-                    binding?.textDesc?.text = if (isStatus) "В сети" else "Не в сети"
+                try {
+                    binding?.textDesc?.text = if (users[1].status == StatusTypes.Online) "В сети" else "Не в сети"
+                }catch (e:Exception){
+                    e.printStackTrace()
                 }
             })
 
-        }, String::class.java, Boolean::class.java)
+        }, mutableListOf<User>()::class.java)
     }
 
     private fun setListeners() {
@@ -201,8 +206,8 @@ class ChatContactActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-//        var intent = Intent(this@ChatContactActivity, MainActivity::class.java)
-//        startActivity(intent)
+        var intent = Intent(this@ChatContactActivity, MainActivity::class.java)
+        startActivity(intent)
         finish()
     }
 

@@ -3,6 +3,7 @@ package KlepetChat.Activities.Chat
 import ChatFragment
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Activities.DialogFragment.AlertDialogGroupChatProfile
+import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
@@ -10,6 +11,9 @@ import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.Enums.RoleTypes
+import KlepetChat.WebApi.Models.Response.Enums.StatusTypes
+import KlepetChat.WebApi.Models.Response.User
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -45,6 +49,19 @@ class ChatGroupActivity : AppCompatActivity() {
         setListeners()
         setObserve()
         init()
+    }
+    override fun onStart() {
+        super.onStart()
+        fragment?.signalRViewModel?.getConnection()?.on("StatusUsers", { users ->
+            runOnUiThread(Runnable {
+                try {
+                    binding?.textDesc?.text = if (users[1].status == StatusTypes.Online) "В сети" else "Не в сети"
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
+            })
+
+        }, mutableListOf<User>()::class.java)
     }
 
     private fun setObserve() {
@@ -208,8 +225,8 @@ class ChatGroupActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-//        var intent = Intent(this@ChatGroupActivity, MainActivity::class.java)
-//        startActivity(intent)
+        var intent = Intent(this@ChatGroupActivity, MainActivity::class.java)
+        startActivity(intent)
         finish()
     }
 

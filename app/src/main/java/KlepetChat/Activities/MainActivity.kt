@@ -62,6 +62,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var user: User
     private var notificationUtils:NotificationUtils? = null
 
+    private var isGetChat = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -191,6 +193,7 @@ class MainActivity : AppCompatActivity() {
                 user = api.data
                 initNavigationViewHeader(user)
                 getChats()
+                isGetChat =false
             }
 
             is ApiResponse.Failure -> {
@@ -208,7 +211,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        getChats()
+        if(isGetChat) {
+            getChats()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        isGetChat = true
     }
 
     private fun getChats() {
@@ -451,7 +461,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this@MainActivity, ChooseActivity::class.java)
         intent.putExtra(Constants.KEY_IS_OPEN_GROUP, isOpenGroup)
         startActivity(intent)
-        //finish()
+        finish()
     }
 
     private fun navigateToProfile() {

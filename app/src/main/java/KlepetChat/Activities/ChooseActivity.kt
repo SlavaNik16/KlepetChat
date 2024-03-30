@@ -240,8 +240,8 @@ class ChooseActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-//        var intent = Intent(this@ChooseActivity, MainActivity::class.java)
-//        startActivity(intent)
+        var intent = Intent(this@ChooseActivity, MainActivity::class.java)
+        startActivity(intent)
         finish()
     }
 
