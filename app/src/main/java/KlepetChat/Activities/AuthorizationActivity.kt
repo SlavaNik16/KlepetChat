@@ -93,7 +93,7 @@ class AuthorizationActivity : ComponentActivity() {
             binding?.phoneField?.text.toString(), binding?.passField?.text.toString()
         ), object : ICoroutinesErrorHandler {
             override fun onError(message: String) {
-                Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
             }
         })
     }
