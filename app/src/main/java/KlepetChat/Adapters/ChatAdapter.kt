@@ -93,13 +93,13 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             binding.textMessage.text = message.text
             binding.textDateTime.text = getReadableDateTime(message.createdAt)
             if (message.photo.isNullOrBlank()) {
-                binding.imageProfile.setBackgroundResource(R.drawable.baseline_account_circle_24)
+                binding.imageProfile.setBackgroundResource(R.drawable.ic_chat_user)
                 return
             }
             Picasso.get()
                 .load(message.photo)
-                .placeholder(R.drawable.baseline_account_circle_24)
-                .error(R.drawable.baseline_account_circle_24)
+                .placeholder(R.drawable.ic_chat_user)
+                .error(R.drawable.ic_chat_user)
                 .into(binding.imageProfile)
         }
     }

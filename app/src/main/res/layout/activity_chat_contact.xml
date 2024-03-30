@@ -48,7 +48,7 @@
 
         <LinearLayout
             android:id="@+id/linearLayout4"
-            android:layout_width="94dp"
+            android:layout_width="172dp"
             android:layout_height="51dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:text="TextView"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -71,6 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="TextView"
                 android:textColor="@color/gray" />
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/Chat"
-    android:background="@drawable/back_chat_view_item"
+
     android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView

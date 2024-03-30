@@ -37,8 +37,8 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
         if (!chatViewItems[position].photo.isNullOrBlank()) {
             Picasso.get()
                 .load(chatViewItems[position].photo)
-                .placeholder(R.drawable.baseline_account_circle_24)
-                .error(R.drawable.baseline_account_circle_24)
+                .placeholder(R.drawable.ic_chat_user)
+                .error(R.drawable.ic_chat_user)
                 .into(holder.binding?.imageChat)
         }
         var resourceTypeChat =
