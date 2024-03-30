@@ -64,6 +64,11 @@ class ChatGroupActivity : AppCompatActivity() {
         }, mutableListOf<User>()::class.java)
     }
 
+    override fun onStop() {
+        super.onStop()
+        fragment?.signalRViewModel?.getConnection()?.remove("StatusUsers")
+    }
+
     private fun setObserve() {
         chatViewModel.chat.observe(this) { getChat(it) }
         messageViewModel.exist.observe(this) { deletedChat() }
