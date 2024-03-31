@@ -133,7 +133,8 @@ class ProfileActivity : AppCompatActivity() {
                     UserData(
                         user.phone,
                         api.data.accessToken.toString(),
-                        api.data.refreshToken.toString()
+                        api.data.refreshToken.toString(),
+                        false
                     )
                 )
             }

@@ -3,7 +3,6 @@ package KlepetChat.Activities
 import KlepetChat.DataSore.Models.UserData
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.AuthViewModel
-import KlepetChat.WebApi.Implementations.ViewModels.OnboardingViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Request.Login
@@ -22,7 +21,6 @@ class AuthorizationActivity : ComponentActivity() {
     private var binding: AuthorizationBinding? = null
     private val authViewModel: AuthViewModel by viewModels()
     private val userDataViewModel: UserDataViewModel by viewModels()
-    private val onboardingViewModel:OnboardingViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = AuthorizationBinding.inflate(layoutInflater)
@@ -32,9 +30,7 @@ class AuthorizationActivity : ComponentActivity() {
     }
 
     private fun setObserve() {
-        userDataViewModel.userData.observe(this) { navigateToMain(it) }
         authViewModel.token.observe(this) { saveUserData(it) }
-        onboardingViewModel.position.observe(this) { onboardingView(it) }
     }
 
     private fun saveUserData(api: ApiResponse<Token>) {
@@ -54,16 +50,14 @@ class AuthorizationActivity : ComponentActivity() {
                     UserData(
                         binding?.phoneField?.text.toString(),
                         api.data.accessToken ?: "",
-                        api.data.refreshToken ?: ""
+                        api.data.refreshToken ?: "",
+                        false
                     )
                 )
             }
         }
     }
 
-    private fun onboardingView(position:Int){
-
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -100,7 +94,7 @@ class AuthorizationActivity : ComponentActivity() {
             binding?.phoneField?.text.toString(), binding?.passField?.text.toString()
         ), object : ICoroutinesErrorHandler {
             override fun onError(message: String) {
-                //Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+
             }
         })
     }
@@ -109,13 +103,5 @@ class AuthorizationActivity : ComponentActivity() {
         var intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
         finish()
-    }
-
-    private fun navigateToMain(userData: UserData?) {
-        if (!userData?.accessToken.isNullOrBlank()) {
-            var intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
     }
 }

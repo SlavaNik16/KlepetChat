@@ -25,8 +25,8 @@ class DataStoreManager @Inject constructor(private val context: Context) : IUser
         val phone = preferences[KEY_PHONE] ?: ""
         val accessToken = preferences[KEY_ACCESS_TOKEN] ?: ""
         val refreshToken = preferences[KEY_REFRESH_TOKEN] ?: ""
-        val isFirst = preferences[KEY_REFRESH_TOKEN] ?: ""
-        UserData(phone, accessToken, refreshToken)
+        val isFirst = preferences[KEY_IS_FIRST] ?: true
+        UserData(phone, accessToken, refreshToken, isFirst)
     }
 
     override suspend fun SaveUserData(userData: UserData) {
@@ -34,6 +34,7 @@ class DataStoreManager @Inject constructor(private val context: Context) : IUser
             preferences[KEY_PHONE] = userData.phone
             preferences[KEY_ACCESS_TOKEN] = userData.accessToken
             preferences[KEY_REFRESH_TOKEN] = userData.refreshToken
+            preferences[KEY_IS_FIRST] = userData.isFirst
         }
     }
 
@@ -58,7 +59,7 @@ class DataStoreManager @Inject constructor(private val context: Context) : IUser
 
     companion object {
         private val KEY_PHONE = stringPreferencesKey("key_phone")
-        private val KEY_IS_FIRTST = booleanPreferencesKey("key_is_first")
+        private val KEY_IS_FIRST = booleanPreferencesKey("key_is_first")
         private val KEY_ACCESS_TOKEN = stringPreferencesKey("key_access_token")
         private val KEY_REFRESH_TOKEN = stringPreferencesKey("key_refresh_token")
     }
