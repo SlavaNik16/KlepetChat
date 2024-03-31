@@ -129,7 +129,9 @@ class ChatContactActivity : AppCompatActivity() {
     private fun statusOffline() {
         fragment?.signalRViewModel?.getConnection()?.on("StatusUsersOffline", { user ->
             runOnUiThread(Runnable {
-                binding?.textDesc?.text = "Не в сети"
+                if(user.phone != phoneOther) {
+                    binding?.textDesc?.text = "Не в сети"
+                }
             })
         }, User::class.java)
     }

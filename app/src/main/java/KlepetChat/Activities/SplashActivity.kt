@@ -35,4 +35,9 @@ class SplashActivity : ComponentActivity() {
             finish()
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModelStore.clear()
+    }
 }

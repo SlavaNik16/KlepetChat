@@ -186,6 +186,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
+        Log.d("notification", intent.action.toString())
         signalRViewModel.getConnection().remove("AnswerNotification")
         isGetChat = true
     }
