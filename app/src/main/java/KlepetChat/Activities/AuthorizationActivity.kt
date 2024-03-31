@@ -54,6 +54,7 @@ class AuthorizationActivity : ComponentActivity() {
                         false
                     )
                 )
+                navigateToMain()
             }
         }
     }
@@ -101,6 +102,11 @@ class AuthorizationActivity : ComponentActivity() {
 
     private fun navigateToRegister() {
         var intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+    private fun navigateToMain() {
+        var intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }

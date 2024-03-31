@@ -1,6 +1,7 @@
 package KlepetChat.Activities.ActivitiesCallbacks
 
 import KlepetChat.Activities.AuthorizationActivity
+import KlepetChat.Activities.IntroActivity
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Enums.StatusTypes
@@ -26,7 +27,7 @@ class MyActivityLifecycleCallbacks : ActivityLifecycleCallbacks {
     override fun onActivityStarted(activity: Activity) {
         Log.e("Activity", "onActivityStarted:" + activity.getLocalClassName());
         ++countActivity
-        if (activity is AppCompatActivity) {
+        if (activity is AppCompatActivity && activity !is IntroActivity) {
             userViewModel = ViewModelProvider(activity)[UserViewModel::class.java]
             isEnter()
         }
@@ -44,7 +45,7 @@ class MyActivityLifecycleCallbacks : ActivityLifecycleCallbacks {
     override fun onActivityStopped(activity: Activity) {
         Log.e("Activity", "onActivityStopped:" + activity.getLocalClassName());
         --countActivity
-        if (activity is AppCompatActivity) {
+        if (activity is AppCompatActivity && activity !is IntroActivity) {
             userViewModel = ViewModelProvider(activity)[UserViewModel::class.java]
             isExit()
         }

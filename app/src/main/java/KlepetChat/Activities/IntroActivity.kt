@@ -2,9 +2,7 @@ package KlepetChat.Activities
 
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.OnboardAdapter
-import KlepetChat.DataSore.Models.UserData
 import KlepetChat.WebApi.Implementations.ViewModels.OnboardingViewModel
-import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -23,7 +21,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class IntroActivity : AppCompatActivity() {
     private var binding: ActivityIntroBinding? = null
-    private val userDataViewModel: UserDataViewModel by viewModels()
     private val onboardingViewModel: OnboardingViewModel by viewModels()
 
     private var buttonsChecked: Array<ImageView>? = null
@@ -34,6 +31,7 @@ class IntroActivity : AppCompatActivity() {
         setContentView(binding!!.root)
         setListener()
         setObserve()
+        onboarding()
     }
 
     private fun setListener() {
@@ -41,20 +39,23 @@ class IntroActivity : AppCompatActivity() {
     }
 
     private fun setObserve() {
-        userDataViewModel.userData.observe(this) { validateToken(it) }
         onboardingViewModel.position.observe(this) { onboardingView(it) }
     }
-
-    private fun validateToken(userData: UserData?) {
-        if (!userData?.accessToken.isNullOrBlank()) {
-            var intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        } else if (userData!!.isFirst) {
-            onboarding()
-        }
+    private fun removeListener() {
+        binding?.textViewSkip?.setOnClickListener(null)
     }
-
+    private fun removeComponent() {
+        adapter = null
+        buttonsChecked = null
+        binding?.viewPager?.adapter = null
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        removeListener()
+        removeComponent()
+        viewModelStore.clear()
+        binding = null
+    }
 
     private fun onboardingView(position: Int) {
         if (buttonsChecked == null) {
@@ -89,7 +90,11 @@ class IntroActivity : AppCompatActivity() {
     }
 
     private fun onSkip() {
-        notificationPage()
+        if(!checkPermission()) {
+            notificationPage()
+            return
+        }
+        navigateToAuthorization()
     }
 
     private fun notificationPage() {
@@ -100,7 +105,7 @@ class IntroActivity : AppCompatActivity() {
         setContentView(bindingNotification.root)
 
         bindingNotification.butOn.setOnClickListener {
-            checkPermission()
+            addPermission()
         }
         bindingNotification.butOff.setOnClickListener {
             navigateToAuthorization()
@@ -115,15 +120,11 @@ class IntroActivity : AppCompatActivity() {
             Constants.REQUEST_PERMISSION_POST_NOTIFICATION
         )
     }
-    private fun checkPermission() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            addPermission()
-            return
-        }
+    private fun checkPermission():Boolean {
+        return ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     override fun onRequestPermissionsResult(
