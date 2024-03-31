@@ -4,6 +4,7 @@ import KlepetChat.DataSore.Interface.IUserDataStore
 import KlepetChat.DataSore.Models.UserData
 import KlepetChat.Hilts.dataStore
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -24,6 +25,7 @@ class DataStoreManager @Inject constructor(private val context: Context) : IUser
         val phone = preferences[KEY_PHONE] ?: ""
         val accessToken = preferences[KEY_ACCESS_TOKEN] ?: ""
         val refreshToken = preferences[KEY_REFRESH_TOKEN] ?: ""
+        val isFirst = preferences[KEY_REFRESH_TOKEN] ?: ""
         UserData(phone, accessToken, refreshToken)
     }
 
@@ -55,9 +57,8 @@ class DataStoreManager @Inject constructor(private val context: Context) : IUser
     }
 
     companion object {
-        private const val FILE_NAME = "user-data"
-
         private val KEY_PHONE = stringPreferencesKey("key_phone")
+        private val KEY_IS_FIRTST = booleanPreferencesKey("key_is_first")
         private val KEY_ACCESS_TOKEN = stringPreferencesKey("key_access_token")
         private val KEY_REFRESH_TOKEN = stringPreferencesKey("key_refresh_token")
     }
