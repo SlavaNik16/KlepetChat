@@ -66,12 +66,12 @@ class ChooseActivity : AppCompatActivity() {
         setContentView(binding?.root)
         setListeners()
         setObserve()
+        init()
     }
 
     override fun onStart() {
         super.onStart()
         getContactsOther()
-        init()
     }
 
     private fun init() {

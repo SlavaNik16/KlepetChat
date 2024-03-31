@@ -144,23 +144,11 @@ class ChatFragment : Fragment() {
     }
 
     private fun printStatusTrue() {
-        signalRViewModel.printGroup(
-            chatId.toString(), true,
-            object : ICoroutinesErrorHandler {
-                override fun onError(message: String) {
-
-                }
-            })
+        signalRViewModel.printGroup(chatId.toString(), true)
     }
 
     private fun printStatusFalse() {
-        signalRViewModel.printGroup(
-            chatId.toString(), false,
-            object : ICoroutinesErrorHandler {
-                override fun onError(message: String) {
-
-                }
-            })
+        signalRViewModel.printGroup(chatId.toString(), false)
     }
 
     private fun sendEmotionAction() {
@@ -297,16 +285,11 @@ class ChatFragment : Fragment() {
     }
 
     private fun sendMessageSignalR(chatId: UUID) {
-        signalRViewModel.sendMessage(chatId,
+        signalRViewModel.sendMessage(
+            chatId,
             binding?.inputMessage?.text.toString(),
-            chatId.toString(),
-            object : ICoroutinesErrorHandler {
-                override fun onError(message: String) {
-                    Toast.makeText(
-                        requireContext(), "Ошибка! $message", Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
+            chatId.toString()
+        )
         binding?.inputMessage?.text?.clear()
     }
 

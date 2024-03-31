@@ -42,4 +42,14 @@ interface IHubService {
         @Query("chatId") chatId: UUID,
         @Query("message") message: String,
     ): Response<ResponseBody>
+
+    @POST("ChatHub/UpdateChat")
+    suspend fun updateChat(
+        @Query("phoneOther") phoneOther: String,
+    ): Response<ResponseBody>
+
+    @POST("ChatHub/UpdateMessage")
+    suspend fun updateMessage(
+        @Query("phoneOther") phoneOther: String,
+    ): Response<ResponseBody>
 }

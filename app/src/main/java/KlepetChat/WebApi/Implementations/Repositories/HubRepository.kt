@@ -33,4 +33,12 @@ class HubRepository @Inject constructor(
         ApiRequestFlowResponse {
             hubService.sendNotificationGroupContact(phoneOther, chatId, message)
         }
+
+    fun updateChat(phoneOther: String) = ApiRequestFlowResponse {
+        hubService.updateChat(phoneOther)
+    }
+
+    fun updateMessage(phoneOther: String) = ApiRequestFlowResponse {
+        hubService.updateMessage(phoneOther)
+    }
 }
