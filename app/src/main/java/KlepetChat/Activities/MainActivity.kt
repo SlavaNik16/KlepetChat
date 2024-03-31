@@ -59,8 +59,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var user: User
     private var notificationUtils: NotificationUtils? = null
 
-    private var isGetChat = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -69,10 +67,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         registerNotification()
+        setSignalR()
         setListeners()
         setObserve()
         initDrawLayout()
         loading(true)
+    }
+    private fun setSignalR(){
+        Log.d("SignalR", "Только 1 раз")
+        signalRViewModel.getConnection().on("AnswerNotification", {
+            runOnUiThread(Runnable {
+                sendNotificationCreate(it)
+            })
+        }, Chat::class.java)
+        signalRViewModel.start()
     }
 
     private fun registerNotification() {
@@ -151,7 +159,6 @@ class MainActivity : AppCompatActivity() {
                 user = api.data
                 initNavigationViewHeader(user)
                 getChats()
-                isGetChat = false
             }
 
             is ApiResponse.Failure -> {
@@ -167,28 +174,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        signalRViewModel.getConnection().on("AnswerNotification", {
-            runOnUiThread(Runnable {
-                sendNotificationCreate(it)
-            })
-        }, Chat::class.java)
-        signalRViewModel.start()
-    }
 
     override fun onResume() {
         super.onResume()
-        if (isGetChat) {
-            getChats()
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("notification", intent.action.toString())
-        signalRViewModel.getConnection().remove("AnswerNotification")
-        isGetChat = true
+        getChats()
     }
 
     private fun getChats() {

@@ -24,6 +24,7 @@ import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityChatContactBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.ResponseBody
 import java.util.Timer
 import java.util.TimerTask
 import java.util.UUID
@@ -69,6 +70,7 @@ class ChatContactActivity : AppCompatActivity() {
 
     private fun setObserve() {
         chatViewModel.chat.observe(this) { getChat(it) }
+        chatViewModel.deleteChat.observe(this) { getDeletedChat(it) }
     }
 
     private fun fragmentInstance(f: Fragment) {
@@ -248,7 +250,7 @@ class ChatContactActivity : AppCompatActivity() {
 
                 }
             })
-        onBackPress()
+        //onBackPress()
     }
 
     private fun onPhonePress() {
@@ -309,6 +311,25 @@ class ChatContactActivity : AppCompatActivity() {
                 fragment?.chatId = chatId!!
                 fragment?.joinGroup()
                 binding?.butMenu?.visibility = View.VISIBLE
+            }
+
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    this@ChatContactActivity, "Ошибка! ${api.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                return
+            }
+        }
+    }
+
+    private fun getDeletedChat(api: ApiResponse<ResponseBody>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                onBackPress()
             }
 
             is ApiResponse.Failure -> {

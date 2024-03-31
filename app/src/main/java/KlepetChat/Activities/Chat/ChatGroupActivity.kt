@@ -3,7 +3,6 @@ package KlepetChat.Activities.Chat
 import ChatFragment
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Activities.DialogFragment.AlertDialogGroupChatProfile
-import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
@@ -13,7 +12,6 @@ import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.Enums.RoleTypes
 import KlepetChat.WebApi.Models.Response.Enums.StatusTypes
 import KlepetChat.WebApi.Models.Response.User
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -26,6 +24,7 @@ import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityChatGroupBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.ResponseBody
 import java.util.UUID
 
 @AndroidEntryPoint
@@ -73,7 +72,8 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private fun setObserve() {
         chatViewModel.chat.observe(this) { getChat(it) }
-        messageViewModel.exist.observe(this) { deletedChat() }
+        messageViewModel.exist.observe(this) { getDeletedMessage(it) }
+        chatViewModel.deleteChat.observe(this) { getDeletedChat(it) }
     }
 
     private fun fragmentInstance(f: Fragment) {
@@ -202,7 +202,6 @@ class ChatGroupActivity : AppCompatActivity() {
 
                 }
             })
-        onBackPress()
     }
 
     private fun removeListeners() {
@@ -233,8 +232,8 @@ class ChatGroupActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-        var intent = Intent(this@ChatGroupActivity, MainActivity::class.java)
-        startActivity(intent)
+//        var intent = Intent(this@ChatGroupActivity, MainActivity::class.java)
+//        startActivity(intent)
         finish()
     }
 
@@ -261,6 +260,43 @@ class ChatGroupActivity : AppCompatActivity() {
             is ApiResponse.Failure -> {
                 Toast.makeText(
                     this@ChatGroupActivity, "Ошибка! ${api.message}", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                return
+            }
+        }
+    }
+
+    private fun getDeletedMessage(api: ApiResponse<ResponseBody>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                deletedChat()
+            }
+
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    this@ChatGroupActivity, "Ошибка! ${api.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                return
+            }
+        }
+    }
+    private fun getDeletedChat(api: ApiResponse<ResponseBody>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                onBackPress()
+            }
+
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    this@ChatGroupActivity, "Ошибка! ${api.message}",
+                    Toast.LENGTH_SHORT
                 ).show()
             }
 
