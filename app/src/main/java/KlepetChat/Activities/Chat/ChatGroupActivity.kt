@@ -10,7 +10,6 @@ import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.Enums.RoleTypes
-import KlepetChat.WebApi.Models.Response.Enums.StatusTypes
 import KlepetChat.WebApi.Models.Response.User
 import android.os.Bundle
 import android.view.MenuItem
@@ -25,6 +24,8 @@ import com.example.klepetchat.databinding.ActivityChatGroupBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.ResponseBody
+import java.util.Timer
+import java.util.TimerTask
 import java.util.UUID
 
 @AndroidEntryPoint
@@ -41,6 +42,7 @@ class ChatGroupActivity : AppCompatActivity() {
     private var fragment: ChatFragment? = null
     private var popupMenu: PopupMenu? = null
 
+    private var persons:MutableList<String>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatGroupBinding.inflate(layoutInflater)
@@ -52,22 +54,89 @@ class ChatGroupActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        fragment?.signalRViewModel?.getConnection()?.on("StatusUsers", { users ->
+        statusOnline()
+        statusOffline()
+        statusPrint()
+    }
+
+    private fun statusOnline() {
+        fragment?.signalRViewModel?.getConnection()?.on("StatusUsersOnline", { user ->
+
+        }, User::class.java)
+    }
+
+    private fun statusOffline() {
+        fragment?.signalRViewModel?.getConnection()?.on("StatusUsersOffline", { user ->
+
+        }, User::class.java)
+    }
+
+    private fun statusPrint() {
+        fragment?.signalRViewModel?.getConnection()?.on("StatusPrint", { user, isStart ->
             runOnUiThread(Runnable {
-                try {
-                    binding?.textDesc?.text =
-                        if (users[1].status == StatusTypes.Online) "В сети" else "Не в сети"
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                if (user.phone != phone) {
+                    statisPrint = isStart
+                    animationUpload(user)
                 }
             })
+        }, User::class.java, Boolean::class.java)
+    }
 
-        }, mutableListOf<User>()::class.java)
+    private var statisPrint = false
+    private fun animationUpload(user: User) {
+        runOnUiThread {
+            if (!statisPrint) {
+                binding?.textDesc?.text = "${persons!!.count()} подписчиков"
+                return@runOnUiThread
+            }
+            var timer = Timer()
+            var Delay: Long = 230
+            var DelayThirst: Long = 700
+            timer.schedule(
+                object : TimerTask() {
+                    override fun run() {
+                        binding?.textDesc?.text = "${user.surname} печатает."
+                    }
+                },
+                Delay
+            )
+            timer.schedule(
+                object : TimerTask() {
+                    override fun run() {
+                        binding?.textDesc?.text = "${user.surname} печатает.."
+                    }
+                },
+                Delay * 2
+            )
+            timer.schedule(
+                object : TimerTask() {
+                    override fun run() {
+                        binding?.textDesc?.text = "${user.surname} печатает..."
+                    }
+                },
+                Delay * 3
+            )
+
+            timer.schedule(
+                object : TimerTask() {
+                    override fun run() {
+                        if (!statisPrint) {
+                            binding?.textDesc?.text ="${persons!!.count()} подписчиков"
+                            return
+                        }
+                        animationUpload(user)
+                    }
+                },
+                DelayThirst
+            )
+        }
     }
 
     override fun onStop() {
         super.onStop()
-        fragment?.signalRViewModel?.getConnection()?.remove("StatusUsers")
+        fragment?.signalRViewModel?.getConnection()?.remove("StatusUsersOnline")
+        fragment?.signalRViewModel?.getConnection()?.remove("StatusUsersOffline")
+        fragment?.signalRViewModel?.getConnection()?.remove("StatusPrint")
     }
 
     private fun setObserve() {
@@ -86,7 +155,7 @@ class ChatGroupActivity : AppCompatActivity() {
     private fun init() {
         val argument = intent.extras
 
-        val persons = argument?.getStringArrayList(Constants.KEY_CHAT_PEOPLE)
+        persons = argument?.getStringArrayList(Constants.KEY_CHAT_PEOPLE)
         binding?.textDesc?.text = "${persons?.count()} подписчик(-a)"
         phone = argument?.getString(Constants.KEY_USER_PHONE)
         val chatIdStr = argument?.getString(Constants.KEY_CHAT_ID)
@@ -101,17 +170,17 @@ class ChatGroupActivity : AppCompatActivity() {
             binding?.butMenu?.visibility = View.INVISIBLE
         }
 
-        val txtName = argument.getString(Constants.KEY_CHAT_NAME)
+        val txtName = argument?.getString(Constants.KEY_CHAT_NAME)
         binding?.txtName?.text = txtName
 
-        var roleTypeStr = argument.getString(Constants.KEY_USER_ROLE).toString()
+        var roleTypeStr = argument?.getString(Constants.KEY_USER_ROLE).toString()
         roleType = when (roleTypeStr) {
             RoleTypes.User.name -> RoleTypes.User
             RoleTypes.Admin.name -> RoleTypes.Admin
             else -> RoleTypes.User
         }
 
-        val imageChat = argument.getString(Constants.KEY_IMAGE_URL)
+        val imageChat = argument?.getString(Constants.KEY_IMAGE_URL)
         if (!imageChat.isNullOrBlank()) {
             Picasso.get()
                 .load(imageChat)
@@ -255,6 +324,8 @@ class ChatGroupActivity : AppCompatActivity() {
                 fragment?.chatId = chatId!!
                 fragment?.joinGroup()
                 binding?.butMenu?.visibility = View.VISIBLE
+                persons!!.add(phone!!)
+                binding?.textDesc?.text = "${persons!!.count()} подписчиков"
             }
 
             is ApiResponse.Failure -> {

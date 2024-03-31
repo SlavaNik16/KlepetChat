@@ -420,6 +420,7 @@ class MainActivity : AppCompatActivity() {
     private fun onAddChat(isOpenGroup: Boolean = false) {
         val intent = Intent(this@MainActivity, ChooseActivity::class.java)
         intent.putExtra(Constants.KEY_IS_OPEN_GROUP, isOpenGroup)
+        intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
         startActivity(intent)
         //finish()
     }

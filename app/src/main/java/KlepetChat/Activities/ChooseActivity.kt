@@ -1,6 +1,7 @@
 package KlepetChat.Activities
 
 import KlepetChat.Activities.Chat.ChatContactActivity
+import KlepetChat.Activities.Chat.ChatGroupActivity
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.UserViewItemAdapter
 import KlepetChat.Image.ImageContainer
@@ -10,6 +11,7 @@ import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.ImageViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
+import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.User
 import android.content.Context
 import android.content.DialogInterface
@@ -57,6 +59,7 @@ class ChooseActivity : AppCompatActivity() {
     private var iamgeURL: String? = null
     private lateinit var file: File
     private var isEdit = false
+    private var phone:String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChooseBinding.inflate(layoutInflater)
@@ -73,6 +76,7 @@ class ChooseActivity : AppCompatActivity() {
 
     private fun init() {
         var isOpenGroup = intent?.extras?.getBoolean(Constants.KEY_IS_OPEN_GROUP) ?: false
+        phone = intent?.extras?.getString(Constants.KEY_USER_PHONE) ?: ""
         if (isOpenGroup) {
             onAddGroup()
         }
@@ -119,9 +123,28 @@ class ChooseActivity : AppCompatActivity() {
         }
     }
 
+    private fun getChat(api: ApiResponse<Chat>) {
+        when (api) {
+            is ApiResponse.Success -> {
+               navigateToGroup(api.data)
+            }
+
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    this@ChooseActivity, "Ошибка! ${api.message}", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                return
+            }
+        }
+    }
+
     private fun setObserve() {
         userViewModel.users.observe(this) { getUsers(it) }
         imageViewModel.img.observe(this) { getHttpImage(it) }
+        chatViewModel.chat.observe(this) { getChat(it) }
     }
 
     private fun getContactsOther() {
@@ -227,12 +250,7 @@ class ChooseActivity : AppCompatActivity() {
                     binding?.contactRecycler?.findContainingViewHolder(view)!!.adapterPosition
                 view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
                     var user = this@ChooseActivity.users[position]
-                    val intent = Intent(this@ChooseActivity, ChatContactActivity::class.java)
-                    intent.putExtra(Constants.KEY_USER_PHONE_OTHER, user.phone)
-                    intent.putExtra(Constants.KEY_CHAT_NAME, user.name)
-                    intent.putExtra(Constants.KEY_IMAGE_URL, user.photo)
-                    startActivity(intent)
-                    //finish()
+                    navigateToContact(user)
                 }
             }
 
@@ -240,6 +258,27 @@ class ChooseActivity : AppCompatActivity() {
                 return
             }
         }
+    }
+    private fun navigateToContact(user: User) {
+        val intent = Intent(this@ChooseActivity, ChatContactActivity::class.java)
+        intent.putExtra(Constants.KEY_USER_PHONE_OTHER, user.phone)
+        intent.putExtra(Constants.KEY_CHAT_NAME, user.name)
+        intent.putExtra(Constants.KEY_IMAGE_URL, user.photo)
+        startActivity(intent)
+        //finish()
+    }
+
+    private fun navigateToGroup(chat: Chat) {
+        val intent = Intent(this@ChooseActivity, ChatGroupActivity::class.java)
+        intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
+        intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
+        intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
+        var arrayList: ArrayList<String> = arrayListOf(phone!!)
+        intent.putStringArrayListExtra(Constants.KEY_CHAT_PEOPLE, arrayList)
+        intent.putExtra(Constants.KEY_USER_PHONE, phone)
+        intent.putExtra(Constants.KEY_USER_ROLE, chat.roleType.name)
+        startActivity(intent)
+        //finish()
     }
 
     private fun onBackPress() {
@@ -267,17 +306,7 @@ class ChooseActivity : AppCompatActivity() {
                     ).show()
                     return@OnClickListener
                 }
-                chatViewModel.postGroup(
-                    dialogBinding?.groupField?.text.toString(),
-                    iamgeURL,
-                    object : ICoroutinesErrorHandler {
-                        override fun onError(message: String) {
-                            Toast.makeText(
-                                this@ChooseActivity, "Ошибка! $message",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    })
+                createGroup(dialogBinding?.groupField?.text.toString(), iamgeURL)
             })
 
         dialogBinding?.imageChat?.setOnClickListener {
@@ -288,6 +317,20 @@ class ChooseActivity : AppCompatActivity() {
         }
         dialog.show()
     }
+
+    private fun createGroup(title:String, imageURL:String?){
+
+        chatViewModel.postGroup(title, imageURL,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    Toast.makeText(
+                        this@ChooseActivity, "Ошибка! $message",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+
 
     private val getAction =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
