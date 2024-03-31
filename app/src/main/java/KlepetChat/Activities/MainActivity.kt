@@ -358,7 +358,6 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
         intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
         startActivity(intent)
-        //finish()
     }
 
     private fun navigateToContact(chat: Chat) {
