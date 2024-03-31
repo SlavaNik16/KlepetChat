@@ -16,16 +16,16 @@ import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
+import KlepetChat.WebApi.Models.Response.Enums.StatusTypes
 import KlepetChat.WebApi.Models.Response.User
-import android.Manifest
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -35,7 +35,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityMainBinding
@@ -58,79 +57,51 @@ class MainActivity : AppCompatActivity() {
     private var isEdit = false
     private lateinit var chats: MutableList<Chat>
     private lateinit var user: User
-    private var notificationUtils:NotificationUtils? = null
+    private var notificationUtils: NotificationUtils? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         var viewHeader = binding?.navigationView!!.inflateHeaderView(R.layout.nav_header)
-        notificationUtils = NotificationUtils().getInstance(this)
         bindingHeader = NavHeaderBinding.bind(viewHeader)
         setContentView(binding?.root)
-        CheckPermission()
-        registerNotification()
-        signalRViewModel.getConnection().on("AnswerNotification", {
-            runOnUiThread(Runnable {
-                sendNotificationCreate(it)
-            })
-        },Chat::class.java)
 
-        signalRViewModel.start()
+        registerNotification()
+        setSignalR()
         setListeners()
         setObserve()
         initDrawLayout()
         loading(true)
     }
 
-    private fun CheckPermission(){
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            AddPermission()
-            return
-        }
+    private fun setSignalR() {
+        signalRViewModel.getConnection().on("AnswerNotification", {
+            runOnUiThread(Runnable {
+                sendNotificationCreate(it)
+            })
+        }, Chat::class.java)
+        signalRViewModel.start()
     }
-    private fun registerNotification(){
+
+    private fun registerNotification() {
+        notificationUtils = NotificationUtils().getInstance(this)
         notificationUtils?.registerNotification()
     }
-    private fun sendNotificationCreate(chat:Chat){
+
+    private fun sendNotificationCreate(chat: Chat) {
         val intent = Intent(this, ChatContactActivity::class.java).apply {
             this.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
             this.putExtra(Constants.KEY_CHAT_NAME, chat.name)
             this.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
             this.putExtra(Constants.KEY_USER_PHONE_OTHER, chat.phones[0])
         }.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-        notificationUtils?.sendNotificationCreate(chat.name + " написал тебе: ", chat.lastMessage!!, pendingIntent)
-    }
-    private fun AddPermission(){
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf<String>(
-                Manifest.permission.POST_NOTIFICATIONS
-            ),
-            Constants.REQUEST_PERMISSION_POST_NOTIFICATION
+        val pendingIntent = PendingIntent.getActivity(this, 0,
+            intent, PendingIntent.FLAG_IMMUTABLE)
+        notificationUtils?.sendNotificationCreate(
+            chat.name + " написал тебе: ",
+            chat.lastMessage!!,
+            pendingIntent
         )
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray,
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            Constants.REQUEST_PERMISSION_POST_NOTIFICATION ->
-                if (grantResults.isNotEmpty()
-                && grantResults[0] === PackageManager.PERMISSION_GRANTED
-            ) {
-                Toast.makeText(this@MainActivity, "Уведомления включены!", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this@MainActivity, "Уведомления отключены!", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     private fun setObserve() {
@@ -193,7 +164,7 @@ class MainActivity : AppCompatActivity() {
 
             is ApiResponse.Failure -> {
                 Toast.makeText(
-                    this@MainActivity, "Ошибка! $api.message", Toast.LENGTH_SHORT
+                    this@MainActivity, "Ошибка! Повторите вход!!!", Toast.LENGTH_SHORT
                 ).show()
                 exitAuth()
             }
@@ -202,6 +173,12 @@ class MainActivity : AppCompatActivity() {
                 return
             }
         }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        getChats()
     }
 
     private fun getChats() {
@@ -381,7 +358,7 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
         intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
         startActivity(intent)
-        finish()
+        //finish()
     }
 
     private fun navigateToContact(chat: Chat) {
@@ -391,7 +368,7 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
         intent.putExtra(Constants.KEY_USER_PHONE_OTHER, chat.phones[0])
         startActivity(intent)
-        finish()
+        //finish()
     }
 
     private fun navigateToGroup(chat: Chat) {
@@ -407,7 +384,7 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
         intent.putExtra(Constants.KEY_USER_ROLE, chat.roleType.name)
         startActivity(intent)
-        finish()
+        //finish()
     }
 
     private fun onRecyclerAttachState(): RecyclerView.OnChildAttachStateChangeListener {
@@ -443,8 +420,9 @@ class MainActivity : AppCompatActivity() {
     private fun onAddChat(isOpenGroup: Boolean = false) {
         val intent = Intent(this@MainActivity, ChooseActivity::class.java)
         intent.putExtra(Constants.KEY_IS_OPEN_GROUP, isOpenGroup)
+        intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
         startActivity(intent)
-        finish()
+        //finish()
     }
 
     private fun navigateToProfile() {
@@ -452,7 +430,7 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_PROFILE_VIEW, false)
         intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
         startActivity(intent)
-        finish()
+        //finish()
     }
 
     private fun initNavigationViewHeader(user: User) {
@@ -477,9 +455,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun exitAuth() {
-        userDataViewModel.ClearUserData()
+        putStatusOffline()
         var intent = Intent(this, AuthorizationActivity::class.java)
         startActivity(intent)
         finish()
+        userDataViewModel.ClearUserData()
     }
+
+    private fun putStatusOffline() {
+        userViewModel.putStatus(
+            StatusTypes.Offline,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    Log.d("Activity", "Не поменял статус Offline")
+                }
+            })
+    }
+
 }

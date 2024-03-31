@@ -7,6 +7,7 @@ import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Request.FIO
 import KlepetChat.WebApi.Models.Request.Login
 import KlepetChat.WebApi.Models.Request.UserRegister
+import KlepetChat.WebApi.Models.Response.Enums.StatusTypes
 import KlepetChat.WebApi.Models.Response.User
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,20 +20,23 @@ class UserViewModel @Inject constructor(
     private val userRepository: UserRepository,
 ) : BaseViewModel() {
     private val userResponse = MutableLiveData<ApiResponse<User>>()
+    private val userStatusResponse = MutableLiveData<ApiResponse<User>>()
     private val userPhoneResponse = MutableLiveData<ApiResponse<User>>()
     private val usersResponse = MutableLiveData<ApiResponse<MutableList<User>>>()
     private val validateResponse = MutableLiveData<ApiResponse<ResponseBody>>()
     val user = userResponse
     val userEditPhone = userPhoneResponse
+    val userEditStatus = userStatusResponse
     val users = usersResponse
     val validate = validateResponse
 
-    fun validateUser(password: String, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
-        validateResponse,
-        coroutineErrorHandler
-    ) {
-        userRepository.validateUser(password)
-    }
+    fun validateUser(password: String, coroutineErrorHandler: ICoroutinesErrorHandler) =
+        BaseRequest(
+            validateResponse,
+            coroutineErrorHandler
+        ) {
+            userRepository.validateUser(password)
+        }
 
     fun getByPhone(phone: String, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         userResponse,
@@ -91,6 +95,14 @@ class UserViewModel @Inject constructor(
     ) {
         userRepository.putPhoto(photo)
     }
+
+    fun putStatus(status: StatusTypes, coroutineErrorHandler: ICoroutinesErrorHandler) =
+        BaseRequest(
+            userStatusResponse,
+            coroutineErrorHandler
+        ) {
+            userRepository.putStatus(status)
+        }
 
     fun putPhone(login: Login, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
         userPhoneResponse,

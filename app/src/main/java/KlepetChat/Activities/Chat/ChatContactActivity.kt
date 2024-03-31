@@ -2,7 +2,6 @@ package KlepetChat.Activities.Chat
 
 import ChatFragment
 import KlepetChat.Activities.Data.Constants
-import KlepetChat.Activities.MainActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
@@ -10,6 +9,7 @@ import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
+import KlepetChat.WebApi.Models.Response.User
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -24,6 +24,9 @@ import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityChatContactBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.ResponseBody
+import java.util.Timer
+import java.util.TimerTask
 import java.util.UUID
 
 
@@ -49,20 +52,17 @@ class ChatContactActivity : AppCompatActivity() {
 
     }
 
-    fun signalNotification(signalRViewModel: SignalRViewModel, message:String){
-        signalRViewModel.sendNotificationGroupContact(
-            phoneOther!!,
-            chatId!!,
-            message,
-            object : ICoroutinesErrorHandler{
-                override fun onError(message: String) {
 
-                }
-            })
+    fun signalNotification(signalRViewModel: SignalRViewModel, message: String, isSend: Boolean) {
+        if (!isSend) {
+            return
+        }
+        signalRViewModel.sendNotificationGroupContact(phoneOther!!, chatId!!, message)
     }
 
     private fun setObserve() {
         chatViewModel.chat.observe(this) { getChat(it) }
+        chatViewModel.deleteChat.observe(this) { getDeletedChat(it) }
     }
 
     private fun fragmentInstance(f: Fragment) {
@@ -106,14 +106,95 @@ class ChatContactActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        fragment?.signalRViewModel?.getConnection()?.on("Status", { connectionId, isStatus ->
+        statusOnline()
+        statusOffline()
+        statusPrint()
+    }
+
+    private fun statusOnline() {
+        fragment?.signalRViewModel?.getConnection()?.on("StatusUsersOnline", { user ->
             runOnUiThread(Runnable {
-                if (connectionId != fragment?.signalRViewModel?.getConnection()?.connectionId) {
-                    binding?.textDesc?.text = if (isStatus) "В сети" else "Не в сети"
+                binding?.textDesc?.text = "В сети"
+            })
+        }, User::class.java)
+    }
+
+    private fun statusOffline() {
+        fragment?.signalRViewModel?.getConnection()?.on("StatusUsersOffline", { user ->
+            runOnUiThread(Runnable {
+                if(user.phone != phoneOther) {
+                    binding?.textDesc?.text = "Не в сети"
                 }
             })
+        }, User::class.java)
+    }
 
-        }, String::class.java, Boolean::class.java)
+    private fun statusPrint() {
+        fragment?.signalRViewModel?.getConnection()?.on("StatusPrint", { user, isStart ->
+            runOnUiThread(Runnable {
+                if (user.phone == phoneOther) {
+                    statisPrint = isStart
+                    animationUpload()
+                }
+            })
+        }, User::class.java, Boolean::class.java)
+    }
+
+    private var statisPrint = false
+    private fun animationUpload() {
+        runOnUiThread {
+            if (!statisPrint) {
+                binding?.textDesc?.text = "В сети"
+                return@runOnUiThread
+            }
+            var timer = Timer()
+            var Delay: Long = 230
+            var DelayThirst: Long = 700
+            timer.schedule(
+                object : TimerTask() {
+                    override fun run() {
+                        binding?.textDesc?.text = "печатает."
+                    }
+                },
+                Delay
+            )
+            timer.schedule(
+                object : TimerTask() {
+                    override fun run() {
+                        binding?.textDesc?.text = "печатает.."
+                    }
+                },
+                Delay * 2
+            )
+            timer.schedule(
+                object : TimerTask() {
+                    override fun run() {
+                        binding?.textDesc?.text = "печатает..."
+                    }
+                },
+                Delay * 3
+            )
+
+            timer.schedule(
+                object : TimerTask() {
+                    override fun run() {
+                        if (!statisPrint) {
+                            binding?.textDesc?.text = "В сети"
+                            return
+                        }
+                        animationUpload()
+                    }
+                },
+                DelayThirst
+            )
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        fragment?.signalRViewModel?.getConnection()?.remove("StatusUsersOnline")
+        fragment?.signalRViewModel?.getConnection()?.remove("StatusUsersOffline")
+        fragment?.signalRViewModel?.getConnection()?.remove("StatusPrint")
     }
 
     private fun setListeners() {
@@ -161,7 +242,7 @@ class ChatContactActivity : AppCompatActivity() {
 
                 }
             })
-        onBackPress()
+        //onBackPress()
     }
 
     private fun onPhonePress() {
@@ -199,8 +280,8 @@ class ChatContactActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-        var intent = Intent(this@ChatContactActivity, MainActivity::class.java)
-        startActivity(intent)
+//        var intent = Intent(this@ChatContactActivity, MainActivity::class.java)
+//        startActivity(intent)
         finish()
     }
 
@@ -222,6 +303,25 @@ class ChatContactActivity : AppCompatActivity() {
                 fragment?.chatId = chatId!!
                 fragment?.joinGroup()
                 binding?.butMenu?.visibility = View.VISIBLE
+            }
+
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    this@ChatContactActivity, "Ошибка! ${api.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                return
+            }
+        }
+    }
+
+    private fun getDeletedChat(api: ApiResponse<ResponseBody>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                onBackPress()
             }
 
             is ApiResponse.Failure -> {

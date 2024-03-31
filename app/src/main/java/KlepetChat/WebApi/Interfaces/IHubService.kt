@@ -26,13 +26,30 @@ interface IHubService {
         @Query("groupName") groupName: String,
     ): Response<ResponseBody>
 
+    @POST("ChatHub/PrintGroup/{groupName}")
+    suspend fun printGroup(
+        @Path("groupName") groupName: String,
+        @Query("isStart") isStart: Boolean,
+    ): Response<ResponseBody>
+
+
     @POST("ChatHub/SendRegister/{connectionId}")
-    suspend fun sendRegister(@Path("connectionId") connectionId:String): Response<ResponseBody>
+    suspend fun sendRegister(@Path("connectionId") connectionId: String): Response<ResponseBody>
 
     @POST("ChatHub/SendNotificationGroupContact")
     suspend fun sendNotificationGroupContact(
         @Query("phoneOther") phoneOther: String,
         @Query("chatId") chatId: UUID,
-        @Query("message") message: String
+        @Query("message") message: String,
+    ): Response<ResponseBody>
+
+    @POST("ChatHub/UpdateChat")
+    suspend fun updateChat(
+        @Query("phoneOther") phoneOther: String,
+    ): Response<ResponseBody>
+
+    @POST("ChatHub/UpdateMessage")
+    suspend fun updateMessage(
+        @Query("phoneOther") phoneOther: String,
     ): Response<ResponseBody>
 }

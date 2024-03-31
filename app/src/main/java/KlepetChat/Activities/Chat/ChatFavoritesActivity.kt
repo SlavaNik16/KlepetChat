@@ -2,13 +2,13 @@ package KlepetChat.Activities.Chat
 
 import ChatFragment
 import KlepetChat.Activities.Data.Constants
-import KlepetChat.Activities.MainActivity
+import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityChatFavoritesBinding
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.ResponseBody
 import java.util.UUID
 
 
@@ -34,6 +35,7 @@ class ChatFavoritesActivity : AppCompatActivity() {
         binding = ActivityChatFavoritesBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         setListeners()
+        setObserves()
         init()
 
     }
@@ -65,6 +67,9 @@ class ChatFavoritesActivity : AppCompatActivity() {
     private fun setListeners() {
         binding?.back?.setOnClickListener { onBackPress() }
         binding?.butMenu?.setOnClickListener { onMenuPress() }
+    }
+    private fun setObserves() {
+        chatViewModel.deleteChat.observe(this) { getDeletedChat(it) }
     }
 
     private fun onMenuPress() {
@@ -106,7 +111,6 @@ class ChatFavoritesActivity : AppCompatActivity() {
 
                 }
             })
-        onBackPress()
     }
 
     private fun removeListeners() {
@@ -130,9 +134,28 @@ class ChatFavoritesActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-        var intent = Intent(this@ChatFavoritesActivity, MainActivity::class.java)
-        startActivity(intent)
+//        var intent = Intent(this@ChatFavoritesActivity, MainActivity::class.java)
+//        startActivity(intent)
         finish()
+    }
+
+    private fun getDeletedChat(api: ApiResponse<ResponseBody>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                onBackPress()
+            }
+
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    this@ChatFavoritesActivity, "Ошибка! ${api.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                return
+            }
+        }
     }
 
 }

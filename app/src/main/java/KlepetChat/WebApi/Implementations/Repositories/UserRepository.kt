@@ -5,6 +5,7 @@ import KlepetChat.WebApi.Interfaces.IUserService
 import KlepetChat.WebApi.Models.Request.FIO
 import KlepetChat.WebApi.Models.Request.Login
 import KlepetChat.WebApi.Models.Request.UserRegister
+import KlepetChat.WebApi.Models.Response.Enums.StatusTypes
 import java.util.UUID
 import javax.inject.Inject
 
@@ -45,6 +46,10 @@ class UserRepository @Inject constructor(
 
     fun putPhoto(photo: String) = ApiRequestFlowResponse {
         userService.putPhoto(photo)
+    }
+
+    fun putStatus(status: StatusTypes) = ApiRequestFlowResponse {
+        userService.putStatus(status)
     }
 
     fun putPhone(login: Login) = ApiRequestFlowResponse {
