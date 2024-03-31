@@ -19,5 +19,5 @@ data class Chat(
     @SerializedName("roleType")
     val roleType: RoleTypes,
     @SerializedName("photo")
-    val photo: String,
+    val photo: String?,
 )

@@ -73,8 +73,8 @@ class MainActivity : AppCompatActivity() {
         initDrawLayout()
         loading(true)
     }
-    private fun setSignalR(){
-        Log.d("SignalR", "Только 1 раз")
+
+    private fun setSignalR() {
         signalRViewModel.getConnection().on("AnswerNotification", {
             runOnUiThread(Runnable {
                 sendNotificationCreate(it)
@@ -95,7 +95,8 @@ class MainActivity : AppCompatActivity() {
             this.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
             this.putExtra(Constants.KEY_USER_PHONE_OTHER, chat.phones[0])
         }.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        val pendingIntent = PendingIntent.getActivity(this, 0,
+            intent, PendingIntent.FLAG_IMMUTABLE)
         notificationUtils?.sendNotificationCreate(
             chat.name + " написал тебе: ",
             chat.lastMessage!!,
