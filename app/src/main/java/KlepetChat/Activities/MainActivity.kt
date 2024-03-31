@@ -431,7 +431,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this@MainActivity, ChooseActivity::class.java)
         intent.putExtra(Constants.KEY_IS_OPEN_GROUP, isOpenGroup)
         startActivity(intent)
-        finish()
+        //finish()
     }
 
     private fun navigateToProfile() {

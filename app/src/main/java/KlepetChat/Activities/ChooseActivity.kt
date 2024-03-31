@@ -63,6 +63,10 @@ class ChooseActivity : AppCompatActivity() {
         setContentView(binding?.root)
         setListeners()
         setObserve()
+    }
+
+    override fun onStart() {
+        super.onStart()
         getContactsOther()
         init()
     }
@@ -228,8 +232,7 @@ class ChooseActivity : AppCompatActivity() {
                     intent.putExtra(Constants.KEY_CHAT_NAME, user.name)
                     intent.putExtra(Constants.KEY_IMAGE_URL, user.photo)
                     startActivity(intent)
-                    startActivity(intent)
-                    finish()
+                    //finish()
                 }
             }
 
@@ -240,8 +243,8 @@ class ChooseActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-        var intent = Intent(this@ChooseActivity, MainActivity::class.java)
-        startActivity(intent)
+//        var intent = Intent(this@ChooseActivity, MainActivity::class.java)
+//        startActivity(intent)
         finish()
     }
 
