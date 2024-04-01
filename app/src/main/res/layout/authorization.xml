@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
+    android:background="@color/back_gray"
+
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="KlepetChat.Activities.AuthorizationActivity">
 
@@ -11,8 +13,8 @@
     <androidx.cardview.widget.CardView
 
         android:id="@+id/cardViewProfile"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="181dp"
+        android:layout_height="170dp"
         android:scrollbarSize="5dp"
         app:cardCornerRadius="60dp"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutЗPhone"
@@ -33,15 +35,15 @@
 
     </androidx.cardview.widget.CardView>
 
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutЗPhone"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_marginLeft="30dp"
+        android:layout_marginTop="112dp"
         android:layout_marginRight="30dp"
+        android:layout_marginBottom="1dp"
         app:counterEnabled="true"
         app:counterMaxLength="11"
         app:counterOverflowTextAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -50,6 +52,7 @@
         app:helperText="Обязательно*"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutPassword"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.266"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardViewProfile">
 
@@ -57,14 +60,14 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/phoneField"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="49dp"
+            android:background="@color/white"
             android:hint="@string/Phone"
             android:inputType="phone"
             android:maxLength="11"
             android:text=""
             android:textSize="24sp" />
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutPassword"
@@ -73,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="88dp"
         app:counterEnabled="true"
         app:counterMaxLength="15"
         app:endIconMode="password_toggle"
@@ -81,14 +84,13 @@
         app:layout_constraintBottom_toTopOf="@+id/butEnter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.733"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutЗPhone"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passField"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="49dp"
+            android:background="@color/white"
             android:hint="@string/Password"
             android:inputType="textPassword"
             android:maxLength="15"
@@ -100,12 +102,12 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/butEnter"
-        android:layout_width="290dp"
-        android:layout_height="60dp"
+        android:layout_width="294dp"
+        android:layout_height="51dp"
         android:layout_marginStart="110dp"
         android:layout_marginEnd="110dp"
         android:layout_marginBottom="156dp"
-        android:backgroundTint="#A12998"
+        android:backgroundTint="@color/white"
         android:rotation="0"
         android:scrollbarSize="5dp"
         android:visibility="visible"
@@ -124,7 +126,7 @@
             android:backgroundTint="#A12998"
             android:gravity="center"
             android:text="@string/Enter"
-            android:textColor="@color/white"
+            android:textColor="#A12998"
             android:textSize="30sp"
             app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
