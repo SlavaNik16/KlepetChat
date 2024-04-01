@@ -9,4 +9,6 @@ data class UserData(
     val accessToken: String,
     @SerializedName("refresh_token")
     val refreshToken: String,
+    @SerializedName("is_first")
+    val isFirst: Boolean,
 )

@@ -21,11 +21,24 @@ class HubRepository @Inject constructor(
         hubService.sendMessage(chatId, message, groupName)
     }
 
-    fun sendRegister(connectionId:String) = ApiRequestFlowResponse {
+    fun printGroup(groupName: String, isStart: Boolean) = ApiRequestFlowResponse {
+        hubService.printGroup(groupName, isStart)
+    }
+
+    fun sendRegister(connectionId: String) = ApiRequestFlowResponse {
         hubService.sendRegister(connectionId)
     }
 
-    fun sendNotificationGroupContact(phoneOther:String, chatId: UUID, message:String) = ApiRequestFlowResponse {
-        hubService.sendNotificationGroupContact(phoneOther,chatId, message)
+    fun sendNotificationGroupContact(phoneOther: String, chatId: UUID, message: String) =
+        ApiRequestFlowResponse {
+            hubService.sendNotificationGroupContact(phoneOther, chatId, message)
+        }
+
+    fun updateChat(phoneOther: String) = ApiRequestFlowResponse {
+        hubService.updateChat(phoneOther)
+    }
+
+    fun updateMessage(phoneOther: String) = ApiRequestFlowResponse {
+        hubService.updateMessage(phoneOther)
     }
 }

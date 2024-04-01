@@ -30,27 +30,35 @@ class AuthorizationActivity : ComponentActivity() {
     }
 
     private fun setObserve() {
-        userDataViewModel.userData.observe(this) { navigateToMain(it) }
         authViewModel.token.observe(this) { saveUserData(it) }
     }
 
     private fun saveUserData(api: ApiResponse<Token>) {
         when (api) {
-            is ApiResponse.Failure -> Toast.makeText(this, api.message, Toast.LENGTH_SHORT).show()
-            ApiResponse.Loading -> Toast.makeText(this, "Пожалуйста подождите!", Toast.LENGTH_SHORT)
-                .show()
+            is ApiResponse.Failure -> Toast.makeText(
+                this, api.message,
+                Toast.LENGTH_SHORT
+            ).show()
+
+            ApiResponse.Loading -> Toast.makeText(
+                this,
+                "Пожалуйста подождите!", Toast.LENGTH_SHORT
+            ).show()
 
             is ApiResponse.Success -> {
                 userDataViewModel.SaveUserData(
                     UserData(
                         binding?.phoneField?.text.toString(),
                         api.data.accessToken ?: "",
-                        api.data.refreshToken ?: ""
+                        api.data.refreshToken ?: "",
+                        false
                     )
                 )
+                navigateToMain()
             }
         }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -73,29 +81,23 @@ class AuthorizationActivity : ComponentActivity() {
         var phone = binding!!.phoneField;
         if (password.length() < 8) {
             Toast.makeText(
-                applicationContext, "Слишком маленький пароль (не меньше 8)",
-                Toast.LENGTH_SHORT
+                applicationContext, "Слишком маленький пароль (не меньше 8)", Toast.LENGTH_SHORT
             ).show()
             return
         }
         if (phone.text!!.length < 11) {
             Toast.makeText(
-                applicationContext, "Такого номера телефона не существует!",
-                Toast.LENGTH_SHORT
+                applicationContext, "Такого номера телефона не существует!", Toast.LENGTH_SHORT
             ).show()
             return
         }
-        authViewModel.login(
-            Login(
-                binding?.phoneField?.text.toString(),
-                binding?.passField?.text.toString()
-            ),
-            object : ICoroutinesErrorHandler {
-                override fun onError(message: String) {
-                    Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
-                }
+        authViewModel.login(Login(
+            binding?.phoneField?.text.toString(), binding?.passField?.text.toString()
+        ), object : ICoroutinesErrorHandler {
+            override fun onError(message: String) {
+
             }
-        )
+        })
     }
 
     private fun navigateToRegister() {
@@ -103,12 +105,9 @@ class AuthorizationActivity : ComponentActivity() {
         startActivity(intent)
         finish()
     }
-
-    private fun navigateToMain(userData: UserData?) {
-        if (!userData?.accessToken.isNullOrBlank()) {
-            var intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+    private fun navigateToMain() {
+        var intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

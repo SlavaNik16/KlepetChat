@@ -25,22 +25,32 @@ class NotificationUtils {
 
     private var notifications: HashMap<Int, Notification>? = null
 
-    constructor(){
+    constructor() {
 
     }
+
     private constructor(context: Context?) {
         this.context = context
         manager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notifications = HashMap<Int, Notification>()
     }
-    
-    fun registerNotification(CHANNEL_NAME:String? = "test_channel_name"){
+
+    fun registerNotification(CHANNEL_NAME: String? = "test_channel_name") {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(Constants.CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
+            val channel = NotificationChannel(
+                Constants.CHANNEL_ID,
+                CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
             manager?.createNotificationChannel(channel)
         }
     }
-    fun sendNotificationCreate(title:String, text:String, pendingIntent:PendingIntent? = null):Int{
+
+    fun sendNotificationCreate(
+        title: String,
+        text: String,
+        pendingIntent: PendingIntent? = null,
+    ): Int {
         var context = context!!
         val builder = NotificationCompat.Builder(context, Constants.CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notifications_active)
@@ -49,7 +59,7 @@ class NotificationUtils {
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
-        if(pendingIntent != null) {
+        if (pendingIntent != null) {
             builder.setContentIntent(pendingIntent)
         }
 

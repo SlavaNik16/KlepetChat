@@ -2,6 +2,7 @@ package KlepetChat.Adapters
 
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ChatViewItemBinding
 import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.Period
+import java.time.ZoneId
+import java.util.Date
+import java.util.Locale
 
 class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewItemHolder>() {
 
@@ -33,6 +40,20 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
         holder.binding?.textDesc?.text = String()
         if (!chatViewItems[position].lastMessage.isNullOrBlank()) {
             holder.binding?.textDesc?.text = chatViewItems[position].lastMessage
+            var date = chatViewItems[position].lastDate
+            var dateLocal = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+            var period:Period = Period.between(dateLocal, LocalDate.now(),)
+            Log.d("Period", "${period.days}, ${period.months}, ${period.years}")
+            if(period.days <= 0 && period.months == 0 && period.years == 0){
+                holder.binding?.textDate?.text = getReadableDateTimeNow(chatViewItems[position].lastDate)
+            }else if(period.days > 0 && period.days <= 7 && period.months == 0 && period.years == 0){
+                holder.binding?.textDate?.text = getReadableDateTimeWeek(chatViewItems[position].lastDate)
+            }else if(period.months > 0 && period.months <= 12 && period.years == 0){
+                holder.binding?.textDate?.text = getReadableDateTimeMonth(chatViewItems[position].lastDate)
+            }else{
+                holder.binding?.textDate?.text = getReadableDateTimeOther(chatViewItems[position].lastDate)
+            }
+
         }
         if (!chatViewItems[position].photo.isNullOrBlank()) {
             Picasso.get()
@@ -62,5 +83,22 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
             binding = ChatViewItemBinding.bind(itemView)
         }
 
+    }
+
+    companion object{
+        fun getReadableDateTimeNow(date: Date): String {
+            return SimpleDateFormat("h:mm a", Locale.getDefault()).format(date)
+        }
+        fun getReadableDateTimeWeek(date: Date): String {
+            return SimpleDateFormat("EEE", Locale.getDefault()).format(date)
+        }
+
+        fun getReadableDateTimeMonth(date: Date): String {
+            return SimpleDateFormat("MMMM dd", Locale.getDefault()).format(date)
+        }
+
+        fun getReadableDateTimeOther(date: Date): String {
+            return SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(date)
+        }
     }
 }
