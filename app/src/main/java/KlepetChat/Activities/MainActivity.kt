@@ -369,7 +369,6 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
         intent.putExtra(Constants.KEY_USER_PHONE_OTHER, chat.phones[0])
         startActivity(intent)
-        //finish()
     }
 
     private fun navigateToGroup(chat: Chat) {
