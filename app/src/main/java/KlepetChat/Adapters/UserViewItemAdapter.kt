@@ -39,12 +39,12 @@ class UserViewItemAdapter() : RecyclerView.Adapter<UserViewItemAdapter.UserViewI
         if (!chatViewItems[position].photo.isNullOrBlank()) {
             picasso
                 .load(chatViewItems[position].photo)
-                .placeholder(R.drawable.baseline_account_circle_24)
-                .error(R.drawable.baseline_account_circle_24)
+                .placeholder(R.drawable.ic_chat_user)
+                .error(R.drawable.ic_chat_user)
                 .into(holder.binding.imageUser)
             return
         }
-        holder.binding.imageUser.setImageResource(R.drawable.baseline_account_circle_24)
+        holder.binding.imageUser.setImageResource(R.drawable.ic_chat_user)
     }
 
     class UserViewItemHolder : RecyclerView.ViewHolder {

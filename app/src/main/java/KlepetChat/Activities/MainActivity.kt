@@ -303,10 +303,12 @@ class MainActivity : AppCompatActivity() {
             binding?.imageSearch?.tag = Constants.KEY_TAG_SEARCHOFF
             binding?.imageSearch?.setImageResource(R.drawable.ic_close_white)
             binding?.inputSearch?.visibility = View.VISIBLE
+            binding?.textView4?.visibility = View.GONE
         } else {
             binding?.imageSearch?.tag = Constants.KEY_TAG_SEARCH
             binding?.imageSearch?.setImageResource(R.drawable.ic_search)
             binding?.inputSearch?.visibility = View.GONE
+            binding?.textView4?.visibility = View.VISIBLE
             binding?.inputSearch?.setText(String())
             if (getSystemService(Context.INPUT_METHOD_SERVICE) is InputMethodManager) {
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

@@ -98,7 +98,7 @@ class ChatContactActivity : AppCompatActivity() {
                 .load(imageChat)
                 .placeholder(R.drawable.baseline_account_circle_24)
                 .error(R.drawable.baseline_account_circle_24)
-                .into(binding?.imageChat)
+                .into(binding?.butMenu)
         }
         binding?.textDesc?.text = "Не в сети"
 

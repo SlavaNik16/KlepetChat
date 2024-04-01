@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/back_gray"
     tools:context="KlepetChat.Activities.ProfileActivity">
 
     <LinearLayout
@@ -13,21 +14,22 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:background="@color/white"
+        android:background="@color/back_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageButtonBack"
-            android:layout_width="30dp"
+            android:layout_width="49dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/ic_arrow_back" />
+            android:src="@drawable/ic_back" />
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:gravity="center_vertical"
@@ -38,46 +40,52 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageUser"
-        android:layout_width="115dp"
-        android:layout_height="115dp"
+        android:layout_width="158dp"
+        android:layout_height="146dp"
         android:layout_margin="10dp"
-        android:layout_marginTop="25dp"
-        android:src="@drawable/baseline_account_circle_24"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_chat_user"
         app:civ_border_color="@color/black"
-        app:civ_border_width="2dp"
+
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
 
     <TextView
         android:id="@+id/textFIO"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="10dp"
         android:gravity="center"
         android:text="textFIO"
-        android:textSize="18dp"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageUser" />
 
     <EditText
         android:id="@+id/inputMessageAboutMe"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="429dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="28dp"
         android:background="@drawable/background_chat_input"
-        android:gravity="center|left"
+        android:gravity="center"
         android:hint="@string/sendMessage"
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="text"
         android:paddingStart="20dp"
         android:textAlignment="gravity"
-        android:textColor="@color/black"
+        android:textColor="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textFIO" />
 
@@ -114,10 +122,10 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="32dp"
-                android:layout_height="match_parent"
+                android:layout_height="33dp"
                 android:layout_margin="10dp"
                 android:layout_marginTop="25dp"
-                android:src="@drawable/baseline_account_circle_24"
+                android:src="@drawable/ic_chat_user"
                 app:civ_border_color="@color/black" />
 
             <TextView
@@ -133,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center|left"
+                android:gravity="center"
                 android:text="@string/Name"
                 android:textSize="18dp" />
 
@@ -166,7 +174,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center|left"
+                android:gravity="center"
                 android:text="@string/Phone"
                 android:textSize="18dp" />
 
@@ -237,17 +245,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-    <TextView
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/butDeleteAcc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="#B51515"
-        android:gravity="center"
-        android:text="Удалить аккаунт"
-        android:textColor="@color/white"
-        android:textSize="34sp"
+        android:layout_width="321dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginEnd="110dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/white"
+        android:rotation="0"
+        android:scrollbarSize="5dp"
+        android:visibility="visible"
+        app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="230dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="#A12998"
+            android:gravity="center"
+            android:text="@string/delete_akkaunt"
+            android:textColor="@color/red"
+            android:textSize="20dp"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.543"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+            app:layout_constraintVertical_bias="0.429" />
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
