@@ -163,11 +163,11 @@ class ChatGroupActivity : AppCompatActivity() {
         if (persons!!.contains(phone)) {
             fragment = ChatFragment.newInstance(chatId!!, ChatTypes.Group)
             fragmentInstance(fragment!!)
-            binding?.butMenu?.visibility = View.VISIBLE
+            binding?.imageChat?.visibility = View.VISIBLE
         } else {
             fragment = ChatFragment.newInstanceInit() { onInitChat() }
             fragmentInstance(fragment!!)
-            binding?.butMenu?.visibility = View.INVISIBLE
+            binding?.imageChat?.visibility = View.INVISIBLE
         }
 
         val txtName = argument?.getString(Constants.KEY_CHAT_NAME)
@@ -184,8 +184,8 @@ class ChatGroupActivity : AppCompatActivity() {
         if (!imageChat.isNullOrBlank()) {
             Picasso.get()
                 .load(imageChat)
-                .placeholder(R.drawable.baseline_account_circle_24)
-                .error(R.drawable.baseline_account_circle_24)
+                .placeholder(R.drawable.ic_group)
+                .error(R.drawable.ic_group)
                 .into(binding?.imageChat)
         }
 
@@ -193,7 +193,7 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private fun setListeners() {
         binding?.back?.setOnClickListener { onBackPress() }
-        binding?.butMenu?.setOnClickListener { onMenuPress() }
+        binding?.imageChat?.setOnClickListener { onMenuPress() }
         binding?.groupProfile?.setOnClickListener { onProfileGroup() }
     }
 
@@ -207,7 +207,7 @@ class ChatGroupActivity : AppCompatActivity() {
     }
 
     private fun onMenuPress() {
-        popupMenu = PopupMenu(this@ChatGroupActivity, binding!!.butMenu)
+        popupMenu = PopupMenu(this@ChatGroupActivity, binding!!.imageChat)
         popupMenu?.menuInflater?.inflate(R.menu.group_menu, popupMenu?.menu)
         isVisibleOnRoleType()
         popupMenu?.setOnMenuItemClickListener { onMenuItemClick(it) }
@@ -275,7 +275,7 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private fun removeListeners() {
         binding?.back?.setOnClickListener(null)
-        binding?.butMenu?.setOnClickListener(null)
+        binding?.imageChat?.setOnClickListener(null)
         binding?.groupProfile?.setOnClickListener(null)
         popupMenu?.setOnMenuItemClickListener(null)
     }
@@ -323,7 +323,7 @@ class ChatGroupActivity : AppCompatActivity() {
                 chatId = api.data.id
                 fragment?.chatId = chatId!!
                 fragment?.joinGroup()
-                binding?.butMenu?.visibility = View.VISIBLE
+                binding?.imageChat?.visibility = View.VISIBLE
                 persons!!.add(phone!!)
                 binding?.textDesc?.text = "${persons!!.count()} подписчиков"
             }

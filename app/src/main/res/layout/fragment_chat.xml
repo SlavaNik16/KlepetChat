@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="60dp"
-            android:background="@drawable/back_chat_fon"
+            android:background="@drawable/im_backgraund"
             android:clipToPadding="false"
             android:orientation="vertical"
             android:overScrollMode="never"
@@ -48,14 +48,12 @@
             android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
-            android:background="@color/white">
+            android:background="#eef2e9">
 
             <EditText
                 android:id="@+id/inputMessage"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_width="305dp"
+                android:layout_height="36dp"
                 android:background="@drawable/background_chat_input"
                 android:gravity="center|left"
                 android:hint="@string/sendMessage"
@@ -64,34 +62,39 @@
                 android:inputType="textShortMessage"
                 android:paddingStart="20dp"
                 android:textAlignment="gravity"
-                android:textColor="@color/black"
+                android:textColor="@color/gray"
+                app:cardCornerRadius="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/sendMessage"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/sendMessage"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/ic_round_send"
+                android:layout_width="44dp"
+                android:layout_height="36dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/ic_send"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/sendEmoticon"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/inputMessage"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.458" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/sendEmoticon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/ic_round_insert_emoticon"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="@drawable/ic_emoji"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/inputMessage"
+                app:layout_constraintHorizontal_bias="0.457"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/buttonInitChat"
             android:layout_width="match_parent"
@@ -105,7 +108,8 @@
             android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="match_parent"

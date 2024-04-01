@@ -9,8 +9,8 @@
         android:id="@+id/imageProfile"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:src="@drawable/baseline_account_circle_24"
-        app:civ_border_width="2dp"
+        android:src="@drawable/ic_chat_user"
+
         app:civ_border_color="@color/black"
         app:layout_constraintBottom_toBottomOf="@id/textMessage"
         app:layout_constraintStart_toStartOf="parent" />
