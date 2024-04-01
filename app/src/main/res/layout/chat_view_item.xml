@@ -5,19 +5,18 @@
     android:id="@+id/Chat"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/back_chat_view_item"
+
     android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageChat"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="59dp"
+        android:layout_height="51dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/baseline_account_circle_24"
-        app:civ_border_color="@color/black"
-        app:civ_border_width="2dp" />
+        android:src="@drawable/ic_chat_user"
+        app:civ_border_color="@color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,24 +33,27 @@
             <ImageView
                 android:id="@+id/imageTypeChat"
                 android:layout_width="16dp"
+
                 android:layout_height="16dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp" />
+          
             <TextView
                 android:id="@+id/textName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:text="TextView"
-                android:textColor="@color/white" />
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/textDate"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <TextView
@@ -60,8 +62,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="TextView"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
+        <LinearLayout
+            android:layout_width="367dp"
+            android:layout_height="12dp"
+            android:background="@drawable/back_chat_view_item"
+            android:orientation="horizontal" />
     </LinearLayout>
+
 
 </LinearLayout>

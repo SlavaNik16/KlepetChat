@@ -12,7 +12,7 @@
         android:background="@color/white"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        android:backgroundTint="@color/blue_2"
+        android:backgroundTint="#689ECB"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -30,7 +30,7 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_margin="20dp"
-                android:background="@drawable/baseline_arrow_back_24" />
+                android:background="@drawable/ic_back" />
 
         </LinearLayout>
 
@@ -38,10 +38,10 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
             android:text="@string/add_chat"
+            android:textColor="@color/black"
             android:textSize="24sp"
-            android:textColor="@color/white"
-            android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/back"
             app:layout_constraintTop_toTopOf="parent" />

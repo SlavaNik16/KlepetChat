@@ -7,12 +7,11 @@
     tools:context="KlepetChat.Activities.Chat.ChatContactActivity">
 
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
-        android:layout_width="0dp"
-
-        android:layout_height="wrap_content"
+        android:layout_width="418dp"
+        android:layout_height="57dp"
+        android:background="#eef2e9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -30,64 +29,62 @@
                 android:id="@+id/imageView2"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_margin="20dp"
-                android:background="@drawable/ic_arrow_back" />
+                android:layout_margin="10dp"
+                android:background="@drawable/ic_back" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/groupProfile"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
+            android:layout_width="190dp"
+            android:layout_height="61dp"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/butMenu"
-            app:layout_constraintHorizontal_bias="0.631"
+            app:layout_constraintEnd_toStartOf="@+id/imageChat"
+            app:layout_constraintHorizontal_bias="0.558"
             app:layout_constraintStart_toEndOf="@+id/back"
             app:layout_constraintTop_toTopOf="parent">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imageChat"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/baseline_account_circle_24"
-                app:civ_border_color="@color/black"
-                app:civ_border_width="2dp" />
-
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="154dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txtName"
-                    android:layout_width="match_parent"
+                    android:layout_width="178dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:text="TextView"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textDesc"
-                    android:layout_width="match_parent"
+                    android:layout_width="178dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:text="TextView"
                     android:textColor="@color/black" />
 
             </LinearLayout>
+
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/butMenu"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/ic_dots"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageChat"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_group"
+            app:civ_border_color="@color/black"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.945"
+            app:layout_constraintStart_toEndOf="@+id/back"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

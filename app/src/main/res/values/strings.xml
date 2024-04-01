@@ -4,6 +4,8 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_authorization">AuthorizationActivity</string>
 
+
+    <string name="Chats">Чаты</string>
     <string name="Auth">Авторизация</string>
     <string name="Phone">Телефон</string>
     <string name="Password">Пароль</string>
@@ -40,6 +42,7 @@
     <string name="JoinChat">Присоединиться</string>
     <string name="deleted_chat">Удалить чат</string>
     <string name="delete_message">Удалить сообщения</string>
+    <string name="delete_akkaunt">Удалить аккаунт</string>
     <string name="add_favorites">Избранное</string>
     <string name="exit_from_chat">Выйти из чата</string>
     <string name="participant">Участники</string>
