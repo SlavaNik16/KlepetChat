@@ -319,10 +319,10 @@ class ChatContactActivity : AppCompatActivity() {
     private fun getDeletedMessage(api: ApiResponse<ResponseBody>) {
         when (api) {
             is ApiResponse.Success -> {
-                fragment?.signalRViewModel?.updateChat(phoneOther.toString())
                 fragment?.signalRViewModel?.updateMessage(phoneOther.toString())
-            }
+                fragment?.signalRViewModel?.updateChat(phoneOther.toString())
 
+            }
             is ApiResponse.Failure -> {
                 Toast.makeText(
                     this@ChatContactActivity, "Ошибка! ${api.message}",

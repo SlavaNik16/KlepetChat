@@ -185,7 +185,7 @@ class ChatFragment : Fragment() {
 
     private fun setObserve() {
         messageViewModel.message.observe(requireActivity()) { getMessage(it) }
-        messageViewModel.messages.observe(requireActivity()) { getMessages(it) }
+        messageViewModel.messages.observe(requireActivity()) { getMessagesApi(it) }
         userDataViewModel.userData.observe(requireActivity()) { getUser(it) }
     }
 
@@ -207,7 +207,7 @@ class ChatFragment : Fragment() {
             })
     }
 
-    private fun getMessages(api: ApiResponse<MutableList<Message>>) {
+    private fun getMessagesApi(api: ApiResponse<MutableList<Message>>) {
         when (api) {
             is ApiResponse.Success -> {
                 messages = api.data
