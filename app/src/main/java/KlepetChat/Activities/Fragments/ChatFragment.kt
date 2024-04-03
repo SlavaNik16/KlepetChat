@@ -54,6 +54,27 @@ class ChatFragment : Fragment() {
         return binding!!.root
     }
 
+    private fun onHandlerUpdateChat() {
+        signalRViewModel.getConnection().on("UpdateMessage") {
+            if(chatId == Constants.GUID_NULL){
+                return@on
+            }
+            getMessages(chatId)
+        }
+    }
+    override fun onStart() {
+        super.onStart()
+        onHandlerUpdateChat()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        removeHandlerUpdateChat()
+    }
+    private fun removeHandlerUpdateChat() {
+        signalRViewModel.getConnection().remove("UpdateMessage")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onHandlers()
@@ -92,10 +113,11 @@ class ChatFragment : Fragment() {
             binding?.buttonInitChat?.visibility = View.VISIBLE
             return
         }
-        joinGroup()
+        joinGroup(chatType)
     }
 
-    fun joinGroup() {
+    fun joinGroup(chatTypes: ChatTypes) {
+        chatType = chatTypes
         if (chatType != ChatTypes.Favorites) {
             signalRViewModel.joinGroup(chatId.toString())
         }

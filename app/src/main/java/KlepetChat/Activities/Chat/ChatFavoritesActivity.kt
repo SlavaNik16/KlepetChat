@@ -134,8 +134,6 @@ class ChatFavoritesActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-//        var intent = Intent(this@ChatFavoritesActivity, MainActivity::class.java)
-//        startActivity(intent)
         finish()
     }
 

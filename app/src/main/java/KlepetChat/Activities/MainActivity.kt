@@ -83,6 +83,29 @@ class MainActivity : AppCompatActivity() {
         signalRViewModel.start()
     }
 
+    private fun setHandlerSignalR(){
+        signalRViewModel.getConnection().on("UpdateChat") {
+            runOnUiThread(Runnable {
+                getChats()
+            })
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setHandlerSignalR()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        removeHandlerSignalR()
+    }
+
+    private fun removeHandlerSignalR(){
+        signalRViewModel.getConnection().remove("UpdateChat")
+    }
+
+
     private fun registerNotification() {
         notificationUtils = NotificationUtils().getInstance(this)
         notificationUtils?.registerNotification()

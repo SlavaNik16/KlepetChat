@@ -322,7 +322,7 @@ class ChatGroupActivity : AppCompatActivity() {
             is ApiResponse.Success -> {
                 chatId = api.data.id
                 fragment?.chatId = chatId!!
-                fragment?.joinGroup()
+                fragment?.joinGroup(ChatTypes.Group)
                 binding?.imageChat?.visibility = View.VISIBLE
                 persons!!.add(phone!!)
                 binding?.textDesc?.text = "${persons!!.count()} подписчиков"

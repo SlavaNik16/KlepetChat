@@ -265,7 +265,6 @@ class ChooseActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_CHAT_NAME, user.name)
         intent.putExtra(Constants.KEY_IMAGE_URL, user.photo)
         startActivity(intent)
-        //finish()
     }
 
     private fun navigateToGroup(chat: Chat) {
@@ -278,12 +277,9 @@ class ChooseActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_USER_PHONE, phone)
         intent.putExtra(Constants.KEY_USER_ROLE, chat.roleType.name)
         startActivity(intent)
-        //finish()
     }
 
     private fun onBackPress() {
-//        var intent = Intent(this@ChooseActivity, MainActivity::class.java)
-//        startActivity(intent)
         finish()
     }
 
