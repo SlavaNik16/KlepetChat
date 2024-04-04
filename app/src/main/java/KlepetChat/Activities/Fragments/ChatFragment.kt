@@ -1,12 +1,13 @@
+
 import KlepetChat.Activities.Chat.ChatContactActivity
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.ChatAdapter
 import KlepetChat.DataSore.Models.UserData
 import KlepetChat.Utils.TextChangedListener
 import KlepetChat.WebApi.Implementations.ApiResponse
+import KlepetChat.WebApi.Implementations.ViewModels.DataStore.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
-import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.Message
@@ -55,11 +56,20 @@ class ChatFragment : Fragment() {
     }
 
     private fun onHandlerUpdateChat() {
+        updateMessageHandler()
+        deleteChatHandler()
+    }
+    private fun updateMessageHandler(){
         signalRViewModel.getConnection().on("UpdateMessage") {
             if(chatId == Constants.GUID_NULL){
                 return@on
             }
             getMessages(chatId)
+        }
+    }
+    private fun deleteChatHandler(){
+        signalRViewModel.getConnection().on("ExitChat") {
+            requireActivity().finish()
         }
     }
     override fun onStart() {
@@ -73,6 +83,7 @@ class ChatFragment : Fragment() {
     }
     private fun removeHandlerUpdateChat() {
         signalRViewModel.getConnection().remove("UpdateMessage")
+        signalRViewModel.getConnection().remove("ExitChat")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -274,8 +285,10 @@ class ChatFragment : Fragment() {
         if (message != null) {
             messages?.add(message)
         }
-        messages?.sortBy { it.createdAt }
-        if (messages?.size != 0) {
+        if (messages != null) {
+            if(messages?.size != 0) {
+                messages?.sortBy { it.createdAt }
+            }
             chatAdapter = ChatAdapter(messages!!, phone!!)
             binding?.recyclerChat?.adapter = chatAdapter
             chatAdapter?.notifyDataSetChanged()

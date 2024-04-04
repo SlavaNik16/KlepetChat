@@ -43,13 +43,33 @@ interface IHubService {
         @Query("message") message: String,
     ): Response<ResponseBody>
 
-    @POST("ChatHub/UpdateChat")
-    suspend fun updateChat(
+    @POST("ChatHub/UpdateChatContact")
+    suspend fun updateChatContact(
         @Query("phoneOther") phoneOther: String,
     ): Response<ResponseBody>
 
-    @POST("ChatHub/UpdateMessage")
-    suspend fun updateMessage(
+    @POST("ChatHub/UpdateChatGroup")
+    suspend fun updateChatGroup(
+        @Query("phones") phones: MutableList<String>,
+    ): Response<ResponseBody>
+
+    @POST("ChatHub/UpdateMessageContact")
+    suspend fun updateMessageContact(
         @Query("phoneOther") phoneOther: String,
+    ): Response<ResponseBody>
+
+    @POST("ChatHub/UpdateMessageGroup")
+    suspend fun updateMessageGroup(
+        @Query("phones") phones: MutableList<String>,
+    ): Response<ResponseBody>
+
+    @POST("ChatHub/DeletedChatContact")
+    suspend fun deletedChatContact(
+        @Query("phoneOther") phoneOther: String,
+    ): Response<ResponseBody>
+
+    @POST("ChatHub/DeletedChatGroup")
+    suspend fun deletedChatGroup(
+        @Query("phones") phones: MutableList<String>,
     ): Response<ResponseBody>
 }

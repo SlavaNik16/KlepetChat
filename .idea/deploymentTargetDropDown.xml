@@ -4,26 +4,26 @@
     <value>
       <entry key="app">
         <State>
-          <runningDeviceTargetSelectedWithDropDown>
+          <targetSelectedWithDropDown>
             <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
+              <type value="QUICK_BOOT_TARGET" />
               <deviceKey>
                 <Key>
-                  <type value="SERIAL_NUMBER" />
-                  <value value="S8BMWKQWFM4XNRYT" />
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\Николаев Вячеслав\.android\avd\Medium_Phone_API_33.avd" />
                 </Key>
               </deviceKey>
             </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-04-03T09:23:26.760516400Z" />
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-04-04T21:45:16.381392400Z" />
           <multipleDevicesSelectedInDropDown value="true" />
           <runningDeviceTargetsSelectedWithDialog>
             <Target>
               <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
-                  <type value="SERIAL_NUMBER" />
-                  <value value="S8BMWKQWFM4XNRYT" />
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\ÐÐ¸ÐºÐ¾Ð»Ð°ÐµÐ² ÐÑÑÐµÑÐ»Ð°Ð²\.android\avd\Medium_Phone_API_33.avd" />
                 </Key>
               </deviceKey>
             </Target>
@@ -31,8 +31,8 @@
               <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\ÐÐ¸ÐºÐ¾Ð»Ð°ÐµÐ² ÐÑÑÐµÑÐ»Ð°Ð²\.android\avd\Medium_Phone_API_33.avd" />
+                  <type value="SERIAL_NUMBER" />
+                  <value value="S8BMWKQWFM4XNRYT" />
                 </Key>
               </deviceKey>
             </Target>

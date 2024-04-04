@@ -34,11 +34,28 @@ class HubRepository @Inject constructor(
             hubService.sendNotificationGroupContact(phoneOther, chatId, message)
         }
 
-    fun updateChat(phoneOther: String) = ApiRequestFlowResponse {
-        hubService.updateChat(phoneOther)
+    fun updateChatContact(phoneOther: String) = ApiRequestFlowResponse {
+        hubService.updateChatContact(phoneOther)
     }
 
-    fun updateMessage(phoneOther: String) = ApiRequestFlowResponse {
-        hubService.updateMessage(phoneOther)
+    fun updateChatGroup(phones: MutableList<String>) = ApiRequestFlowResponse {
+        hubService.updateChatGroup(phones)
     }
+
+    fun updateMessageContact(phoneOther: String) = ApiRequestFlowResponse {
+        hubService.updateMessageContact(phoneOther)
+    }
+
+    fun updateMessageGroup(phones: MutableList<String>) = ApiRequestFlowResponse {
+        hubService.updateMessageGroup(phones)
+    }
+
+    fun deletedChatContact(phoneOther: String) = ApiRequestFlowResponse {
+        hubService.deletedChatContact(phoneOther)
+    }
+
+    fun deletedChatGroup(phones: MutableList<String>) = ApiRequestFlowResponse {
+        hubService.deletedChatGroup(phones)
+    }
+
 }

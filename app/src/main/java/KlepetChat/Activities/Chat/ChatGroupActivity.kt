@@ -301,8 +301,6 @@ class ChatGroupActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-//        var intent = Intent(this@ChatGroupActivity, MainActivity::class.java)
-//        startActivity(intent)
         finish()
     }
 

@@ -83,24 +83,64 @@ class SignalRViewModel @Inject constructor(
     ) {
         hubRepository.printGroup(groupName, isStart)
     }
-    private fun updateChat(
+    private fun updateChatContact(
         phoneOther: String,
         coroutineErrorHandler: ICoroutinesErrorHandler,
     ) = BaseRequest(
         hubResponse,
         coroutineErrorHandler
     ) {
-        hubRepository.updateChat(phoneOther)
+        hubRepository.updateChatContact(phoneOther)
     }
 
-    private fun updateMessage(
+    private fun updateMessageContact(
         phoneOther: String,
         coroutineErrorHandler: ICoroutinesErrorHandler,
     ) = BaseRequest(
         hubResponse,
         coroutineErrorHandler
     ) {
-        hubRepository.updateMessage(phoneOther)
+        hubRepository.updateMessageContact(phoneOther)
+    }
+
+    private fun deletedChatContact(
+        phoneOther: String,
+        coroutineErrorHandler: ICoroutinesErrorHandler,
+    ) = BaseRequest(
+        hubResponse,
+        coroutineErrorHandler
+    ) {
+        hubRepository.deletedChatContact(phoneOther)
+    }
+
+    private fun updateChatGroup(
+        phones: MutableList<String>,
+        coroutineErrorHandler: ICoroutinesErrorHandler,
+    ) = BaseRequest(
+        hubResponse,
+        coroutineErrorHandler
+    ) {
+        hubRepository.updateChatGroup(phones)
+    }
+
+    private fun updateMessageGroup(
+        phones: MutableList<String>,
+        coroutineErrorHandler: ICoroutinesErrorHandler,
+    ) = BaseRequest(
+        hubResponse,
+        coroutineErrorHandler
+    ) {
+        hubRepository.updateMessageGroup(phones)
+    }
+
+    private fun deletedChatGroup(
+        phones: MutableList<String>,
+        coroutineErrorHandler: ICoroutinesErrorHandler,
+    ) = BaseRequest(
+        hubResponse,
+        coroutineErrorHandler
+    ) {
+        hubRepository.deletedChatGroup(phones)
     }
 
     fun joinGroup(groupName: String) {
@@ -161,8 +201,8 @@ class SignalRViewModel @Inject constructor(
             })
     }
 
-    fun updateChat(phoneOther: String) {
-        updateChat(
+    fun updateChatContact(phoneOther: String) {
+        updateChatContact(
             phoneOther,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
@@ -171,10 +211,20 @@ class SignalRViewModel @Inject constructor(
             })
     }
 
-    fun updateMessage(phoneOther: String) {
-        updateMessage(
+    fun updateMessageContact(phoneOther: String) {
+        updateMessageContact(
             phoneOther,
             object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+    }
+
+    fun deletedChatContact(phoneOther: String) {
+        deletedChatContact(
+            phoneOther,
+            object : ICoroutinesErrorHandler{
                 override fun onError(message: String) {
 
                 }
