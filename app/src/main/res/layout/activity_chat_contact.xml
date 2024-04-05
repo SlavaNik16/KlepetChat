@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
-        android:layout_width="414dp"
+        android:layout_width="wrap_content"
         android:layout_height="57dp"
         android:background="#eef2e9"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,19 +27,19 @@
 
             <ImageView
                 android:id="@+id/imageView2"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="37dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:background="@drawable/ic_back" />
         </LinearLayout>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/butMenu"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="84dp"
+            android:layout_height="51dp"
 
 
-            android:layout_marginStart="360dp"
+            android:layout_marginStart="330dp"
             android:src="@drawable/ic_chat_user"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/back"
@@ -48,8 +48,8 @@
 
         <LinearLayout
             android:id="@+id/linearLayout4"
-            android:layout_width="172dp"
-            android:layout_height="51dp"
+            android:layout_width="192dp"
+            android:layout_height="55dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/butMenu"
@@ -65,6 +65,7 @@
                 android:text="TextView"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/textDesc"
                 android:layout_width="match_parent"
