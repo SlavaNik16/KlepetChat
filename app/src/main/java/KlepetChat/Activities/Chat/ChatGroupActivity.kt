@@ -6,6 +6,7 @@ import KlepetChat.Activities.DialogFragment.AlertDialogGroupChatProfile
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
@@ -50,6 +51,13 @@ class ChatGroupActivity : AppCompatActivity() {
         setListeners()
         setObserve()
         init()
+    }
+    fun signalNotification(signalRViewModel: SignalRViewModel, message: String, isSend: Boolean) {
+        if (isSend) {
+            return
+        }
+        signalRViewModel.sendNotificationGroupContact(phone!!, chatId!!, message)
+        signalRViewModel.updateChatContact(phone!!)
     }
 
     override fun onStart() {
@@ -324,6 +332,11 @@ class ChatGroupActivity : AppCompatActivity() {
                 binding?.imageChat?.visibility = View.VISIBLE
                 persons!!.add(phone!!)
                 binding?.textDesc?.text = "${persons!!.count()} подписчиков"
+                for (person in persons!!){
+                    fragment?.signalRViewModel?.updateChatContact(person)
+                    fragment?.signalRViewModel?.updateChatContact(person)
+                }
+
             }
 
             is ApiResponse.Failure -> {
@@ -359,7 +372,9 @@ class ChatGroupActivity : AppCompatActivity() {
     private fun getDeletedChat(api: ApiResponse<ResponseBody>) {
         when (api) {
             is ApiResponse.Success -> {
-                onBackPress()
+                for (person in persons!!){
+                    fragment?.signalRViewModel?.deletedChatContact(person)
+                }
             }
 
             is ApiResponse.Failure -> {

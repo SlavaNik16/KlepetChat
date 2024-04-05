@@ -231,6 +231,36 @@ class SignalRViewModel @Inject constructor(
             })
     }
 
+    fun updateChatGroup(phones: MutableList<String>) {
+        updateChatGroup(
+            phones,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+    }
+
+    fun updateMessageGroup(phones: MutableList<String>) {
+        updateMessageGroup(
+            phones,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+    }
+
+    fun deletedChatGroup(phones: MutableList<String>) {
+        deletedChatGroup(
+            phones,
+            object : ICoroutinesErrorHandler{
+                override fun onError(message: String) {
+
+                }
+            })
+    }
+
 
     fun start() {
         try {

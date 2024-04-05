@@ -1,5 +1,6 @@
 
 import KlepetChat.Activities.Chat.ChatContactActivity
+import KlepetChat.Activities.Chat.ChatGroupActivity
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.ChatAdapter
 import KlepetChat.DataSore.Models.UserData
@@ -113,6 +114,11 @@ class ChatFragment : Fragment() {
                 if (chatType == ChatTypes.Contact) {
                     if (requireActivity() is ChatContactActivity) {
                         var chatContact = requireActivity() as ChatContactActivity
+                        chatContact.signalNotification(signalRViewModel, it.text, it.phone == phone)
+                    }
+                }else if(chatType == ChatTypes.Group){
+                    if (requireActivity() is ChatGroupActivity) {
+                        var chatContact = requireActivity() as ChatGroupActivity
                         chatContact.signalNotification(signalRViewModel, it.text, it.phone == phone)
                     }
                 }
