@@ -9,8 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
-        android:layout_width="wrap_content"
-        android:layout_height="57dp"
+        android:layout_width="0dp"
+        android:layout_height="59dp"
         android:background="#eef2e9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,6 +20,7 @@
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,22 +28,22 @@
 
             <ImageView
                 android:id="@+id/imageView2"
-                android:layout_width="37dp"
-                android:layout_height="wrap_content"
+                android:layout_width="35dp"
+                android:layout_height="38dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/ic_back" />
         </LinearLayout>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/butMenu"
-            android:layout_width="84dp"
-            android:layout_height="51dp"
+            android:layout_width="66dp"
+            android:layout_height="52dp"
 
 
-            android:layout_marginStart="330dp"
+            android:layout_marginEnd="10dp"
             android:src="@drawable/ic_chat_user"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/back"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.444" />
 
@@ -81,10 +82,9 @@
             android:id="@+id/butPhone"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginStart="244dp"
             android:background="@drawable/ic_calling"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/back"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout4"
             app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -96,7 +96,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
         app:layout_constraintVertical_bias="0.0" />
