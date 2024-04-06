@@ -135,15 +135,7 @@ class MainActivity : AppCompatActivity() {
     private fun sendNotificationCreateGroup(chat: Chat, userName:String) {
         val intent = Intent(this, ChatGroupActivity::class.java).apply {
             this.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
-            this.putExtra(Constants.KEY_CHAT_NAME, chat.name)
-            this.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
-            var arrayList: ArrayList<String> = arrayListOf()
-            for (item in chat.phones) {
-                arrayList.add(item)
-            }
-            this.putStringArrayListExtra(Constants.KEY_CHAT_PEOPLE, arrayList)
             this.putExtra(Constants.KEY_USER_PHONE, user.phone)
-            this.putExtra(Constants.KEY_USER_ROLE, chat.roleType.name)
         }.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0,
             intent, PendingIntent.FLAG_IMMUTABLE)
@@ -430,15 +422,7 @@ class MainActivity : AppCompatActivity() {
     private fun navigateToGroup(chat: Chat) {
         val intent = Intent(this@MainActivity, ChatGroupActivity::class.java)
         intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
-        intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
-        intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
-        var arrayList: ArrayList<String> = arrayListOf()
-        for (item in chat.phones) {
-            arrayList.add(item)
-        }
-        intent.putStringArrayListExtra(Constants.KEY_CHAT_PEOPLE, arrayList)
         intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
-        intent.putExtra(Constants.KEY_USER_ROLE, chat.roleType.name)
         startActivity(intent)
     }
 

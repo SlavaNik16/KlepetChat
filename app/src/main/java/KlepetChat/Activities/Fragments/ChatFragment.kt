@@ -10,6 +10,7 @@ import KlepetChat.WebApi.Implementations.ViewModels.DataStore.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
+import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.Message
 import android.os.Bundle
@@ -57,8 +58,19 @@ class ChatFragment : Fragment() {
     }
 
     private fun onHandlerUpdateChat() {
+        updateChatInfoHandler()
         updateMessageHandler()
         deleteChatHandler()
+    }
+    private fun updateChatInfoHandler(){
+        signalRViewModel.getConnection().on("ChatInfoUpdate", { chat->
+            requireActivity().runOnUiThread(Runnable {
+                if(requireActivity() is ChatGroupActivity){
+                    var act = requireActivity() as ChatGroupActivity
+                    act.getChatUpdate(chat)
+                }
+            })
+        }, Chat::class.java)
     }
     private fun updateMessageHandler(){
         signalRViewModel.getConnection().on("UpdateMessage") {
@@ -83,6 +95,7 @@ class ChatFragment : Fragment() {
         removeHandlerUpdateChat()
     }
     private fun removeHandlerUpdateChat() {
+        signalRViewModel.getConnection().remove("ChatInfoUpdate")
         signalRViewModel.getConnection().remove("UpdateMessage")
         signalRViewModel.getConnection().remove("ExitChat")
     }

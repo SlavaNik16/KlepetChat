@@ -13,6 +13,10 @@ class ChatRepository @Inject constructor(
         chatService.getChats()
     }
 
+    fun getChatById(id: UUID) = ApiRequestFlowResponse {
+        chatService.getChatById(id)
+    }
+
     fun getChatsByName(name: String) = ApiRequestFlowResponse {
         chatService.getChatsByName(name)
     }

@@ -43,8 +43,8 @@ class HubRepository @Inject constructor(
         hubService.updateChat(phoneOther)
     }
 
-    fun updateChatInfo(phoneOther: String) = ApiRequestFlowResponse {
-        hubService.updateChatInfo(phoneOther)
+    fun updateChatInfo(phoneOther: String, chatId: UUID) = ApiRequestFlowResponse {
+        hubService.updateChatInfo(phoneOther,chatId)
     }
 
     fun updateMessageContact(phoneOther: String) = ApiRequestFlowResponse {

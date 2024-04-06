@@ -58,6 +58,7 @@ interface IHubService {
     @POST("ChatHub/UpdateChatInfo")
     suspend fun updateChatInfo(
         @Query("phoneOther") phoneOther: String,
+        @Query("chatId") chatId: UUID,
     ): Response<ResponseBody>
 
     @POST("ChatHub/UpdateMessageContact")

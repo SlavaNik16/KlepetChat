@@ -47,7 +47,6 @@ class AlertDialogGroupChatProfile : DialogFragment() {
     private var userViewModel: UserViewModel? = null
     private var imageViewModel: ImageViewModel? = null
     private var chatViewModel: ChatViewModel? = null
-    //private var signalRViewModel: SignalRViewModel? = null
     private var adapter: RecyclerView.Adapter<UserViewItemAdapter.UserViewItemHolder>? = null
     private var users: MutableList<User>? = null
     private var chatId: UUID? = null
@@ -95,14 +94,18 @@ class AlertDialogGroupChatProfile : DialogFragment() {
         imageViewModel?.img?.observe(requireActivity()) { getHttpImage(it) }
         chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
         chatViewModel?.chatImage?.observe(requireActivity()) { getChat(it) }
-
-        //signalRViewModel = ViewModelProvider(this)[SignalRViewModel::class.java]
     }
 
     private fun getChat(api: ApiResponse<Chat>) {
         when (api) {
             is ApiResponse.Success -> {
+                if (requireActivity() is ChatGroupActivity) {
+                    var chatGroupActivity = activity as ChatGroupActivity
+                    for(phone in users!!.map { it.phone }){
+                        chatGroupActivity.getUpdateChat(phone, chatId!!)
+                    }
 
+                }
                 Toast.makeText(
                     requireActivity(), "Фото успешно сохранено!", Toast.LENGTH_SHORT
                 ).show()
@@ -125,13 +128,6 @@ class AlertDialogGroupChatProfile : DialogFragment() {
             is ApiResponse.Success -> {
                 var imageHttp = api.data.string()
                 putEditPhotoChat(imageHttp)
-                var activity = requireActivity()
-                if (activity is ChatGroupActivity) {
-                    var chatGroupActivity = activity as ChatGroupActivity
-                    chatGroupActivity.intent?.putExtra(Constants.KEY_IMAGE_URL, imageHttp)
-//                    signalRViewModel?.updateChatGroup(users?.map { it.phone }!!.toMutableList())
-//                    signalRViewModel?.updateMessageGroup(users?.map { it.phone }!!.toMutableList())
-                }
                 if (file?.exists() == true) {
                     file?.delete()
                 }

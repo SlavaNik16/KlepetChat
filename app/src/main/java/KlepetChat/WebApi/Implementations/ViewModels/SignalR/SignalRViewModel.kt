@@ -107,12 +107,13 @@ class SignalRViewModel @Inject constructor(
 
     private fun updateChatInfo(
         phoneOther: String,
+        chatId: UUID,
         coroutineErrorHandler: ICoroutinesErrorHandler,
     ) = BaseRequest(
         hubResponse,
         coroutineErrorHandler
     ) {
-        hubRepository.updateChatInfo(phoneOther)
+        hubRepository.updateChatInfo(phoneOther, chatId)
     }
 
     private fun updateMessageContact(
@@ -220,6 +221,17 @@ class SignalRViewModel @Inject constructor(
     fun updateChat(phoneOther: String) {
         updateChat(
             phoneOther,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+    }
+
+    fun updateChatInfo(phoneOther: String, chatId: UUID) {
+        updateChatInfo(
+            phoneOther,
+            chatId,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
