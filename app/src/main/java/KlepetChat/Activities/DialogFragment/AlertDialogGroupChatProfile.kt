@@ -302,6 +302,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
         intent.putExtra(Constants.KEY_PROFILE_VIEW, user.phone != phone)
         intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
         startActivity(intent)
+        requireActivity().finish()
     }
 
 
