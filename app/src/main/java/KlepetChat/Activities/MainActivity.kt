@@ -26,6 +26,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity() {
     private val userViewModel: UserViewModel by viewModels()
     private val userDataViewModel: UserDataViewModel by viewModels()
     private val chatViewModel: ChatViewModel by viewModels()
+    private var actionBarDrawerToggle: ActionBarDrawerToggle? = null
     private lateinit var adapter: RecyclerView.Adapter<ChatViewItemAdapter.ChatViewItemHolder>
     private var isEdit = false
     private lateinit var chats: MutableList<Chat>
@@ -73,6 +75,15 @@ class MainActivity : AppCompatActivity() {
         initDrawLayout()
         loading(true)
     }
+
+    override fun onBackPressed() {
+        if(binding?.drawerLayout!!.isDrawerOpen(Gravity.LEFT)){
+            binding?.drawerLayout!!.closeDrawer(Gravity.LEFT)
+        }else{
+            super.onBackPressed();
+        }
+    }
+
 
     private fun setSignalR() {
         signalRViewModel.getConnection().on("AnswerNotificationContact", {
@@ -99,6 +110,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        binding?.drawerLayout?.closeDrawer(Gravity.LEFT)
         setHandlerSignalR()
     }
 
@@ -201,7 +213,6 @@ class MainActivity : AppCompatActivity() {
             is ApiResponse.Success -> {
                 user = api.data
                 initNavigationViewHeader(user)
-                getChats()
             }
 
             is ApiResponse.Failure -> {
@@ -243,6 +254,7 @@ class MainActivity : AppCompatActivity() {
         getByPhone(userData!!.phone)
     }
 
+
     private fun getByPhone(phone: String) {
         userViewModel.getByPhone(phone,
             object : ICoroutinesErrorHandler {
@@ -258,15 +270,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun initDrawLayout() {
         setSupportActionBar(binding?.toolBar)
-        var toggle = ActionBarDrawerToggle(
-            this,
-            binding?.drawerLayout,
-            binding?.toolBar,
-            R.string.open,
-            R.string.close
-        )
-        binding?.drawerLayout?.addDrawerListener(toggle)
-        toggle.syncState()
+
+        binding?.imageMenu?.setOnClickListener{
+            getByPhone(user.phone)
+            binding?.drawerLayout?.openDrawer(Gravity.LEFT)
+        }
     }
 
     override fun onDestroy() {
@@ -303,6 +311,7 @@ class MainActivity : AppCompatActivity() {
         binding?.inputSearch?.addTextChangedListener(addTextSearchChange())
 
     }
+
 
     private fun addTextSearchChange(): TextWatcher {
         return object : TextChangedListener<EditText>(binding?.inputSearch!!) {
@@ -461,7 +470,6 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_IS_OPEN_GROUP, isOpenGroup)
         intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
         startActivity(intent)
-        //finish()
     }
 
     private fun navigateToProfile() {
@@ -469,7 +477,6 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_PROFILE_VIEW, false)
         intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
         startActivity(intent)
-        //finish()
     }
 
     private fun initNavigationViewHeader(user: User) {
