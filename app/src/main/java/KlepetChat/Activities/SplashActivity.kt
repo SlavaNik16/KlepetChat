@@ -1,7 +1,7 @@
 package KlepetChat.Activities
 
 import KlepetChat.DataSore.Models.UserData
-import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.DataStore.UserDataViewModel
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity

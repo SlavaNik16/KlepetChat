@@ -19,11 +19,13 @@ class ChatViewModel @Inject constructor(
     private val chatsResponse = MutableLiveData<ApiResponse<MutableList<Chat>>>()
     private val chatExists = MutableLiveData<ApiResponse<Boolean>>()
     private val chatResponse = MutableLiveData<ApiResponse<Chat>>()
+    private val chatJoinResponse = MutableLiveData<ApiResponse<Chat>>()
     private val chatImageResponse = MutableLiveData<ApiResponse<Chat>>()
     private val chatBodyResponse = MutableLiveData<ApiResponse<ResponseBody>>()
     val chats = chatsResponse
     val exists = chatExists
     val chat = chatResponse
+    val chatJoin = chatJoinResponse
     val chatImage = chatImageResponse
     val deleteChat = chatBodyResponse
 
@@ -32,6 +34,13 @@ class ChatViewModel @Inject constructor(
         coroutineErrorHandler
     ) {
         chatRepository.getChats()
+    }
+
+    fun getChatById(id: UUID, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
+        chatResponse,
+        coroutineErrorHandler
+    ) {
+        chatRepository.getChatById(id)
     }
 
     fun getChatsByName(name: String, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
@@ -76,7 +85,7 @@ class ChatViewModel @Inject constructor(
     }
 
     fun postJoinGroup(id: UUID, coroutineErrorHandler: ICoroutinesErrorHandler) = BaseRequest(
-        chatResponse,
+        chatJoinResponse,
         coroutineErrorHandler
     ) {
         chatRepository.postJoinGroup(id)

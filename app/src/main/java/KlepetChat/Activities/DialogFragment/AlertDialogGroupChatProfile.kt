@@ -99,7 +99,13 @@ class AlertDialogGroupChatProfile : DialogFragment() {
     private fun getChat(api: ApiResponse<Chat>) {
         when (api) {
             is ApiResponse.Success -> {
+                if (requireActivity() is ChatGroupActivity) {
+                    var chatGroupActivity = activity as ChatGroupActivity
+                    for(phone in users!!.map { it.phone }){
+                        chatGroupActivity.getUpdateChat(phone, chatId!!)
+                    }
 
+                }
                 Toast.makeText(
                     requireActivity(), "Фото успешно сохранено!", Toast.LENGTH_SHORT
                 ).show()
@@ -122,11 +128,6 @@ class AlertDialogGroupChatProfile : DialogFragment() {
             is ApiResponse.Success -> {
                 var imageHttp = api.data.string()
                 putEditPhotoChat(imageHttp)
-                var activity = requireActivity()
-                if (activity is ChatGroupActivity) {
-                    var chatGroupActivity = activity as ChatGroupActivity
-                    chatGroupActivity.intent?.putExtra(Constants.KEY_IMAGE_URL, imageHttp)
-                }
                 if (file?.exists() == true) {
                     file?.delete()
                 }
@@ -228,6 +229,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
         userViewModel = null
         imageViewModel = null
         chatViewModel = null
+        //signalRViewModel = null
         this.viewModelStore.clear()
     }
 
@@ -300,6 +302,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
         intent.putExtra(Constants.KEY_PROFILE_VIEW, user.phone != phone)
         intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
         startActivity(intent)
+        requireActivity().finish()
     }
 
 

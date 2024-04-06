@@ -6,10 +6,12 @@ import KlepetChat.Activities.DialogFragment.AlertDialogGroupChatProfile
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.Enums.RoleTypes
+import KlepetChat.WebApi.Models.Response.Message
 import KlepetChat.WebApi.Models.Response.User
 import android.os.Bundle
 import android.view.MenuItem
@@ -37,6 +39,7 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private var chatId: UUID? = null
     private var phone: String? = null
+    private var image: String? = null
     private var roleType: RoleTypes = RoleTypes.User
 
     private var fragment: ChatFragment? = null
@@ -51,23 +54,33 @@ class ChatGroupActivity : AppCompatActivity() {
         setObserve()
         init()
     }
-
-    override fun onStart() {
-        super.onStart()
-        statusOnline()
-        statusOffline()
-        statusPrint()
+    fun signalNotification(signalRViewModel: SignalRViewModel, message: Message) {
+        if (message.phone != phone) {
+            return
+        }
+        for(person in persons!!){
+            if(person == message.phone){
+                continue
+            }
+            signalRViewModel.sendNotificationGroup(person, chatId!!, message.id)
+            signalRViewModel.updateChat(person)
+        }
     }
+
 
     private fun statusOnline() {
         fragment?.signalRViewModel?.getConnection()?.on("StatusUsersOnline", { user ->
+            runOnUiThread(Runnable {
 
+            })
         }, User::class.java)
     }
 
     private fun statusOffline() {
         fragment?.signalRViewModel?.getConnection()?.on("StatusUsersOffline", { user ->
+            runOnUiThread(Runnable {
 
+            })
         }, User::class.java)
     }
 
@@ -75,17 +88,17 @@ class ChatGroupActivity : AppCompatActivity() {
         fragment?.signalRViewModel?.getConnection()?.on("StatusPrint", { user, isStart ->
             runOnUiThread(Runnable {
                 if (user.phone != phone) {
-                    statisPrint = isStart
+                    statusPrint = isStart
                     animationUpload(user)
                 }
             })
         }, User::class.java, Boolean::class.java)
     }
 
-    private var statisPrint = false
+    private var statusPrint = false
     private fun animationUpload(user: User) {
         runOnUiThread {
-            if (!statisPrint) {
+            if (!statusPrint) {
                 binding?.textDesc?.text = "${persons!!.count()} подписчиков"
                 return@runOnUiThread
             }
@@ -120,7 +133,7 @@ class ChatGroupActivity : AppCompatActivity() {
             timer.schedule(
                 object : TimerTask() {
                     override fun run() {
-                        if (!statisPrint) {
+                        if (!statusPrint) {
                             binding?.textDesc?.text ="${persons!!.count()} подписчиков"
                             return
                         }
@@ -140,8 +153,10 @@ class ChatGroupActivity : AppCompatActivity() {
     }
 
     private fun setObserve() {
-        chatViewModel.chat.observe(this) { getChat(it) }
+        chatViewModel.chatJoin.observe(this) { getChatJoin(it) }
+        chatViewModel.chat.observe(this) { getChatApi(it) }
         messageViewModel.exist.observe(this) { getDeletedMessage(it) }
+        chatViewModel.exists.observe(this) { getLeaveChat(it) }
         chatViewModel.deleteChat.observe(this) { getDeletedChat(it) }
     }
 
@@ -154,12 +169,21 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private fun init() {
         val argument = intent.extras
-
-        persons = argument?.getStringArrayList(Constants.KEY_CHAT_PEOPLE)
-        binding?.textDesc?.text = "${persons?.count()} подписчик(-a)"
         phone = argument?.getString(Constants.KEY_USER_PHONE)
         val chatIdStr = argument?.getString(Constants.KEY_CHAT_ID)
         chatId = UUID.fromString(chatIdStr)
+        getChat(chatId!!)
+    }
+    private fun getChat(chatId: UUID){
+       chatViewModel.getChatById(chatId,
+           object : ICoroutinesErrorHandler{
+               override fun onError(message: String) {
+
+               }
+           })
+    }
+    private fun initChat(chat: Chat){
+        getChatUpdate(chat)
         if (persons!!.contains(phone)) {
             fragment = ChatFragment.newInstance(chatId!!, ChatTypes.Group)
             fragmentInstance(fragment!!)
@@ -169,26 +193,25 @@ class ChatGroupActivity : AppCompatActivity() {
             fragmentInstance(fragment!!)
             binding?.imageChat?.visibility = View.INVISIBLE
         }
+        statusOnline()
+        statusOffline()
+        statusPrint()
+    }
 
-        val txtName = argument?.getString(Constants.KEY_CHAT_NAME)
-        binding?.txtName?.text = txtName
-
-        var roleTypeStr = argument?.getString(Constants.KEY_USER_ROLE).toString()
-        roleType = when (roleTypeStr) {
-            RoleTypes.User.name -> RoleTypes.User
-            RoleTypes.Admin.name -> RoleTypes.Admin
-            else -> RoleTypes.User
-        }
-
-        val imageChat = argument?.getString(Constants.KEY_IMAGE_URL)
-        if (!imageChat.isNullOrBlank()) {
+    fun getChatUpdate(chat: Chat){
+        chatId = chat.id
+        binding?.txtName?.text = chat.name
+        image = chat.photo ?: "empty"
+        if(!chat.photo.isNullOrBlank()){
             Picasso.get()
-                .load(imageChat)
+                .load(chat.photo)
                 .placeholder(R.drawable.ic_group)
                 .error(R.drawable.ic_group)
                 .into(binding?.imageChat)
         }
-
+        roleType = chat.roleType
+        persons = chat.phones
+        binding?.textDesc?.text = "${persons?.count()} подписчик(-a)"
     }
 
     private fun setListeners() {
@@ -198,7 +221,6 @@ class ChatGroupActivity : AppCompatActivity() {
     }
 
     private fun onProfileGroup() {
-        var image = intent?.extras?.getString(Constants.KEY_IMAGE_URL)
         val alertDialogGroupChatProfile = AlertDialogGroupChatProfile.newInstance(
             chatId!!, phone!!, binding?.txtName?.text.toString(), roleType, image
         )
@@ -252,7 +274,6 @@ class ChatGroupActivity : AppCompatActivity() {
 
                 }
             })
-        onBackPress()
     }
 
     private fun deletedMessage() {
@@ -301,8 +322,6 @@ class ChatGroupActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-//        var intent = Intent(this@ChatGroupActivity, MainActivity::class.java)
-//        startActivity(intent)
         finish()
     }
 
@@ -317,15 +336,42 @@ class ChatGroupActivity : AppCompatActivity() {
             })
     }
 
-    private fun getChat(api: ApiResponse<Chat>) {
+    private fun getChatApi(api: ApiResponse<Chat>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                initChat(api.data)
+
+            }
+
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    this@ChatGroupActivity, "Ошибка! ${api.message}", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                return
+            }
+        }
+    }
+
+    fun getUpdateChat(phone:String, chatId: UUID){
+        fragment?.signalRViewModel?.updateChatInfo(phone, chatId)
+    }
+    private fun getChatJoin(api: ApiResponse<Chat>) {
         when (api) {
             is ApiResponse.Success -> {
                 chatId = api.data.id
                 fragment?.chatId = chatId!!
-                fragment?.joinGroup()
+                fragment?.joinGroup(ChatTypes.Group)
+                persons?.add(phone!!)
                 binding?.imageChat?.visibility = View.VISIBLE
-                persons!!.add(phone!!)
-                binding?.textDesc?.text = "${persons!!.count()} подписчиков"
+                for (person in persons!!){
+                    fragment?.signalRViewModel?.updateChat(person)
+                    getUpdateChat(person, chatId!!)
+                }
+
+
             }
 
             is ApiResponse.Failure -> {
@@ -358,10 +404,34 @@ class ChatGroupActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun getLeaveChat(api: ApiResponse<Boolean>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                for (person in persons!!){
+                    getUpdateChat(person, chatId!!)
+                }
+                fragment?.signalRViewModel?.exitChat(phone!!)
+            }
+
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    this@ChatGroupActivity, "Ошибка! ${api.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                return
+            }
+        }
+    }
     private fun getDeletedChat(api: ApiResponse<ResponseBody>) {
         when (api) {
             is ApiResponse.Success -> {
-                onBackPress()
+                for (person in persons!!){
+                    fragment?.signalRViewModel?.exitChat(person)
+                }
             }
 
             is ApiResponse.Failure -> {

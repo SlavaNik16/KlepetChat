@@ -1,13 +1,16 @@
+
 import KlepetChat.Activities.Chat.ChatContactActivity
+import KlepetChat.Activities.Chat.ChatGroupActivity
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Adapters.ChatAdapter
 import KlepetChat.DataSore.Models.UserData
 import KlepetChat.Utils.TextChangedListener
 import KlepetChat.WebApi.Implementations.ApiResponse
+import KlepetChat.WebApi.Implementations.ViewModels.DataStore.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
-import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
+import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.Message
 import android.os.Bundle
@@ -54,6 +57,49 @@ class ChatFragment : Fragment() {
         return binding!!.root
     }
 
+    private fun onHandlerUpdateChat() {
+        updateChatInfoHandler()
+        updateMessageHandler()
+        deleteChatHandler()
+    }
+    private fun updateChatInfoHandler(){
+        signalRViewModel.getConnection().on("ChatInfoUpdate", { chat->
+            requireActivity().runOnUiThread(Runnable {
+                if(requireActivity() is ChatGroupActivity){
+                    var act = requireActivity() as ChatGroupActivity
+                    act.getChatUpdate(chat)
+                }
+            })
+        }, Chat::class.java)
+    }
+    private fun updateMessageHandler(){
+        signalRViewModel.getConnection().on("UpdateMessage") {
+            if(chatId == Constants.GUID_NULL){
+                return@on
+            }
+            getMessages(chatId)
+        }
+    }
+    private fun deleteChatHandler(){
+        signalRViewModel.getConnection().on("ExitChat") {
+            requireActivity().finish()
+        }
+    }
+    override fun onStart() {
+        super.onStart()
+        onHandlerUpdateChat()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        removeHandlerUpdateChat()
+    }
+    private fun removeHandlerUpdateChat() {
+        signalRViewModel.getConnection().remove("ChatInfoUpdate")
+        signalRViewModel.getConnection().remove("UpdateMessage")
+        signalRViewModel.getConnection().remove("ExitChat")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onHandlers()
@@ -83,6 +129,11 @@ class ChatFragment : Fragment() {
                         var chatContact = requireActivity() as ChatContactActivity
                         chatContact.signalNotification(signalRViewModel, it.text, it.phone == phone)
                     }
+                }else if(chatType == ChatTypes.Group){
+                    if (requireActivity() is ChatGroupActivity) {
+                        var chatContact = requireActivity() as ChatGroupActivity
+                        chatContact.signalNotification(signalRViewModel, it)
+                    }
                 }
             })
     }
@@ -92,10 +143,11 @@ class ChatFragment : Fragment() {
             binding?.buttonInitChat?.visibility = View.VISIBLE
             return
         }
-        joinGroup()
+        joinGroup(chatType)
     }
 
-    fun joinGroup() {
+    fun joinGroup(chatTypes: ChatTypes) {
+        chatType = chatTypes
         if (chatType != ChatTypes.Favorites) {
             signalRViewModel.joinGroup(chatId.toString())
         }
@@ -163,7 +215,7 @@ class ChatFragment : Fragment() {
 
     private fun setObserve() {
         messageViewModel.message.observe(requireActivity()) { getMessage(it) }
-        messageViewModel.messages.observe(requireActivity()) { getMessages(it) }
+        messageViewModel.messages.observe(requireActivity()) { getMessagesApi(it) }
         userDataViewModel.userData.observe(requireActivity()) { getUser(it) }
     }
 
@@ -185,7 +237,7 @@ class ChatFragment : Fragment() {
             })
     }
 
-    private fun getMessages(api: ApiResponse<MutableList<Message>>) {
+    private fun getMessagesApi(api: ApiResponse<MutableList<Message>>) {
         when (api) {
             is ApiResponse.Success -> {
                 messages = api.data
@@ -252,8 +304,10 @@ class ChatFragment : Fragment() {
         if (message != null) {
             messages?.add(message)
         }
-        messages?.sortBy { it.createdAt }
-        if (messages?.size != 0) {
+        if (messages != null) {
+            if(messages?.size != 0) {
+                messages?.sortBy { it.createdAt }
+            }
             chatAdapter = ChatAdapter(messages!!, phone!!)
             binding?.recyclerChat?.adapter = chatAdapter
             chatAdapter?.notifyDataSetChanged()
