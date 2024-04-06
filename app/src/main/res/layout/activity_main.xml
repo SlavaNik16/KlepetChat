@@ -100,7 +100,7 @@
             android:layout_height="40dp"
             android:gravity="center"
             android:textColor="@color/black"
-            android:hint="@string/Chats"
+            android:text="@string/Chats"
             android:textSize="20sp"
             android:textStyle="bold"
             android:visibility="visible"
