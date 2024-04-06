@@ -275,6 +275,7 @@ class MainActivity : AppCompatActivity() {
             getByPhone(user.phone)
             binding?.drawerLayout?.openDrawer(Gravity.LEFT)
         }
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     override fun onDestroy() {
