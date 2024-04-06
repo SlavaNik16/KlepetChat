@@ -37,8 +37,8 @@
 
         <LinearLayout
             android:id="@+id/groupProfile"
-            android:layout_width="190dp"
-            android:layout_height="61dp"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -48,15 +48,15 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:layout_width="154dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txtName"
-                    android:layout_width="178dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="TextView"
@@ -65,7 +65,7 @@
 
                 <TextView
                     android:id="@+id/textDesc"
-                    android:layout_width="178dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"

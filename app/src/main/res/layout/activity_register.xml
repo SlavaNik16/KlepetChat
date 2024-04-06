@@ -11,20 +11,18 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView10"
-        android:layout_width="308dp"
-        android:layout_height="70dp"
+        android:layout_width="286dp"
+        android:layout_height="73dp"
         android:layout_marginTop="16dp"
 
         android:rotation="0"
         android:scrollbarSize="5dp"
         android:visibility="visible"
         app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardViewProfile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textView11"
@@ -49,8 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView10"
-        app:layout_constraintVertical_bias="0.689">
+        app:layout_constraintTop_toBottomOf="@+id/cardViewProfile">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayoutEmail"
@@ -70,8 +67,8 @@
 
                 android:id="@+id/surnameField"
                 android:layout_width="match_parent"
-                android:background="@color/white"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:hint="@string/Surname"
                 android:inputType="textEmailAddress"
                 android:maxLength="60"
@@ -99,9 +96,9 @@
                 android:id="@+id/nameField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:hint="@string/Name"
                 android:inputType="text"
-                android:background="@color/white"
 
                 android:maxLength="60"
                 android:text="" />
@@ -129,9 +126,9 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:hint="@string/Phone"
                 android:inputType="phone"
-                android:background="@color/white"
 
                 android:maxLength="11"
                 android:text="" />
@@ -157,9 +154,9 @@
                 android:id="@+id/passwordField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:hint="@string/Password"
                 android:inputType="textPassword"
-                android:background="@color/white"
                 android:maxLength="15"
                 android:text="" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -206,20 +203,20 @@
     <androidx.cardview.widget.CardView
 
         android:id="@+id/cardViewProfile"
-        android:layout_width="137dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="104dp"
+        android:layout_width="153dp"
+        android:layout_height="145dp"
+        android:layout_marginTop="15dp"
         android:scrollbarSize="5dp"
         app:cardCornerRadius="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">>
+        app:layout_constraintTop_toBottomOf="@+id/cardView10">>
 
         <ImageView
             android:id="@+id/imageViewUserAvatar"
-            android:layout_width="139dp"
-            android:layout_height="127dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:contentDescription="@string/Empty"
             android:padding="25dp"
             android:scaleType="centerCrop"
@@ -230,7 +227,7 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/butBack"
-        android:layout_width="42dp"
+        android:layout_width="0dp"
         android:layout_height="54dp"
         android:layout_margin="10dp"
         android:layout_marginBottom="187dp"
@@ -239,10 +236,10 @@
 
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toStartOf="@+id/cardView10"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.075" />
+        app:layout_constraintVertical_bias="0.054" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
