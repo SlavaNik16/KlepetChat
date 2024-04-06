@@ -21,7 +21,7 @@
 
         <ImageView
             android:id="@+id/imageButtonBack"
-            android:layout_width="49dp"
+            android:layout_width="3dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
@@ -29,9 +29,10 @@
             android:src="@drawable/ic_back" />
 
         <TextView
-            android:layout_width="48dp"
+            android:layout_width="136dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
+            android:paddingLeft="55dp"
             android:gravity="center_vertical"
             android:text="@string/info"
             android:textSize="24dp" />
