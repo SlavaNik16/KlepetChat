@@ -2,7 +2,6 @@ package KlepetChat.WebApi.Implementations.Repositories
 
 import KlepetChat.WebApi.Implementations.ApiRequestFlowResponse
 import KlepetChat.WebApi.Interfaces.IHubService
-import KlepetChat.WebApi.Models.Response.Message
 import java.util.UUID
 import javax.inject.Inject
 
@@ -35,9 +34,9 @@ class HubRepository @Inject constructor(
             hubService.sendNotificationContact(phoneOther, chatId, message)
         }
 
-    fun sendNotificationGroup(phoneOther: String, chatId: UUID, message: Message) =
+    fun sendNotificationGroup(phoneOther: String, chatId: UUID, messageId: UUID) =
         ApiRequestFlowResponse {
-            hubService.sendNotificationGroup(phoneOther, chatId, message)
+            hubService.sendNotificationGroup(phoneOther, chatId, messageId)
         }
 
     fun updateChat(phoneOther: String) = ApiRequestFlowResponse {

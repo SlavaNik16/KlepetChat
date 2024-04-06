@@ -4,7 +4,6 @@ import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.BaseViewModel
 import KlepetChat.WebApi.Implementations.Repositories.HubRepository
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
-import KlepetChat.WebApi.Models.Response.Message
 import androidx.lifecycle.MutableLiveData
 import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionState
@@ -77,13 +76,13 @@ class SignalRViewModel @Inject constructor(
     private fun sendNotificationGroup(
         phoneOther: String,
         chatId: UUID,
-        message: Message,
+        messageId: UUID,
         coroutineErrorHandler: ICoroutinesErrorHandler,
     ) = BaseRequest(
         hubResponse,
         coroutineErrorHandler
     ) {
-        hubRepository.sendNotificationGroup(phoneOther, chatId, message)
+        hubRepository.sendNotificationGroup(phoneOther, chatId, messageId)
     }
 
     private fun printGroup(
@@ -171,11 +170,11 @@ class SignalRViewModel @Inject constructor(
             })
     }
 
-    fun sendNotificationGroup(phoneOther: String, chatId: UUID, message: Message) {
+    fun sendNotificationGroup(phoneOther: String, chatId: UUID, messageId: UUID) {
         sendNotificationGroup(
             phoneOther,
             chatId,
-            message,
+            messageId,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 

@@ -61,7 +61,7 @@ class ChatGroupActivity : AppCompatActivity() {
             if(person == message.phone){
                 continue
             }
-            signalRViewModel.sendNotificationGroup(person, chatId!!, message)
+            signalRViewModel.sendNotificationGroup(person, chatId!!, message.id)
             signalRViewModel.updateChat(person)
         }
     }

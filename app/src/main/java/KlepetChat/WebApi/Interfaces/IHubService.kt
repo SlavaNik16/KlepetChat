@@ -1,6 +1,5 @@
 package KlepetChat.WebApi.Interfaces
 
-import KlepetChat.WebApi.Models.Response.Message
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.POST
@@ -48,7 +47,7 @@ interface IHubService {
     suspend fun sendNotificationGroup(
         @Query("phoneOther") phoneOther: String,
         @Query("chatId") chatId: UUID,
-        @Query("message") message: Message,
+        @Query("messageId") messageId: UUID,
     ): Response<ResponseBody>
 
     @POST("ChatHub/UpdateChat")

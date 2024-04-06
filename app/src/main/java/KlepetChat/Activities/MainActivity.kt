@@ -81,11 +81,11 @@ class MainActivity : AppCompatActivity() {
             })
         }, Chat::class.java)
 
-        signalRViewModel.getConnection().on("AnswerNotificationGroup", {
+        signalRViewModel.getConnection().on("AnswerNotificationGroup", {chat, name ->
             runOnUiThread(Runnable {
-                sendNotificationCreateGroup(it)
+                sendNotificationCreateGroup(chat, name)
             })
-        }, Chat::class.java)
+        }, Chat::class.java, String::class.java)
         signalRViewModel.start()
     }
 
@@ -132,18 +132,24 @@ class MainActivity : AppCompatActivity() {
             pendingIntent
         )
     }
-    private fun sendNotificationCreateGroup(chat: Chat) {
+    private fun sendNotificationCreateGroup(chat: Chat, userName:String) {
         val intent = Intent(this, ChatGroupActivity::class.java).apply {
             this.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
             this.putExtra(Constants.KEY_CHAT_NAME, chat.name)
             this.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
-            this.putExtra(Constants.KEY_USER_PHONE_OTHER, chat.phones[0])
+            var arrayList: ArrayList<String> = arrayListOf()
+            for (item in chat.phones) {
+                arrayList.add(item)
+            }
+            this.putStringArrayListExtra(Constants.KEY_CHAT_PEOPLE, arrayList)
+            this.putExtra(Constants.KEY_USER_PHONE, user.phone)
+            this.putExtra(Constants.KEY_USER_ROLE, chat.roleType.name)
         }.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0,
             intent, PendingIntent.FLAG_IMMUTABLE)
         notificationUtils?.sendNotificationCreate(
-            chat.name + " написал тебе: ",
-            chat.lastMessage!!,
+            "В группе ${chat.name}",
+            "$userName: ${chat.lastMessage}",
             pendingIntent
         )
     }
@@ -434,7 +440,6 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
         intent.putExtra(Constants.KEY_USER_ROLE, chat.roleType.name)
         startActivity(intent)
-        //finish()
     }
 
     private fun onRecyclerAttachState(): RecyclerView.OnChildAttachStateChangeListener {
