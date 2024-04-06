@@ -10,8 +10,8 @@ import KlepetChat.Utils.NotificationUtils
 import KlepetChat.Utils.TextChangedListener
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
-import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.DataStore.UserDataViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
@@ -75,9 +75,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setSignalR() {
-        signalRViewModel.getConnection().on("AnswerNotification", {
+        signalRViewModel.getConnection().on("AnswerNotificationContact", {
             runOnUiThread(Runnable {
-                sendNotificationCreate(it)
+                sendNotificationCreateContact(it)
+            })
+        }, Chat::class.java)
+
+        signalRViewModel.getConnection().on("AnswerNotificationGroup", {
+            runOnUiThread(Runnable {
+                sendNotificationCreateGroup(it)
             })
         }, Chat::class.java)
         signalRViewModel.start()
@@ -111,8 +117,23 @@ class MainActivity : AppCompatActivity() {
         notificationUtils?.registerNotification()
     }
 
-    private fun sendNotificationCreate(chat: Chat) {
+    private fun sendNotificationCreateContact(chat: Chat) {
         val intent = Intent(this, ChatContactActivity::class.java).apply {
+            this.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
+            this.putExtra(Constants.KEY_CHAT_NAME, chat.name)
+            this.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
+            this.putExtra(Constants.KEY_USER_PHONE_OTHER, chat.phones[0])
+        }.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        val pendingIntent = PendingIntent.getActivity(this, 0,
+            intent, PendingIntent.FLAG_IMMUTABLE)
+        notificationUtils?.sendNotificationCreate(
+            chat.name + " написал тебе: ",
+            chat.lastMessage!!,
+            pendingIntent
+        )
+    }
+    private fun sendNotificationCreateGroup(chat: Chat) {
+        val intent = Intent(this, ChatGroupActivity::class.java).apply {
             this.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
             this.putExtra(Constants.KEY_CHAT_NAME, chat.name)
             this.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
@@ -253,8 +274,14 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         removeListeners()
+        removeHandlers()
         binding = null
         bindingHeader = null
+    }
+
+    private fun removeHandlers(){
+        signalRViewModel.getConnection().remove("AnswerNotificationContact")
+        signalRViewModel.getConnection().remove("AnswerNotificationGroup")
     }
 
     private fun removeListeners() {

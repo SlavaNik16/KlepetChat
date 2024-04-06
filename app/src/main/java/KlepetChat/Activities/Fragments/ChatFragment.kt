@@ -119,7 +119,7 @@ class ChatFragment : Fragment() {
                 }else if(chatType == ChatTypes.Group){
                     if (requireActivity() is ChatGroupActivity) {
                         var chatContact = requireActivity() as ChatGroupActivity
-                        chatContact.signalNotification(signalRViewModel, it.text, it.phone == phone)
+                        chatContact.signalNotification(signalRViewModel, it)
                     }
                 }
             })

@@ -1,5 +1,6 @@
 package KlepetChat.WebApi.Interfaces
 
+import KlepetChat.WebApi.Models.Response.Message
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.POST
@@ -36,21 +37,28 @@ interface IHubService {
     @POST("ChatHub/SendRegister/{connectionId}")
     suspend fun sendRegister(@Path("connectionId") connectionId: String): Response<ResponseBody>
 
-    @POST("ChatHub/SendNotificationGroupContact")
-    suspend fun sendNotificationGroupContact(
+    @POST("ChatHub/SendNotificationContact")
+    suspend fun sendNotificationContact(
         @Query("phoneOther") phoneOther: String,
         @Query("chatId") chatId: UUID,
         @Query("message") message: String,
     ): Response<ResponseBody>
 
-    @POST("ChatHub/UpdateChatContact")
-    suspend fun updateChatContact(
+    @POST("ChatHub/SendNotificationGroup")
+    suspend fun sendNotificationGroup(
+        @Query("phoneOther") phoneOther: String,
+        @Query("chatId") chatId: UUID,
+        @Query("message") message: Message,
+    ): Response<ResponseBody>
+
+    @POST("ChatHub/UpdateChat")
+    suspend fun updateChat(
         @Query("phoneOther") phoneOther: String,
     ): Response<ResponseBody>
 
-    @POST("ChatHub/UpdateChatGroup")
-    suspend fun updateChatGroup(
-        @Query("phones") phones: MutableList<String>,
+    @POST("ChatHub/UpdateChatInfo")
+    suspend fun updateChatInfo(
+        @Query("phoneOther") phoneOther: String,
     ): Response<ResponseBody>
 
     @POST("ChatHub/UpdateMessageContact")
@@ -60,16 +68,12 @@ interface IHubService {
 
     @POST("ChatHub/UpdateMessageGroup")
     suspend fun updateMessageGroup(
-        @Query("phones") phones: MutableList<String>,
+        @Query("phoneOther") phoneOther: String
     ): Response<ResponseBody>
 
-    @POST("ChatHub/DeletedChatContact")
-    suspend fun deletedChatContact(
+    @POST("ChatHub/ExitChat")
+    suspend fun exitChat(
         @Query("phoneOther") phoneOther: String,
     ): Response<ResponseBody>
 
-    @POST("ChatHub/DeletedChatGroup")
-    suspend fun deletedChatGroup(
-        @Query("phones") phones: MutableList<String>,
-    ): Response<ResponseBody>
 }

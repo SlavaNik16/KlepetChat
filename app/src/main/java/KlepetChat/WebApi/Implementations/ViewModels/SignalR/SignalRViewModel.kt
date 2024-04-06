@@ -4,6 +4,7 @@ import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.BaseViewModel
 import KlepetChat.WebApi.Implementations.Repositories.HubRepository
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
+import KlepetChat.WebApi.Models.Response.Message
 import androidx.lifecycle.MutableLiveData
 import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionState
@@ -61,7 +62,7 @@ class SignalRViewModel @Inject constructor(
         hubRepository.sendRegister(connectionId)
     }
 
-    private fun sendNotificationGroupContact(
+    private fun sendNotificationContact(
         phoneOther: String,
         chatId: UUID,
         message: String,
@@ -70,7 +71,19 @@ class SignalRViewModel @Inject constructor(
         hubResponse,
         coroutineErrorHandler
     ) {
-        hubRepository.sendNotificationGroupContact(phoneOther, chatId, message)
+        hubRepository.sendNotificationContact(phoneOther, chatId, message)
+    }
+
+    private fun sendNotificationGroup(
+        phoneOther: String,
+        chatId: UUID,
+        message: Message,
+        coroutineErrorHandler: ICoroutinesErrorHandler,
+    ) = BaseRequest(
+        hubResponse,
+        coroutineErrorHandler
+    ) {
+        hubRepository.sendNotificationGroup(phoneOther, chatId, message)
     }
 
     private fun printGroup(
@@ -83,14 +96,24 @@ class SignalRViewModel @Inject constructor(
     ) {
         hubRepository.printGroup(groupName, isStart)
     }
-    private fun updateChatContact(
+    private fun updateChat(
         phoneOther: String,
         coroutineErrorHandler: ICoroutinesErrorHandler,
     ) = BaseRequest(
         hubResponse,
         coroutineErrorHandler
     ) {
-        hubRepository.updateChatContact(phoneOther)
+        hubRepository.updateChat(phoneOther)
+    }
+
+    private fun updateChatInfo(
+        phoneOther: String,
+        coroutineErrorHandler: ICoroutinesErrorHandler,
+    ) = BaseRequest(
+        hubResponse,
+        coroutineErrorHandler
+    ) {
+        hubRepository.updateChatInfo(phoneOther)
     }
 
     private fun updateMessageContact(
@@ -103,45 +126,27 @@ class SignalRViewModel @Inject constructor(
         hubRepository.updateMessageContact(phoneOther)
     }
 
-    private fun deletedChatContact(
+    private fun updateMessageGroup(
         phoneOther: String,
         coroutineErrorHandler: ICoroutinesErrorHandler,
     ) = BaseRequest(
         hubResponse,
         coroutineErrorHandler
     ) {
-        hubRepository.deletedChatContact(phoneOther)
+        hubRepository.updateMessageGroup(phoneOther)
     }
 
-    private fun updateChatGroup(
-        phones: MutableList<String>,
+    private fun exitChat(
+        phoneOther: String,
         coroutineErrorHandler: ICoroutinesErrorHandler,
     ) = BaseRequest(
         hubResponse,
         coroutineErrorHandler
     ) {
-        hubRepository.updateChatGroup(phones)
+        hubRepository.exitChat(phoneOther)
     }
 
-    private fun updateMessageGroup(
-        phones: MutableList<String>,
-        coroutineErrorHandler: ICoroutinesErrorHandler,
-    ) = BaseRequest(
-        hubResponse,
-        coroutineErrorHandler
-    ) {
-        hubRepository.updateMessageGroup(phones)
-    }
 
-    private fun deletedChatGroup(
-        phones: MutableList<String>,
-        coroutineErrorHandler: ICoroutinesErrorHandler,
-    ) = BaseRequest(
-        hubResponse,
-        coroutineErrorHandler
-    ) {
-        hubRepository.deletedChatGroup(phones)
-    }
 
     fun joinGroup(groupName: String) {
         joinGroup(
@@ -154,8 +159,20 @@ class SignalRViewModel @Inject constructor(
             })
     }
 
-    fun sendNotificationGroupContact(phoneOther: String, chatId: UUID, message: String,) {
-        sendNotificationGroupContact(
+    fun sendNotificationContact(phoneOther: String, chatId: UUID, message: String) {
+        sendNotificationContact(
+            phoneOther,
+            chatId,
+            message,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+    }
+
+    fun sendNotificationGroup(phoneOther: String, chatId: UUID, message: Message) {
+        sendNotificationGroup(
             phoneOther,
             chatId,
             message,
@@ -201,8 +218,8 @@ class SignalRViewModel @Inject constructor(
             })
     }
 
-    fun updateChatContact(phoneOther: String) {
-        updateChatContact(
+    fun updateChat(phoneOther: String) {
+        updateChat(
             phoneOther,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
@@ -221,8 +238,18 @@ class SignalRViewModel @Inject constructor(
             })
     }
 
-    fun deletedChatContact(phoneOther: String) {
-        deletedChatContact(
+    fun updateMessageGroup(phoneOther: String) {
+        updateMessageGroup(
+            phoneOther,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+    }
+
+    fun exitChat(phoneOther: String) {
+        exitChat(
             phoneOther,
             object : ICoroutinesErrorHandler{
                 override fun onError(message: String) {
@@ -231,35 +258,6 @@ class SignalRViewModel @Inject constructor(
             })
     }
 
-    fun updateChatGroup(phones: MutableList<String>) {
-        updateChatGroup(
-            phones,
-            object : ICoroutinesErrorHandler {
-                override fun onError(message: String) {
-
-                }
-            })
-    }
-
-    fun updateMessageGroup(phones: MutableList<String>) {
-        updateMessageGroup(
-            phones,
-            object : ICoroutinesErrorHandler {
-                override fun onError(message: String) {
-
-                }
-            })
-    }
-
-    fun deletedChatGroup(phones: MutableList<String>) {
-        deletedChatGroup(
-            phones,
-            object : ICoroutinesErrorHandler{
-                override fun onError(message: String) {
-
-                }
-            })
-    }
 
 
     fun start() {

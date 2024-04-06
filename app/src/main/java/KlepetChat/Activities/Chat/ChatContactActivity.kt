@@ -57,8 +57,8 @@ class ChatContactActivity : AppCompatActivity() {
         if (!isSend) {
             return
         }
-        signalRViewModel.sendNotificationGroupContact(phoneOther!!, chatId!!, message)
-        signalRViewModel.updateChatContact(phoneOther!!)
+        signalRViewModel.sendNotificationContact(phoneOther!!, chatId!!, message)
+        signalRViewModel.updateChat(phoneOther!!)
     }
 
     private fun setObserve() {
@@ -300,7 +300,7 @@ class ChatContactActivity : AppCompatActivity() {
                 fragment?.chatId = chatId!!
                 fragment?.joinGroup(ChatTypes.Contact)
                 binding?.butMenu?.visibility = View.VISIBLE
-                fragment?.signalRViewModel?.updateChatContact(phoneOther!!)
+                fragment?.signalRViewModel?.updateChat(phoneOther!!)
             }
 
             is ApiResponse.Failure -> {
@@ -320,7 +320,7 @@ class ChatContactActivity : AppCompatActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 fragment?.signalRViewModel?.updateMessageContact(phoneOther.toString())
-                fragment?.signalRViewModel?.updateChatContact(phoneOther.toString())
+                fragment?.signalRViewModel?.updateChat(phoneOther.toString())
             }
             is ApiResponse.Failure -> {
                 Toast.makeText(
@@ -338,7 +338,7 @@ class ChatContactActivity : AppCompatActivity() {
     private fun getDeletedChat(api: ApiResponse<ResponseBody>) {
         when (api) {
             is ApiResponse.Success -> {
-                fragment?.signalRViewModel?.deletedChatContact(phoneOther.toString())
+                fragment?.signalRViewModel?.exitChat(phoneOther.toString())
                 onBackPress()
             }
 

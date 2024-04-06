@@ -11,6 +11,7 @@ import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import KlepetChat.WebApi.Models.Response.Enums.RoleTypes
+import KlepetChat.WebApi.Models.Response.Message
 import KlepetChat.WebApi.Models.Response.User
 import android.os.Bundle
 import android.view.MenuItem
@@ -52,12 +53,17 @@ class ChatGroupActivity : AppCompatActivity() {
         setObserve()
         init()
     }
-    fun signalNotification(signalRViewModel: SignalRViewModel, message: String, isSend: Boolean) {
-        if (isSend) {
+    fun signalNotification(signalRViewModel: SignalRViewModel, message: Message) {
+        if (message.phone != phone) {
             return
         }
-        signalRViewModel.sendNotificationGroupContact(phone!!, chatId!!, message)
-        signalRViewModel.updateChatContact(phone!!)
+        for(person in persons!!){
+            if(person == message.phone){
+                continue
+            }
+            signalRViewModel.sendNotificationGroup(person, chatId!!, message)
+            signalRViewModel.updateChat(person)
+        }
     }
 
     override fun onStart() {
@@ -83,17 +89,17 @@ class ChatGroupActivity : AppCompatActivity() {
         fragment?.signalRViewModel?.getConnection()?.on("StatusPrint", { user, isStart ->
             runOnUiThread(Runnable {
                 if (user.phone != phone) {
-                    statisPrint = isStart
+                    statusPrint = isStart
                     animationUpload(user)
                 }
             })
         }, User::class.java, Boolean::class.java)
     }
 
-    private var statisPrint = false
+    private var statusPrint = false
     private fun animationUpload(user: User) {
         runOnUiThread {
-            if (!statisPrint) {
+            if (!statusPrint) {
                 binding?.textDesc?.text = "${persons!!.count()} подписчиков"
                 return@runOnUiThread
             }
@@ -128,7 +134,7 @@ class ChatGroupActivity : AppCompatActivity() {
             timer.schedule(
                 object : TimerTask() {
                     override fun run() {
-                        if (!statisPrint) {
+                        if (!statusPrint) {
                             binding?.textDesc?.text ="${persons!!.count()} подписчиков"
                             return
                         }
@@ -333,8 +339,8 @@ class ChatGroupActivity : AppCompatActivity() {
                 persons!!.add(phone!!)
                 binding?.textDesc?.text = "${persons!!.count()} подписчиков"
                 for (person in persons!!){
-                    fragment?.signalRViewModel?.updateChatContact(person)
-                    fragment?.signalRViewModel?.updateChatContact(person)
+                    fragment?.signalRViewModel?.updateChat(person)
+                    fragment?.signalRViewModel?.updateChat(person)
                 }
 
             }
@@ -373,7 +379,7 @@ class ChatGroupActivity : AppCompatActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 for (person in persons!!){
-                    fragment?.signalRViewModel?.deletedChatContact(person)
+                    fragment?.signalRViewModel?.exitChat(person)
                 }
             }
 

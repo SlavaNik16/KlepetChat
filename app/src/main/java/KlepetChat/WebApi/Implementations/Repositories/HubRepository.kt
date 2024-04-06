@@ -2,6 +2,7 @@ package KlepetChat.WebApi.Implementations.Repositories
 
 import KlepetChat.WebApi.Implementations.ApiRequestFlowResponse
 import KlepetChat.WebApi.Interfaces.IHubService
+import KlepetChat.WebApi.Models.Response.Message
 import java.util.UUID
 import javax.inject.Inject
 
@@ -29,33 +30,34 @@ class HubRepository @Inject constructor(
         hubService.sendRegister(connectionId)
     }
 
-    fun sendNotificationGroupContact(phoneOther: String, chatId: UUID, message: String) =
+    fun sendNotificationContact(phoneOther: String, chatId: UUID, message: String) =
         ApiRequestFlowResponse {
-            hubService.sendNotificationGroupContact(phoneOther, chatId, message)
+            hubService.sendNotificationContact(phoneOther, chatId, message)
         }
 
-    fun updateChatContact(phoneOther: String) = ApiRequestFlowResponse {
-        hubService.updateChatContact(phoneOther)
+    fun sendNotificationGroup(phoneOther: String, chatId: UUID, message: Message) =
+        ApiRequestFlowResponse {
+            hubService.sendNotificationGroup(phoneOther, chatId, message)
+        }
+
+    fun updateChat(phoneOther: String) = ApiRequestFlowResponse {
+        hubService.updateChat(phoneOther)
     }
 
-    fun updateChatGroup(phones: MutableList<String>) = ApiRequestFlowResponse {
-        hubService.updateChatGroup(phones)
+    fun updateChatInfo(phoneOther: String) = ApiRequestFlowResponse {
+        hubService.updateChatInfo(phoneOther)
     }
 
     fun updateMessageContact(phoneOther: String) = ApiRequestFlowResponse {
         hubService.updateMessageContact(phoneOther)
     }
 
-    fun updateMessageGroup(phones: MutableList<String>) = ApiRequestFlowResponse {
-        hubService.updateMessageGroup(phones)
+    fun updateMessageGroup(phoneOther: String) = ApiRequestFlowResponse {
+        hubService.updateMessageGroup(phoneOther)
     }
 
-    fun deletedChatContact(phoneOther: String) = ApiRequestFlowResponse {
-        hubService.deletedChatContact(phoneOther)
-    }
-
-    fun deletedChatGroup(phones: MutableList<String>) = ApiRequestFlowResponse {
-        hubService.deletedChatGroup(phones)
+    fun exitChat(phoneOther: String) = ApiRequestFlowResponse {
+        hubService.exitChat(phoneOther)
     }
 
 }
