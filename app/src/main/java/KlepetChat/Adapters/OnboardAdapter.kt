@@ -8,13 +8,13 @@ import com.example.klepetchat.R
 
 class OnboardAdapter(fragment: FragmentActivity): FragmentStateAdapter(fragment) {
 
-    private val titles = arrayOf("Добро пожаловать!", "Удобный поиск", "Любой маршрут на ваш вкус")
+    private val titles = arrayOf("Klepet chat", "Приятный интерфейс", "Найди друзей и общайся!")
 
-    private val descriptions = arrayOf("Сервис совместных поездок",
-        "Находите попутчиков или водителей через поисковик",
-        "Создавайте запрос, если результаты поиска не удовлетворяет")
+    private val descriptions = arrayOf("Добро пожаловать!",
+        "Интуитивно понятное перемещение по приложению которое будет радовать глаза!",
+        "Здесь вы можете общаться на любые темы с друзьями, или найти их тут!")
 
-    private val images = arrayOf(R.drawable.baseline_directions_car_24, R.drawable.ic_search, R.drawable.ic_menu)
+    private val images = arrayOf(R.drawable.ic_logo, R.drawable.ic_ui_design, R.drawable.ic_onbora_chat)
     override fun getItemCount(): Int {
         return 3
     }

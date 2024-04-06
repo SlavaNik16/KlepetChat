@@ -60,7 +60,7 @@ class ChatFavoritesActivity : AppCompatActivity() {
         val txtName = argument?.getString(Constants.KEY_CHAT_NAME)
         binding?.txtName?.text = txtName
 
-        binding?.imageChat?.setImageResource(R.drawable.favorites_icon)
+
 
     }
 

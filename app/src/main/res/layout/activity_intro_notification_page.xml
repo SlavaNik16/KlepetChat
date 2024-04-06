@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/back_gray"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
@@ -10,7 +12,7 @@
         android:rotation="-26"
         android:scrollbarSize="5dp"
         app:cardCornerRadius="120dp"
-        app:cardBackgroundColor="@color/blue"
+        app:cardBackgroundColor="#A12998"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,38 +43,83 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="409dp"
+        android:layout_height="62dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3">
 
-        <androidx.appcompat.widget.AppCompatButton
+        <androidx.cardview.widget.CardView
             android:id="@+id/butOn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/back_chat_view_item"
-            android:ems="1"
-            android:gravity="center"
-            android:maxWidth="320dp"
-            android:text="Да"
-            android:textSize="18sp" />
+            android:layout_width="158dp"
+            android:layout_height="51dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="200dp"
+            android:backgroundTint="@color/white"
+            android:rotation="0"
+            android:scrollbarSize="5dp"
+            android:visibility="visible"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.appcompat.widget.AppCompatButton
+            <TextView
+                android:layout_width="109dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="#A12998"
+                android:gravity="center"
+                android:text="Да"
+                android:textColor="#A12998"
+                android:textSize="30dp"
+                app:cornerRadius="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.543"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+                app:layout_constraintVertical_bias="0.429" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:id="@+id/butOff"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/back_chat_view_item"
-            android:ems="1"
-            android:gravity="center"
-            android:maxWidth="320dp"
-            android:text="Нет"
-            android:textSize="18sp" />
+            android:layout_width="157dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="10dp"
+            android:backgroundTint="@color/white"
+            android:rotation="0"
+            android:scrollbarSize="5dp"
+            android:visibility="visible"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="146dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="#A12998"
+                android:gravity="center"
+                android:text="Нет"
+                android:textColor="#A12998"
+                android:textSize="30dp"
+                app:cornerRadius="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.543"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+                app:layout_constraintVertical_bias="0.429" />
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
