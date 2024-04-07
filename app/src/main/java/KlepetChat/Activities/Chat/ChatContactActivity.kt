@@ -204,6 +204,7 @@ class ChatContactActivity : AppCompatActivity() {
         binding?.back?.setOnClickListener { onBackPress() }
         binding?.butPhone?.setOnClickListener { onPhonePress() }
         binding?.butMenu?.setOnClickListener { onMenuPress() }
+        //binding?.linearLayoutProfileContact
     }
 
     private fun onMenuPress() {

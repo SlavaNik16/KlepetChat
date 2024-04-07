@@ -190,7 +190,7 @@ class MainActivity : AppCompatActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 this.chats = api.data
-                chats.sortBy {
+                chats.sortByDescending {
                     it.lastDate
                 }
                 adapter = ChatViewItemAdapter(chats)
