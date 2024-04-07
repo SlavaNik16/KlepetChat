@@ -1,5 +1,7 @@
 package KlepetChat.Adapters
 
+import KlepetChat.Activities.Data.Constants
+import KlepetChat.Activities.Data.Constants.Companion.cropLength
 import KlepetChat.WebApi.Models.Response.User
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +32,7 @@ class UserViewItemAdapter() : RecyclerView.Adapter<UserViewItemAdapter.UserViewI
     override fun onBindViewHolder(holder: UserViewItemHolder, position: Int) {
         holder.binding.textName.text =
             "${chatViewItems[position].surname} ${chatViewItems[position].name}"
+                .cropLength(Constants.TEXT_SIZE_CROP_DESCRIPTION)
         holder.binding.textDesc.text = String()
         if (!chatViewItems[position].phone.isNullOrBlank()) {
             holder.binding.textDesc.text = chatViewItems[position].phone
