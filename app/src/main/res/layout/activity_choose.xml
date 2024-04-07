@@ -12,7 +12,7 @@
         android:background="@color/white"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        android:backgroundTint="@color/blue_2"
+        android:backgroundTint="@color/back_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 

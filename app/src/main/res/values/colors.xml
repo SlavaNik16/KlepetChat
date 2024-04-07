@@ -23,4 +23,5 @@
     <color name="regteext">#505050</color>
     <color name="btnColorText">#A12998</color>
     <color name="textNavBAr">#FFFFFF</color>
+    <color name="colorBarChat">#eef2e9</color>
 </resources>

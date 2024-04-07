@@ -13,4 +13,5 @@
     <color name="Gray">#FFCCCACA</color>
     <color name="btnColorText">#2FA7F6</color>
     <color name="textNavBAr">#FFFFFF</color>
+    <color name="colorBarChat">#393939</color>
 </resources>

@@ -11,7 +11,7 @@
         android:id="@+id/constraintLayout4"
         android:layout_width="0dp"
         android:layout_height="49dp"
-        android:background="@color/white"
+        android:background="@color/colorBarChat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
