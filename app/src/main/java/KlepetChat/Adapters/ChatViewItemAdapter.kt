@@ -4,7 +4,6 @@ import KlepetChat.Activities.Data.Constants
 import KlepetChat.Activities.Data.Constants.Companion.cropLength
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,7 +48,6 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
             var date = chatViewItems[position].lastDate
             var dateLocal = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
             var period: Period = Period.between(dateLocal, LocalDate.now())
-            Log.d("Period", "${period.days}, ${period.months}, ${period.years}")
             if (period.days <= 0 && period.months == 0 && period.years == 0) {
                 holder.binding?.textDate?.text =
                     getReadableDateTimeNow(chatViewItems[position].lastDate)
