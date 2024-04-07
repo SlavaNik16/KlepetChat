@@ -75,7 +75,7 @@
 
     <EditText
         android:id="@+id/inputMessageAboutMe"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_marginTop="28dp"
         android:background="@drawable/background_chat_input"
@@ -183,6 +183,9 @@
             app:layout_constraintVertical_bias="0.429" />
     </androidx.cardview.widget.CardView>
 
+
+
+
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -202,7 +205,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
-
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -231,7 +233,6 @@
                         android:textColor="@color/textprof"
                         android:gravity="center|left"
                         android:text="@string/Name"
-
                         android:textSize="18dp" />
 
                     <TextView
@@ -294,7 +295,6 @@
                         android:layout_margin="10dp"
                         android:layout_marginTop="25dp"
                         android:src="@drawable/ic_email"
-
                         app:civ_border_color="@color/black" />
 
                     <TextView
@@ -349,10 +349,10 @@
 
             <LinearLayout
                 android:id="@+id/linearLayout7"
-                android:layout_width="412dp"
-                android:layout_height="33dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="116dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="30dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/butDeleteAcc"
@@ -362,27 +362,24 @@
 
                 <TextView
                     android:id="@+id/textView6"
-                    android:layout_width="161dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:textColor="@color/textprof"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="10dp"
                     android:layout_weight="1"
                     android:text="Отображение уведомлений"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
+                    android:gravity="left"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <Switch
-                    android:id="@+id/switch2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="40dp"
-                    android:layout_weight="1"
-                    android:text="" />
-
+                    android:id="@+id/switchNotification"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:layout_marginEnd="5dp"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

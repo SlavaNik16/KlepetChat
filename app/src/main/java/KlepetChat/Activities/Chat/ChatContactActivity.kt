@@ -2,6 +2,8 @@ package KlepetChat.Activities.Chat
 
 import ChatFragment
 import KlepetChat.Activities.Data.Constants
+import KlepetChat.Activities.Data.Constants.Companion.cropLength
+import KlepetChat.Activities.ProfileActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
@@ -92,7 +94,7 @@ class ChatContactActivity : AppCompatActivity() {
         }
 
         val txtName = argument?.getString(Constants.KEY_CHAT_NAME)
-        binding?.txtName?.text = txtName
+        binding?.txtName?.text = txtName!!.cropLength(Constants.TEXT_SIZE_CROP_NAME)
 
         val imageChat = argument?.getString(Constants.KEY_IMAGE_URL)
         if (!imageChat.isNullOrBlank()) {
@@ -135,17 +137,17 @@ class ChatContactActivity : AppCompatActivity() {
         fragment?.signalRViewModel?.getConnection()?.on("StatusPrint", { user, isStart ->
             runOnUiThread(Runnable {
                 if (user.phone == phoneOther) {
-                    statisPrint = isStart
+                    statusPrint = isStart
                     animationUpload()
                 }
             })
         }, User::class.java, Boolean::class.java)
     }
 
-    private var statisPrint = false
+    private var statusPrint = false
     private fun animationUpload() {
         runOnUiThread {
-            if (!statisPrint) {
+            if (!statusPrint) {
                 binding?.textDesc?.text = "В сети"
                 return@runOnUiThread
             }
@@ -180,7 +182,7 @@ class ChatContactActivity : AppCompatActivity() {
             timer.schedule(
                 object : TimerTask() {
                     override fun run() {
-                        if (!statisPrint) {
+                        if (!statusPrint) {
                             binding?.textDesc?.text = "В сети"
                             return
                         }
@@ -203,8 +205,16 @@ class ChatContactActivity : AppCompatActivity() {
         binding?.back?.setOnClickListener { onBackPress() }
         binding?.butPhone?.setOnClickListener { onPhonePress() }
         binding?.butMenu?.setOnClickListener { onMenuPress() }
+        binding?.linearLayoutProfileContact?.setOnClickListener { onNavigateToProfile() }
     }
 
+    private fun onNavigateToProfile(){
+        val intent = Intent(this, ProfileActivity::class.java)
+        intent.putExtra(Constants.KEY_PROFILE_VIEW, true)
+        intent.putExtra(Constants.KEY_USER_PHONE, phoneOther)
+        startActivity(intent)
+        finish()
+    }
     private fun onMenuPress() {
         popupMenu = PopupMenu(this@ChatContactActivity, binding!!.butMenu)
         popupMenu?.menuInflater?.inflate(R.menu.contracts_menu, popupMenu?.menu)
@@ -253,6 +263,7 @@ class ChatContactActivity : AppCompatActivity() {
         binding?.back?.setOnClickListener(null)
         binding?.butPhone?.setOnClickListener(null)
         binding?.butMenu?.setOnClickListener(null)
+        binding?.linearLayoutProfileContact?.setOnClickListener(null)
         popupMenu?.setOnMenuItemClickListener(null)
         popupMenu = null
     }

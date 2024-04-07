@@ -191,6 +191,9 @@ class MainActivity : AppCompatActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 this.chats = api.data
+                chats.sortByDescending {
+                    it.lastDate
+                }
                 adapter = ChatViewItemAdapter(chats)
                 binding?.recyclerChat?.adapter = adapter
                 loading(false)
