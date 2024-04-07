@@ -21,15 +21,22 @@
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:background="#eef2e9"
+            android:background="#C6D6E6"
             android:orientation="horizontal"
             android:theme="@style/ThemeOverlay.AppCompat.Light"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageMenu"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="start"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/ic_menu"
+                android:tag="search" />
 
             <ImageView
                 android:id="@+id/imageSearch"
