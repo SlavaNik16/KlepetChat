@@ -3,9 +3,9 @@ package KlepetChat.Activities.DialogFragment
 import KlepetChat.Activities.AuthorizationActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.DataStore.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.TokenViewModel
-import KlepetChat.WebApi.Implementations.ViewModels.DataStore.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
