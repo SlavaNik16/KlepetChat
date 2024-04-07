@@ -17,13 +17,16 @@ import KlepetChat.WebApi.Models.Request.Login
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Token
 import KlepetChat.WebApi.Models.Response.User
+import android.Manifest
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -33,6 +36,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityProfileBinding
 import com.example.klepetchat.databinding.AlertDialogEditFioBinding
@@ -70,7 +74,7 @@ class ProfileActivity : AppCompatActivity() {
         setObserve()
         getView()
         getUser()
-
+        init()
     }
 
     private fun setObserve() {
@@ -80,6 +84,10 @@ class ProfileActivity : AppCompatActivity() {
         imageViewModel.img.observe(this) { getHttpImage(it) }
         chatViewModel.chat.observe(this) { AnyChatSend(it) }
         userViewModel.validate.observe(this) { getValidate(it) }
+    }
+
+    private fun init(){
+        binding?.switchNotification?.isChecked = checkPermission()
     }
 
 
@@ -232,6 +240,9 @@ class ProfileActivity : AppCompatActivity() {
         binding?.inputMessageAboutMe?.onFocusChangeListener = null
         binding?.form?.setOnClickListener(null)
         binding?.butSend?.setOnClickListener(null)
+        binding?.butDeleteAcc?.setOnClickListener(null)
+        binding?.imageUser?.setOnClickListener(null)
+        binding?.switchNotification?.setOnClickListener(null)
     }
 
     private fun setListeners() {
@@ -244,6 +255,41 @@ class ProfileActivity : AppCompatActivity() {
         binding?.form?.setOnClickListener { onClickForm() }
         binding?.butSend?.setOnClickListener { onSendMessage() }
         binding?.butDeleteAcc?.setOnClickListener { onDeleteAcc() }
+        binding?.switchNotification?.setOnClickListener { onSwithNotification() }
+    }
+
+    private fun onSwithNotification(){
+        if(!binding?.switchNotification!!.isChecked) {
+            if(checkPermission()){
+                removePermission()
+            }
+            return
+        }
+        if(!checkPermission()){
+            addPermission()
+        }
+    }
+    private fun addPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf<String>(
+                Manifest.permission.POST_NOTIFICATIONS
+            ),
+            Constants.REQUEST_PERMISSION_POST_NOTIFICATION
+        )
+    }
+    private fun removePermission() {
+        val intent = Intent()
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", packageName, null)
+        intent.setData(uri)
+        startActivity(intent)
+    }
+    private fun checkPermission():Boolean {
+        return ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun onDeleteAcc() {
