@@ -14,4 +14,6 @@
     <color name="btnColorText">#2FA7F6</color>
     <color name="textNavBAr">#FFFFFF</color>
     <color name="colorBarChat">#393939</color>
+    <color name="messText">#FFB1B0B0</color>
+
 </resources>

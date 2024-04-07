@@ -48,29 +48,42 @@
             android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
-            android:background="@color/dark_light_blue">
+            android:background="@color/colorBarChat">
 
-            <EditText
-                android:id="@+id/inputMessage"
-                android:layout_width="match_parent"
-                android:layout_height="34dp"
-                android:layout_marginStart="65dp"
-                android:layout_marginEnd="65dp"
-                android:background="@drawable/background_chat_input"
-                android:gravity="center|left"
-                android:hint="@string/sendMessage"
-                android:imeOptions="actionDone"
-                android:importantForAutofill="no"
-                android:inputType="textShortMessage"
+            <androidx.cardview.widget.CardView
 
-                android:paddingStart="20dp"
-                android:textAlignment="gravity"
-                android:textColor="@color/black"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/Regist"
+                android:rotation="0"
+                android:scrollbarSize="5dp"
+                android:visibility="visible"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/sendMessage"
-                app:layout_constraintStart_toEndOf="@+id/sendEmoticon"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/sendEmoticon">>
+                <EditText
+                    android:id="@+id/inputMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/background_chat_input"
+                    android:gravity="center|left"
+                    android:hint="@string/sendMessage"
+                    android:imeOptions="actionDone"
+                    android:importantForAutofill="no"
+                    android:inputType="textShortMessage"
+
+                    android:paddingStart="20dp"
+                    android:textAlignment="gravity"
+                    android:textColorHint="@color/messText"
+                    app:cardCornerRadius="20dp" />
+            </androidx.cardview.widget.CardView>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/sendMessage"
