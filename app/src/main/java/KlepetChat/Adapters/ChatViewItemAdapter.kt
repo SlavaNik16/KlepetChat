@@ -22,7 +22,6 @@ import java.util.Locale
 class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewItemHolder>() {
 
     lateinit var chatViewItems: MutableList<Chat>
-    private val textSize = 20
 
     constructor(chatViewItems: MutableList<Chat>) : this() {
         this.chatViewItems = chatViewItems;

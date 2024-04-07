@@ -2,6 +2,7 @@ package KlepetChat.Activities
 
 import KlepetChat.Activities.Chat.ChatContactActivity
 import KlepetChat.Activities.Data.Constants
+import KlepetChat.Activities.Data.Constants.Companion.cropLength
 import KlepetChat.Activities.DialogFragment.AlertDialogLoadingDelete
 import KlepetChat.DataSore.Models.UserData
 import KlepetChat.Image.ImageContainer
@@ -629,9 +630,9 @@ class ProfileActivity : AppCompatActivity() {
     private fun initProfile(user: User) {
         var fio = "${user.surname} ${user.name}"
         binding?.textFIO?.text = fio
-        binding?.textFIOEdit?.text = fio
+        binding?.textFIOEdit?.text = fio.cropLength(Constants.TEXT_SIZE_CROP_SHORT)
         binding?.textPhone?.text = user.phone
-        binding?.textNickname?.text = user.nickName
+        binding?.textNickname?.text = user.nickName?.cropLength(Constants.TEXT_SIZE_CROP_SHORT)
         binding?.inputMessageAboutMe?.setText(user.aboutMe)
         if (user.photo.isNullOrBlank()) {
             return
