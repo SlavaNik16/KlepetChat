@@ -84,7 +84,7 @@
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="text"
-        android:paddingStart="20dp"
+
         android:textAlignment="gravity"
         android:textColorHint="@color/textprof"
         app:layout_constraintEnd_toEndOf="parent"
