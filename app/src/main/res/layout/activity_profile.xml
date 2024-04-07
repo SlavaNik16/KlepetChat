@@ -5,7 +5,7 @@
     android:id="@+id/form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/back_gray"
+    android:background="@color/Regist"
     tools:context="KlepetChat.Activities.ProfileActivity"
     >
 
@@ -13,7 +13,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="@color/back_gray"
+        android:background="@color/Regist"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -288,7 +288,7 @@
             android:backgroundTint="#A12998"
             android:gravity="center"
             android:text="@string/delete_akkaunt"
-            android:textColor="@color/red"
+            android:textColor="@color/btnColorText"
             android:textSize="20dp"
             app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"

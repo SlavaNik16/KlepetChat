@@ -20,5 +20,7 @@
     <color name="Fon">#F4F4F4</color>
     <color name="White">#FFFFFFFF</color>
     <color name="Gray">#F4F4F4</color>
-
+    <color name="regteext">#505050</color>
+    <color name="btnColorText">#A12998</color>
+    <color name="textNavBAr">#FFFFFF</color>
 </resources>
