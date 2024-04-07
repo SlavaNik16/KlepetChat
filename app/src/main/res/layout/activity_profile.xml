@@ -75,7 +75,7 @@
 
     <EditText
         android:id="@+id/inputMessageAboutMe"
-        android:layout_width="429dp"
+        android:layout_width="0dp"
         android:layout_height="36dp"
         android:layout_marginTop="28dp"
         android:background="@drawable/background_chat_input"
@@ -107,21 +107,6 @@
         app:layout_constraintTop_toBottomOf="@+id/inputMessageAboutMe" />
 
 
-
-    <TextView
-        android:id="@+id/butSend"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@color/blue_2"
-        android:gravity="center"
-        android:text="Написать"
-        android:textColor="@color/white"
-        android:textSize="34sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
 
     <androidx.cardview.widget.CardView
@@ -161,8 +146,42 @@
             app:layout_constraintVertical_bias="0.429" />
     </androidx.cardview.widget.CardView>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/butSend"
+        android:layout_width="321dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginEnd="110dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/white"
+        android:rotation="0"
+        android:scrollbarSize="5dp"
+        android:visibility="visible"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent">
 
-
+        <TextView
+            android:layout_width="230dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="#A12998"
+            android:gravity="center"
+            android:text="Написать"
+            android:textColor="#2FA7F6"
+            android:textSize="20dp"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.543"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+            app:layout_constraintVertical_bias="0.429" />
+    </androidx.cardview.widget.CardView>
 
     <ScrollView
         android:layout_width="0dp"
