@@ -31,7 +31,7 @@
             android:layout_gravity="center"
             android:rotation="0"
             android:text="@string/Register"
-            android:textColor="@color/textCol"
+            android:textColor="@color/textprof"
             android:textSize="24sp" />
 
     </androidx.cardview.widget.CardView>
