@@ -265,25 +265,16 @@ class ChooseActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_CHAT_NAME, user.name)
         intent.putExtra(Constants.KEY_IMAGE_URL, user.photo)
         startActivity(intent)
-        //finish()
     }
 
     private fun navigateToGroup(chat: Chat) {
         val intent = Intent(this@ChooseActivity, ChatGroupActivity::class.java)
         intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
-        intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
-        intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
-        var arrayList: ArrayList<String> = arrayListOf(phone!!)
-        intent.putStringArrayListExtra(Constants.KEY_CHAT_PEOPLE, arrayList)
         intent.putExtra(Constants.KEY_USER_PHONE, phone)
-        intent.putExtra(Constants.KEY_USER_ROLE, chat.roleType.name)
         startActivity(intent)
-        //finish()
     }
 
     private fun onBackPress() {
-//        var intent = Intent(this@ChooseActivity, MainActivity::class.java)
-//        startActivity(intent)
         finish()
     }
 

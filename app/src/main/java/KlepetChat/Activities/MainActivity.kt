@@ -10,8 +10,8 @@ import KlepetChat.Utils.NotificationUtils
 import KlepetChat.Utils.TextChangedListener
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
+import KlepetChat.WebApi.Implementations.ViewModels.DataStore.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.SignalR.SignalRViewModel
-import KlepetChat.WebApi.Implementations.ViewModels.UserDataViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.UserViewModel
 import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Response.Chat
@@ -26,6 +26,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -35,7 +36,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityMainBinding
@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
     private val userViewModel: UserViewModel by viewModels()
     private val userDataViewModel: UserDataViewModel by viewModels()
     private val chatViewModel: ChatViewModel by viewModels()
+    private var actionBarDrawerToggle: ActionBarDrawerToggle? = null
     private lateinit var adapter: RecyclerView.Adapter<ChatViewItemAdapter.ChatViewItemHolder>
     private var isEdit = false
     private lateinit var chats: MutableList<Chat>
@@ -75,23 +76,60 @@ class MainActivity : AppCompatActivity() {
         loading(true)
     }
 
+    override fun onBackPressed() {
+        if(binding?.drawerLayout!!.isDrawerOpen(Gravity.LEFT)){
+            binding?.drawerLayout!!.closeDrawer(Gravity.LEFT)
+        }else{
+            super.onBackPressed();
+        }
+    }
 
 
     private fun setSignalR() {
-        signalRViewModel.getConnection().on("AnswerNotification", {
+        signalRViewModel.getConnection().on("AnswerNotificationContact", {
             runOnUiThread(Runnable {
-                sendNotificationCreate(it)
+                sendNotificationCreateContact(it)
             })
         }, Chat::class.java)
+
+        signalRViewModel.getConnection().on("AnswerNotificationGroup", {chat, name ->
+            runOnUiThread(Runnable {
+                sendNotificationCreateGroup(chat, name)
+            })
+        }, Chat::class.java, String::class.java)
         signalRViewModel.start()
     }
+
+    private fun setHandlerSignalR(){
+        signalRViewModel.getConnection().on("UpdateChat") {
+            runOnUiThread(Runnable {
+                getChats()
+            })
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        binding?.drawerLayout?.closeDrawer(Gravity.LEFT)
+        setHandlerSignalR()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        removeHandlerSignalR()
+    }
+
+    private fun removeHandlerSignalR(){
+        signalRViewModel.getConnection().remove("UpdateChat")
+    }
+
 
     private fun registerNotification() {
         notificationUtils = NotificationUtils().getInstance(this)
         notificationUtils?.registerNotification()
     }
 
-    private fun sendNotificationCreate(chat: Chat) {
+    private fun sendNotificationCreateContact(chat: Chat) {
         val intent = Intent(this, ChatContactActivity::class.java).apply {
             this.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
             this.putExtra(Constants.KEY_CHAT_NAME, chat.name)
@@ -103,6 +141,19 @@ class MainActivity : AppCompatActivity() {
         notificationUtils?.sendNotificationCreate(
             chat.name + " написал тебе: ",
             chat.lastMessage!!,
+            pendingIntent
+        )
+    }
+    private fun sendNotificationCreateGroup(chat: Chat, userName:String) {
+        val intent = Intent(this, ChatGroupActivity::class.java).apply {
+            this.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
+            this.putExtra(Constants.KEY_USER_PHONE, user.phone)
+        }.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        val pendingIntent = PendingIntent.getActivity(this, 0,
+            intent, PendingIntent.FLAG_IMMUTABLE)
+        notificationUtils?.sendNotificationCreate(
+            "В группе ${chat.name}",
+            "$userName: ${chat.lastMessage}",
             pendingIntent
         )
     }
@@ -162,7 +213,6 @@ class MainActivity : AppCompatActivity() {
             is ApiResponse.Success -> {
                 user = api.data
                 initNavigationViewHeader(user)
-                getChats()
             }
 
             is ApiResponse.Failure -> {
@@ -204,6 +254,7 @@ class MainActivity : AppCompatActivity() {
         getByPhone(userData!!.phone)
     }
 
+
     private fun getByPhone(phone: String) {
         userViewModel.getByPhone(phone,
             object : ICoroutinesErrorHandler {
@@ -219,22 +270,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun initDrawLayout() {
         setSupportActionBar(binding?.toolBar)
-        var toggle = ActionBarDrawerToggle(
-            this,
-            binding?.drawerLayout,
-            binding?.toolBar,
-            R.string.open,
-            R.string.close
-        )
-        binding?.drawerLayout?.addDrawerListener(toggle)
-        toggle.syncState()
+
+        binding?.imageMenu?.setOnClickListener{
+            getByPhone(user.phone)
+            binding?.drawerLayout?.openDrawer(Gravity.LEFT)
+        }
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         removeListeners()
+        removeHandlers()
         binding = null
         bindingHeader = null
+    }
+
+    private fun removeHandlers(){
+        signalRViewModel.getConnection().remove("AnswerNotificationContact")
+        signalRViewModel.getConnection().remove("AnswerNotificationGroup")
     }
 
     private fun removeListeners() {
@@ -258,6 +312,7 @@ class MainActivity : AppCompatActivity() {
         binding?.inputSearch?.addTextChangedListener(addTextSearchChange())
 
     }
+
 
     private fun addTextSearchChange(): TextWatcher {
         return object : TextChangedListener<EditText>(binding?.inputSearch!!) {
@@ -321,18 +376,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setMode() {
-        var newMode: Int
         var modeTag = bindingHeader?.imageMode?.tag.toString()
         if (modeTag == Constants.KEY_TAG_MOON) {
             bindingHeader?.imageMode?.setImageResource(R.drawable.ic_sun)
             bindingHeader?.imageMode?.tag = Constants.KEY_TAG_SUN
-            newMode = AppCompatDelegate.MODE_NIGHT_NO
         } else {
             bindingHeader?.imageMode?.setImageResource(R.drawable.ic_moon)
             bindingHeader?.imageMode?.tag = Constants.KEY_TAG_MOON
-            newMode = AppCompatDelegate.MODE_NIGHT_YES
         }
-        AppCompatDelegate.setDefaultNightMode(newMode)
     }
 
     private fun setMenuItem(menuItem: MenuItem): Boolean {
@@ -376,23 +427,13 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
         intent.putExtra(Constants.KEY_USER_PHONE_OTHER, chat.phones[0])
         startActivity(intent)
-        //finish()
     }
 
     private fun navigateToGroup(chat: Chat) {
         val intent = Intent(this@MainActivity, ChatGroupActivity::class.java)
         intent.putExtra(Constants.KEY_CHAT_ID, chat.id.toString())
-        intent.putExtra(Constants.KEY_CHAT_NAME, chat.name)
-        intent.putExtra(Constants.KEY_IMAGE_URL, chat.photo)
-        var arrayList: ArrayList<String> = arrayListOf()
-        for (item in chat.phones) {
-            arrayList.add(item)
-        }
-        intent.putStringArrayListExtra(Constants.KEY_CHAT_PEOPLE, arrayList)
         intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
-        intent.putExtra(Constants.KEY_USER_ROLE, chat.roleType.name)
         startActivity(intent)
-        //finish()
     }
 
     private fun onRecyclerAttachState(): RecyclerView.OnChildAttachStateChangeListener {
@@ -430,7 +471,6 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_IS_OPEN_GROUP, isOpenGroup)
         intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
         startActivity(intent)
-        //finish()
     }
 
     private fun navigateToProfile() {
@@ -438,7 +478,6 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.KEY_PROFILE_VIEW, false)
         intent.putExtra(Constants.KEY_USER_PHONE, user.phone)
         startActivity(intent)
-        //finish()
     }
 
     private fun initNavigationViewHeader(user: User) {

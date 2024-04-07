@@ -57,12 +57,14 @@ class ChatContactActivity : AppCompatActivity() {
         if (!isSend) {
             return
         }
-        signalRViewModel.sendNotificationGroupContact(phoneOther!!, chatId!!, message)
+        signalRViewModel.sendNotificationContact(phoneOther!!, chatId!!, message)
+        signalRViewModel.updateChat(phoneOther!!)
     }
 
     private fun setObserve() {
         chatViewModel.chat.observe(this) { getChat(it) }
         chatViewModel.deleteChat.observe(this) { getDeletedChat(it) }
+        messageViewModel.exist.observe(this) { getDeletedMessage(it) }
     }
 
     private fun fragmentInstance(f: Fragment) {
@@ -231,8 +233,6 @@ class ChatContactActivity : AppCompatActivity() {
 
                 }
             })
-        finish()
-        startActivity(intent)
     }
 
     private fun deletedChat() {
@@ -242,7 +242,6 @@ class ChatContactActivity : AppCompatActivity() {
 
                 }
             })
-        //onBackPress()
     }
 
     private fun onPhonePress() {
@@ -280,8 +279,6 @@ class ChatContactActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-//        var intent = Intent(this@ChatContactActivity, MainActivity::class.java)
-//        startActivity(intent)
         finish()
     }
 
@@ -301,10 +298,30 @@ class ChatContactActivity : AppCompatActivity() {
             is ApiResponse.Success -> {
                 chatId = api.data.id
                 fragment?.chatId = chatId!!
-                fragment?.joinGroup()
+                fragment?.joinGroup(ChatTypes.Contact)
                 binding?.butMenu?.visibility = View.VISIBLE
+                fragment?.signalRViewModel?.updateChat(phoneOther!!)
             }
 
+            is ApiResponse.Failure -> {
+                Toast.makeText(
+                    this@ChatContactActivity, "Ошибка! ${api.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is ApiResponse.Loading -> {
+                return
+            }
+        }
+    }
+
+    private fun getDeletedMessage(api: ApiResponse<ResponseBody>) {
+        when (api) {
+            is ApiResponse.Success -> {
+                fragment?.signalRViewModel?.updateMessageContact(phoneOther.toString())
+                fragment?.signalRViewModel?.updateChat(phoneOther.toString())
+            }
             is ApiResponse.Failure -> {
                 Toast.makeText(
                     this@ChatContactActivity, "Ошибка! ${api.message}",
@@ -321,6 +338,7 @@ class ChatContactActivity : AppCompatActivity() {
     private fun getDeletedChat(api: ApiResponse<ResponseBody>) {
         when (api) {
             is ApiResponse.Success -> {
+                fragment?.signalRViewModel?.exitChat(phoneOther.toString())
                 onBackPress()
             }
 

@@ -67,7 +67,6 @@
                 android:text="TextView"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
-
             <TextView
                 android:id="@+id/textDesc"
                 android:layout_width="match_parent"

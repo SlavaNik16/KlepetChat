@@ -48,7 +48,7 @@
             android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
-            android:background="@color/colorBarChat">
+            android:background="#eef2e9">
 
             <androidx.cardview.widget.CardView
 
@@ -89,13 +89,12 @@
                 android:id="@+id/sendMessage"
                 android:layout_width="44dp"
                 android:layout_height="36dp"
-                android:layout_margin="5dp"
-                android:layout_marginEnd="20dp"
+                android:layout_margin="3dp"
                 android:background="@drawable/ic_send"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.458" />
+                app:layout_constraintVertical_bias="0.541" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/sendEmoticon"
@@ -105,8 +104,7 @@
                 android:background="@drawable/ic_emoji"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -60,6 +60,8 @@ class ChatFavoritesActivity : AppCompatActivity() {
         val txtName = argument?.getString(Constants.KEY_CHAT_NAME)
         binding?.txtName?.text = txtName
 
+
+
     }
 
     private fun setListeners() {

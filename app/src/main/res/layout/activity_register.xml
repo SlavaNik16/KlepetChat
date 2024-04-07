@@ -62,6 +62,7 @@
             android:textColorHint="@color/regteext"
             app:helperTextTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -71,10 +72,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-
                 android:hint="@string/Surname"
                 android:inputType="textEmailAddress"
-                android:maxLength="60" />
+                android:maxLength="60"
+                android:text="" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,8 +103,8 @@
                 android:hint="@string/Name"
                 android:inputType="text"
 
-
-                android:maxLength="60" />
+                android:maxLength="60"
+                android:text="" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -128,9 +129,9 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:hint="@string/Phone"
                 android:inputType="phone"
+                android:background="@color/white"
 
                 android:maxLength="11"
                 android:text="" />
@@ -156,9 +157,9 @@
                 android:id="@+id/passwordField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:hint="@string/Password"
                 android:inputType="textPassword"
+                android:background="@color/white"
                 android:maxLength="15"
                 android:text="" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -214,7 +215,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         android:backgroundTint="@color/back_gray"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView10">
+        app:layout_constraintTop_toBottomOf="@+id/cardView10">>
 
         <ImageView
             android:id="@+id/imageViewUserAvatar"

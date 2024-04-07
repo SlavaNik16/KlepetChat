@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/form"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/Regist"
@@ -21,18 +22,18 @@
 
         <ImageView
             android:id="@+id/imageButtonBack"
-            android:layout_width="49dp"
+            android:layout_width="3dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/ic_back"
-            />
+            android:src="@drawable/ic_back" />
 
         <TextView
-            android:layout_width="48dp"
+            android:layout_width="136dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
+            android:paddingLeft="55dp"
             android:gravity="center_vertical"
             android:text="@string/info"
             android:textColor="@color/textCol"
@@ -105,146 +106,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputMessageAboutMe" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7">
 
-
-        <LinearLayout
-            android:id="@+id/editName"
-
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="32dp"
-                android:layout_height="33dp"
-                android:layout_margin="10dp"
-                android:layout_marginTop="25dp"
-                android:src="@drawable/ic_chat_user"
-                app:civ_border_color="@color/black" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center|left"
-                android:text="@string/Name"
-                android:textSize="18dp"
-                android:textColor="@color/textCol"
-                />
-
-            <TextView
-                android:id="@+id/textFIOEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/Name"
-                android:textSize="18dp"
-                android:textColor="@color/textCol"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/editPhone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="32dp"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_marginTop="25dp"
-                android:src="@drawable/ic_phone"
-                app:civ_border_color="@color/black" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center|left"
-                android:text="@string/Phone"
-                android:textSize="18dp"
-                android:textColor="@color/textCol"
-                />
-
-            <TextView
-                android:id="@+id/textPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/Phone"
-                android:textSize="18dp"
-                android:textColor="@color/textCol"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/editNickname"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="32dp"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_marginTop="25dp"
-                android:src="@drawable/ic_email"
-                app:civ_border_color="@color/black" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center|left"
-                android:text="@string/Nickname"
-                android:textSize="18dp"
-                android:textColor="@color/textCol"
-                />
-
-            <TextView
-                android:id="@+id/textNickname"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center|left"
-                android:text="@string/Nickname"
-                android:textSize="18dp"
-                android:textColor="@color/textCol"
-                />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@color/back_gray"
-        android:gravity="center_vertical"
-        android:padding="10dp"
-        android:text="@string/example_nickname"
-        android:textColor="@color/gray"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <TextView
         android:id="@+id/butSend"
@@ -288,7 +150,7 @@
             android:backgroundTint="#A12998"
             android:gravity="center"
             android:text="@string/delete_akkaunt"
-            android:textColor="@color/btnColorText"
+            android:textColor="@color/red"
             android:textSize="20dp"
             app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -299,57 +161,199 @@
             app:layout_constraintVertical_bias="0.429" />
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="123dp"
-        android:layout_height="37dp"
-        android:text="Настройка"
 
 
-        android:textSize="23dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8"
-        android:textColor="@color/textCol"
-        />
 
-    <LinearLayout
-        android:id="@+id/linearLayout7"
-        android:layout_width="412dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="116dp"
-        android:background="@color/white"
-        android:orientation="horizontal"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/butDeleteAcc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5">
+        app:layout_constraintTop_toBottomOf="@+id/textView7">
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="161dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:text="Отображение уведомлений"
-            android:textSize="18dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:textColor="@color/textCol"
-            />
+            android:orientation="vertical">
 
-        <Switch
-            android:id="@+id/switch2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView7">
 
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="40dp"
-            android:layout_weight="1"
-            android:text="" />
 
-    </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/editName"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="32dp"
+                        android:layout_height="33dp"
+                        android:layout_margin="10dp"
+                        android:layout_marginTop="25dp"
+                        android:src="@drawable/ic_chat_user"
+                        app:civ_border_color="@color/black" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:text="@string/Name"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:id="@+id/textFIOEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/Name"
+                        android:textSize="18dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/editPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="32dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_marginTop="25dp"
+                        android:src="@drawable/ic_phone"
+                        app:civ_border_color="@color/black" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:text="@string/Phone"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:id="@+id/textPhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/Phone"
+                        android:textSize="18dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/editNickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="32dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_marginTop="25dp"
+                        android:src="@drawable/ic_email"
+                        app:civ_border_color="@color/black" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:text="@string/Nickname"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:id="@+id/textNickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:text="@string/Nickname"
+                        android:textSize="18dp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/back_gray"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="@string/example_nickname"
+                android:textColor="@color/gray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:gravity="center"
+                android:text="Настройка"
+                android:textSize="23dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout7"
+                android:layout_width="412dp"
+                android:layout_height="33dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="116dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/butDeleteAcc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="161dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:text="Отображение уведомлений"
+                    android:textSize="18dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <Switch
+                    android:id="@+id/switch2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_weight="1"
+                    android:text="" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
