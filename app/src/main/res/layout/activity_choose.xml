@@ -12,7 +12,7 @@
         android:background="@color/white"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        android:backgroundTint="#689ECB"
+        android:backgroundTint="@color/blue_2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -83,7 +83,7 @@
         android:id="@+id/addGroup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/Gray"
         android:orientation="horizontal"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -109,6 +109,7 @@
         android:id="@+id/contactRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/White"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

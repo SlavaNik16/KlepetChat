@@ -9,10 +9,15 @@ import KlepetChat.WebApi.Models.Request.UserRegister
 import KlepetChat.WebApi.Models.Response.User
 import android.content.Intent
 import android.os.Bundle
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
+import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityRegisterBinding
+
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.UUID
 

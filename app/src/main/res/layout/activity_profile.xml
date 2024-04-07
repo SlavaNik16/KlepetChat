@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/form"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/back_gray"
-    tools:context="KlepetChat.Activities.ProfileActivity">
+    tools:context="KlepetChat.Activities.ProfileActivity"
+    >
 
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:orientation="horizontal"
         android:background="@color/back_gray"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -26,7 +26,8 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/ic_back" />
+            android:src="@drawable/ic_back"
+            />
 
         <TextView
             android:layout_width="48dp"
@@ -34,6 +35,7 @@
             android:layout_weight="3"
             android:gravity="center_vertical"
             android:text="@string/info"
+            android:textColor="@color/textCol"
             android:textSize="24dp" />
 
     </LinearLayout>
@@ -62,7 +64,7 @@
         android:layout_marginEnd="10dp"
         android:gravity="center"
         android:text="textFIO"
-        android:textColor="@color/black"
+        android:textColor="@color/textCol"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -107,8 +109,8 @@
         android:id="@+id/linearLayout3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:layout_marginTop="10dp"
+        android:background="@color/white"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -136,7 +138,9 @@
                 android:layout_weight="1"
                 android:gravity="center|left"
                 android:text="@string/Name"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:textColor="@color/textCol"
+                />
 
             <TextView
                 android:id="@+id/textFIOEdit"
@@ -145,7 +149,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/Name"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:textColor="@color/textCol"
+                />
 
         </LinearLayout>
 
@@ -161,7 +167,7 @@
                 android:layout_margin="10dp"
                 android:layout_marginTop="25dp"
                 android:src="@drawable/ic_phone"
-                app:civ_border_color="@color/black"/>
+                app:civ_border_color="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -169,7 +175,9 @@
                 android:layout_weight="1"
                 android:gravity="center|left"
                 android:text="@string/Phone"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:textColor="@color/textCol"
+                />
 
             <TextView
                 android:id="@+id/textPhone"
@@ -178,7 +186,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/Phone"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:textColor="@color/textCol"
+                />
 
         </LinearLayout>
 
@@ -194,7 +204,7 @@
                 android:layout_margin="10dp"
                 android:layout_marginTop="25dp"
                 android:src="@drawable/ic_email"
-                app:civ_border_color="@color/black"/>
+                app:civ_border_color="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -202,7 +212,9 @@
                 android:layout_weight="1"
                 android:gravity="center|left"
                 android:text="@string/Nickname"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:textColor="@color/textCol"
+                />
 
             <TextView
                 android:id="@+id/textNickname"
@@ -211,7 +223,9 @@
                 android:layout_weight="1"
                 android:gravity="center|left"
                 android:text="@string/Nickname"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:textColor="@color/textCol"
+                />
 
         </LinearLayout>
 
@@ -291,10 +305,13 @@
         android:layout_height="37dp"
         android:text="Настройка"
 
+
         android:textSize="23dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        android:textColor="@color/textCol"
+        />
 
     <LinearLayout
         android:id="@+id/linearLayout7"
@@ -319,14 +336,16 @@
             android:text="Отображение уведомлений"
             android:textSize="18dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/textCol"
+            />
 
         <Switch
             android:id="@+id/switch2"
             android:layout_width="0dp"
-            android:layout_marginTop="5dp"
-
             android:layout_height="wrap_content"
+
+            android:layout_marginTop="5dp"
             android:layout_marginRight="40dp"
             android:layout_weight="1"
             android:text="" />

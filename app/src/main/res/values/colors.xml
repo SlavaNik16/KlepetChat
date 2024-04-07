@@ -14,5 +14,11 @@
     <color name="gray">#979797</color>
     <color name="back_gray">#ECECEC</color>
     <color name="blue">#3795F8</color>
-    <color name="blue_2">#022E5C</color>
+    <color name="blue_2">#8BB3DD</color>
+    <color name="textCol">#FFB1B0B0</color>
+    <color name="Regist">#F4F4F4</color>
+    <color name="Fon">#F4F4F4</color>
+    <color name="White">#FFFFFFFF</color>
+    <color name="Gray">#F4F4F4</color>
+
 </resources>

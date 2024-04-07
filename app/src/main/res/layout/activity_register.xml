@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/back_gray"
+    android:background="@color/Regist"
     android:theme="@style/Theme.KlepetChat"
 
     tools:context="KlepetChat.Activities.RegisterActivity">
@@ -43,6 +43,7 @@
         android:layout_marginBottom="80dp"
         android:orientation="vertical"
         android:padding="20dp"
+        android:background="@color/Fon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -59,7 +60,6 @@
             app:helperText="Обязательно*"
             app:helperTextTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -72,7 +72,7 @@
                 android:hint="@string/Surname"
                 android:inputType="textEmailAddress"
                 android:maxLength="60"
-                android:text="" />
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,8 +100,8 @@
                 android:hint="@string/Name"
                 android:inputType="text"
 
-                android:maxLength="60"
-                android:text="" />
+
+                android:maxLength="60" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -211,8 +211,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView10">>
-
+        app:layout_constraintTop_toBottomOf="@+id/cardView10">
         <ImageView
             android:id="@+id/imageViewUserAvatar"
             android:layout_width="match_parent"

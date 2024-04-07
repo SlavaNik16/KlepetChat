@@ -13,7 +13,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayoutPhone"
@@ -29,7 +30,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:startIconDrawable="@drawable/ic_phone">
+            app:startIconDrawable="@drawable/ic_phone"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/phoneField"
@@ -38,7 +40,9 @@
                 android:hint="@string/NewPhone"
                 android:inputType="phone"
                 android:maxLength="11"
-                android:text="" />
+                android:text=""
+                android:textColor="@color/textCol"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -64,7 +68,9 @@
                 android:hint="@string/ValidatePassword"
                 android:inputType="textPassword"
                 android:maxLength="15"
-                android:text="" />
+                android:text=""
+                android:textColor="@color/textCol"
+                />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
