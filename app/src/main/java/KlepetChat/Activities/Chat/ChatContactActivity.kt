@@ -3,6 +3,7 @@ package KlepetChat.Activities.Chat
 import ChatFragment
 import KlepetChat.Activities.Data.Constants
 import KlepetChat.Activities.Data.Constants.Companion.cropLength
+import KlepetChat.Activities.ProfileActivity
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
@@ -204,9 +205,16 @@ class ChatContactActivity : AppCompatActivity() {
         binding?.back?.setOnClickListener { onBackPress() }
         binding?.butPhone?.setOnClickListener { onPhonePress() }
         binding?.butMenu?.setOnClickListener { onMenuPress() }
-        //binding?.linearLayoutProfileContact
+        binding?.linearLayoutProfileContact?.setOnClickListener { onNavigateToProfile() }
     }
 
+    private fun onNavigateToProfile(){
+        val intent = Intent(this, ProfileActivity::class.java)
+        intent.putExtra(Constants.KEY_PROFILE_VIEW, true)
+        intent.putExtra(Constants.KEY_USER_PHONE, phoneOther)
+        startActivity(intent)
+        finish()
+    }
     private fun onMenuPress() {
         popupMenu = PopupMenu(this@ChatContactActivity, binding!!.butMenu)
         popupMenu?.menuInflater?.inflate(R.menu.contracts_menu, popupMenu?.menu)
@@ -255,6 +263,7 @@ class ChatContactActivity : AppCompatActivity() {
         binding?.back?.setOnClickListener(null)
         binding?.butPhone?.setOnClickListener(null)
         binding?.butMenu?.setOnClickListener(null)
+        binding?.linearLayoutProfileContact?.setOnClickListener(null)
         popupMenu?.setOnMenuItemClickListener(null)
         popupMenu = null
     }
