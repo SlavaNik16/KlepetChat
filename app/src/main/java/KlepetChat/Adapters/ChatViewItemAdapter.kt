@@ -20,6 +20,7 @@ import java.util.Locale
 class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewItemHolder>() {
 
     lateinit var chatViewItems: MutableList<Chat>
+    private val textSize = 20
 
     constructor(chatViewItems: MutableList<Chat>) : this() {
         this.chatViewItems = chatViewItems;
@@ -27,7 +28,8 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewItemHolder {
         var chatView: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.chat_view_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.chat_view_item, parent,
+                false)
         return ChatViewItemHolder(chatView)
     }
 
@@ -36,22 +38,30 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
     }
 
     override fun onBindViewHolder(holder: ChatViewItemHolder, position: Int) {
-        holder.binding?.textName?.text = chatViewItems[position].name
+        val name = chatViewItems[position].name
+        holder.binding?.textName?.text =
+            if (name.length > textSize - 2) "${name.substring(0, textSize - 2)}..." else name
         holder.binding?.textDesc?.text = String()
         if (!chatViewItems[position].lastMessage.isNullOrBlank()) {
-            holder.binding?.textDesc?.text = chatViewItems[position].lastMessage
+            var lastMessage = chatViewItems[position].lastMessage ?: " "
+            holder.binding?.textDesc?.text = if (lastMessage.length > textSize + 5) "${
+                lastMessage.substring(0, textSize + 5)}..." else lastMessage
             var date = chatViewItems[position].lastDate
             var dateLocal = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-            var period:Period = Period.between(dateLocal, LocalDate.now(),)
+            var period: Period = Period.between(dateLocal, LocalDate.now())
             Log.d("Period", "${period.days}, ${period.months}, ${period.years}")
-            if(period.days <= 0 && period.months == 0 && period.years == 0){
-                holder.binding?.textDate?.text = getReadableDateTimeNow(chatViewItems[position].lastDate)
-            }else if(period.days > 0 && period.days <= 7 && period.months == 0 && period.years == 0){
-                holder.binding?.textDate?.text = getReadableDateTimeWeek(chatViewItems[position].lastDate)
-            }else if(period.months > 0 && period.months <= 12 && period.years == 0){
-                holder.binding?.textDate?.text = getReadableDateTimeMonth(chatViewItems[position].lastDate)
-            }else{
-                holder.binding?.textDate?.text = getReadableDateTimeOther(chatViewItems[position].lastDate)
+            if (period.days <= 0 && period.months == 0 && period.years == 0) {
+                holder.binding?.textDate?.text =
+                    getReadableDateTimeNow(chatViewItems[position].lastDate)
+            } else if (period.days in 1..7 && period.months == 0 && period.years == 0) {
+                holder.binding?.textDate?.text =
+                    getReadableDateTimeWeek(chatViewItems[position].lastDate)
+            } else if (period.months in 1..12 && period.years == 0) {
+                holder.binding?.textDate?.text =
+                    getReadableDateTimeMonth(chatViewItems[position].lastDate)
+            } else {
+                holder.binding?.textDate?.text =
+                    getReadableDateTimeOther(chatViewItems[position].lastDate)
             }
 
         }
@@ -85,10 +95,11 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
 
     }
 
-    companion object{
+    companion object {
         fun getReadableDateTimeNow(date: Date): String {
             return SimpleDateFormat("h:mm a", Locale.getDefault()).format(date)
         }
+
         fun getReadableDateTimeWeek(date: Date): String {
             return SimpleDateFormat("EEE", Locale.getDefault()).format(date)
         }
