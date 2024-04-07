@@ -2,6 +2,7 @@ package KlepetChat.Activities.Chat
 
 import ChatFragment
 import KlepetChat.Activities.Data.Constants
+import KlepetChat.Activities.Data.Constants.Companion.cropLength
 import KlepetChat.Activities.DialogFragment.AlertDialogGroupChatProfile
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
@@ -39,6 +40,7 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private var chatId: UUID? = null
     private var phone: String? = null
+    private var name: String? = null
     private var image: String? = null
     private var roleType: RoleTypes = RoleTypes.User
 
@@ -200,7 +202,8 @@ class ChatGroupActivity : AppCompatActivity() {
 
     fun getChatUpdate(chat: Chat){
         chatId = chat.id
-        binding?.txtName?.text = chat.name
+        name = chat.name
+        binding?.txtName?.text = chat.name.cropLength(Constants.TEXT_SIZE_CROP_NAME)
         image = chat.photo ?: "empty"
         if(!chat.photo.isNullOrBlank()){
             Picasso.get()
@@ -222,7 +225,7 @@ class ChatGroupActivity : AppCompatActivity() {
 
     private fun onProfileGroup() {
         val alertDialogGroupChatProfile = AlertDialogGroupChatProfile.newInstance(
-            chatId!!, phone!!, binding?.txtName?.text.toString(), roleType, image
+            chatId!!, phone!!, name!!, roleType, image
         )
         alertDialogGroupChatProfile.show(supportFragmentManager, "alertDialogGroupChatProfile")
 
@@ -305,6 +308,7 @@ class ChatGroupActivity : AppCompatActivity() {
         popupMenu = null
         chatId = null
         phone = null
+        name = null
         fragment?.onDestroy()
     }
 

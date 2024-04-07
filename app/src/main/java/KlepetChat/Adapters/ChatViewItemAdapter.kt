@@ -1,5 +1,7 @@
 package KlepetChat.Adapters
 
+import KlepetChat.Activities.Data.Constants
+import KlepetChat.Activities.Data.Constants.Companion.cropLength
 import KlepetChat.WebApi.Models.Response.Chat
 import KlepetChat.WebApi.Models.Response.Enums.ChatTypes
 import android.util.Log
@@ -39,13 +41,12 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
 
     override fun onBindViewHolder(holder: ChatViewItemHolder, position: Int) {
         val name = chatViewItems[position].name
-        holder.binding?.textName?.text =
-            if (name.length > textSize - 2) "${name.substring(0, textSize - 2)}..." else name
+        holder.binding?.textName?.text = name.cropLength(Constants.TEXT_SIZE_CROP_NAME)
         holder.binding?.textDesc?.text = String()
         if (!chatViewItems[position].lastMessage.isNullOrBlank()) {
             var lastMessage = chatViewItems[position].lastMessage ?: " "
-            holder.binding?.textDesc?.text = if (lastMessage.length > textSize + 5) "${
-                lastMessage.substring(0, textSize + 5)}..." else lastMessage
+            holder.binding?.textDesc?.text =
+                lastMessage.cropLength(Constants.TEXT_SIZE_CROP_DESCRIPTION)
             var date = chatViewItems[position].lastDate
             var dateLocal = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
             var period: Period = Period.between(dateLocal, LocalDate.now())
@@ -65,13 +66,8 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
             }
 
         }
-        if (!chatViewItems[position].photo.isNullOrBlank()) {
-            Picasso.get()
-                .load(chatViewItems[position].photo)
-                .placeholder(R.drawable.ic_chat_user)
-                .error(R.drawable.ic_chat_user)
-                .into(holder.binding?.imageChat)
-        }
+        val path = if(chatViewItems[position].photo.isNullOrBlank()) "empty" else
+            chatViewItems[position].photo
         var resourceTypeChat =
             when (chatViewItems[position].chatType) {
                 ChatTypes.Favorites -> {
@@ -79,8 +75,22 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
                     R.drawable.ic_favourites
                 }
 
-                ChatTypes.Contact -> R.drawable.ic_person_contact
-                ChatTypes.Group -> R.drawable.ic_add_groups
+                ChatTypes.Contact ->{
+                    Picasso.get()
+                        .load(path)
+                        .placeholder(R.drawable.ic_chat_user)
+                        .error(R.drawable.ic_chat_user)
+                        .into(holder.binding?.imageChat)
+                    R.drawable.ic_person_contact
+                }
+                ChatTypes.Group ->{
+                    Picasso.get()
+                        .load(path)
+                        .placeholder(R.drawable.ic_group)
+                        .error(R.drawable.ic_group)
+                        .into(holder.binding?.imageChat)
+                    R.drawable.ic_add_groups
+                }
             }
         holder.binding?.imageTypeChat?.setBackgroundResource(resourceTypeChat)
 

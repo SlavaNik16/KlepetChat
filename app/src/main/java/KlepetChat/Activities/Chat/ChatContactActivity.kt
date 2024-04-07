@@ -2,6 +2,7 @@ package KlepetChat.Activities.Chat
 
 import ChatFragment
 import KlepetChat.Activities.Data.Constants
+import KlepetChat.Activities.Data.Constants.Companion.cropLength
 import KlepetChat.WebApi.Implementations.ApiResponse
 import KlepetChat.WebApi.Implementations.ViewModels.ChatViewModel
 import KlepetChat.WebApi.Implementations.ViewModels.MessageViewModel
@@ -92,7 +93,7 @@ class ChatContactActivity : AppCompatActivity() {
         }
 
         val txtName = argument?.getString(Constants.KEY_CHAT_NAME)
-        binding?.txtName?.text = txtName
+        binding?.txtName?.text = txtName!!.cropLength(Constants.TEXT_SIZE_CROP_NAME)
 
         val imageChat = argument?.getString(Constants.KEY_IMAGE_URL)
         if (!imageChat.isNullOrBlank()) {
@@ -135,17 +136,17 @@ class ChatContactActivity : AppCompatActivity() {
         fragment?.signalRViewModel?.getConnection()?.on("StatusPrint", { user, isStart ->
             runOnUiThread(Runnable {
                 if (user.phone == phoneOther) {
-                    statisPrint = isStart
+                    statusPrint = isStart
                     animationUpload()
                 }
             })
         }, User::class.java, Boolean::class.java)
     }
 
-    private var statisPrint = false
+    private var statusPrint = false
     private fun animationUpload() {
         runOnUiThread {
-            if (!statisPrint) {
+            if (!statusPrint) {
                 binding?.textDesc?.text = "В сети"
                 return@runOnUiThread
             }
@@ -180,7 +181,7 @@ class ChatContactActivity : AppCompatActivity() {
             timer.schedule(
                 object : TimerTask() {
                     override fun run() {
-                        if (!statisPrint) {
+                        if (!statusPrint) {
                             binding?.textDesc?.text = "В сети"
                             return
                         }

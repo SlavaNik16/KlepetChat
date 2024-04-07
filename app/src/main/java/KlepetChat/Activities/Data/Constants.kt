@@ -25,6 +25,13 @@ class Constants {
         const val NOTIFICATION_ID = 99
         const val CHANNEL_ID = "channel_id_const"
         const val REQUEST_PERMISSION_POST_NOTIFICATION = 1
+
+        const val TEXT_SIZE_CROP_NAME:Int = 18
+        const val TEXT_SIZE_CROP_DESCRIPTION:Int = 25
+
+        fun String.cropLength(length:Int):String{
+            return if(this.length > length) "${this.substring(0,length)}..." else this
+        }
     }
 
 }
