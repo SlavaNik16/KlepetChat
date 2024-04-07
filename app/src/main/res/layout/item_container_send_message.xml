@@ -8,12 +8,16 @@
 
     <TextView
         android:id="@+id/textMessage"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:background="@drawable/back_send_message"
         android:padding="12dp"
-        android:textColor="@color/black"
-        android:textSize="15sp"
+        android:textColor="#202020"
+        android:maxWidth="200dp"
+        android:minHeight="38dp"
+        android:textSize="12sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.8" />
@@ -25,6 +29,7 @@
         android:layout_marginTop="10dp"
         android:textColor="#FFF4F4F4"
         android:textSize="10sp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textMessage" />
 </androidx.constraintlayout.widget.ConstraintLayout>

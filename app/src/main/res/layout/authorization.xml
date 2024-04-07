@@ -66,6 +66,8 @@
             android:background="@color/white"
             android:hint="@string/Phone"
             android:inputType="phone"
+            android:textColor="@color/textprof"
+
             android:maxLength="11"
             android:text=""
             android:textSize="20sp" />
@@ -98,6 +100,8 @@
             android:background="@color/white"
             android:hint="@string/Password"
             android:inputType="textPassword"
+            android:textColor="@color/textprof"
+
             android:maxLength="15"
             android:text=""
             android:textSize="20sp" />

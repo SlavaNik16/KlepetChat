@@ -7,6 +7,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@color/Regist"
         android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
@@ -16,6 +17,7 @@
             android:layout_margin="80dp"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
+            android:backgroundTint="@color/back_gray"
             android:rotation="-35"
             app:cardCornerRadius="200dp"
             app:layout_constraintBottom_toTopOf="@+id/title"
@@ -61,6 +63,7 @@
             android:layout_marginBottom="50dp"
             android:gravity="center"
             android:text="TextView"
+            android:textColor="@color/textprof"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -78,7 +78,7 @@
                     android:imeOptions="actionDone"
                     android:importantForAutofill="no"
                     android:inputType="textShortMessage"
-
+                    android:textColor="@color/textprof"
                     android:paddingStart="20dp"
                     android:textAlignment="gravity"
                     android:textColorHint="@color/messText"
