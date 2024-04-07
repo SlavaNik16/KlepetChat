@@ -21,13 +21,14 @@
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorBarChat"
+            android:background="@color/mainChat"
             android:orientation="horizontal"
             android:theme="@style/ThemeOverlay.AppCompat.Light"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <ImageView
                 android:id="@+id/imageMenu"
                 android:layout_width="32dp"
@@ -36,6 +37,7 @@
                 android:layout_marginEnd="20dp"
                 android:src="@drawable/ic_menu"
                 android:tag="search" />
+
             <ImageView
                 android:id="@+id/imageSearch"
                 android:layout_width="32dp"
@@ -58,7 +60,7 @@
                 android:paddingStart="1dp"
                 android:paddingEnd="1dp"
                 android:textAlignment="gravity"
-                android:textColor="@color/black"
+                android:textColor="@color/textprof"
                 android:visibility="invisible"
                 app:cardCornerRadius="20dp"
                 tools:layout_editor_absoluteX="16dp"
@@ -122,7 +124,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/back_gray"
-        app:itemTextColor="@color/textCol"
+        app:itemTextColor="@color/textprof"
         android:layout_gravity="start"
         android:layout_marginTop="20dp"
         android:visibility="visible"

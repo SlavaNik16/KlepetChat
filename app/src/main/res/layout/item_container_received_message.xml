@@ -34,7 +34,7 @@
         android:id="@+id/textDateTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="#FFF4F4F4"
         android:layout_marginTop="10dp"
         android:textSize="10sp"
         app:layout_constraintStart_toStartOf="@id/textMessage"

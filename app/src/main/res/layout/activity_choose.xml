@@ -83,7 +83,7 @@
         android:id="@+id/addGroup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/Gray"
+        android:background="@color/back_gray"
         android:orientation="horizontal"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -101,6 +101,7 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/textprof"
             android:text="@string/add_group"
             android:textSize="24sp" />
     </LinearLayout>
@@ -109,7 +110,7 @@
         android:id="@+id/contactRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/White"
+        android:background="@color/Regist"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

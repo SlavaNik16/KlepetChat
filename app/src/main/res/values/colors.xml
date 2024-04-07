@@ -25,4 +25,6 @@
     <color name="textNavBAr">#FFFFFF</color>
     <color name="colorBarChat">#eef2e9</color>
     <color name="messText">#FFB1B0B0</color>
+    <color name="textprof">#474747</color>
+    <color name="mainChat">#EAE8EC</color>
 </resources>
