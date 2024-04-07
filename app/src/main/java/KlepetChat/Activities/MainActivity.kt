@@ -36,6 +36,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityMainBinding
@@ -376,16 +377,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setMode() {
+        var newMode: Int
         var modeTag = bindingHeader?.imageMode?.tag.toString()
         if (modeTag == Constants.KEY_TAG_MOON) {
             bindingHeader?.imageMode?.setImageResource(R.drawable.ic_sun)
             bindingHeader?.imageMode?.tag = Constants.KEY_TAG_SUN
+            newMode = AppCompatDelegate.MODE_NIGHT_NO
         } else {
             bindingHeader?.imageMode?.setImageResource(R.drawable.ic_moon)
             bindingHeader?.imageMode?.tag = Constants.KEY_TAG_MOON
+            newMode = AppCompatDelegate.MODE_NIGHT_YES
         }
+        AppCompatDelegate.setDefaultNightMode(newMode)
     }
-
     private fun setMenuItem(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.nav_add_group -> onAddChat(true)

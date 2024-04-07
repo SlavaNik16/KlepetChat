@@ -21,14 +21,21 @@
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#C6D6E6"
+            android:background="@color/colorBarChat"
             android:orientation="horizontal"
             android:theme="@style/ThemeOverlay.AppCompat.Light"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
+            <ImageView
+                android:id="@+id/imageMenu"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="start"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/ic_menu"
+                android:tag="search" />
             <ImageView
                 android:id="@+id/imageSearch"
                 android:layout_width="32dp"
@@ -56,6 +63,7 @@
                 app:cardCornerRadius="20dp"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="16dp" />
+
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.recyclerview.widget.RecyclerView
