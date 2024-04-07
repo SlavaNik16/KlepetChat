@@ -1,4 +1,4 @@
-package KlepetChat.WebApi.Implementations.ViewModels
+package KlepetChat.WebApi.Implementations.ViewModels.DataStore
 
 import KlepetChat.DataSore.Context.DataStoreManager
 import KlepetChat.DataSore.Models.UserData

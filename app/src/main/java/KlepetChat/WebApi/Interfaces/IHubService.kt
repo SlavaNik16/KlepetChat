@@ -36,11 +36,18 @@ interface IHubService {
     @POST("ChatHub/SendRegister/{connectionId}")
     suspend fun sendRegister(@Path("connectionId") connectionId: String): Response<ResponseBody>
 
-    @POST("ChatHub/SendNotificationGroupContact")
-    suspend fun sendNotificationGroupContact(
+    @POST("ChatHub/SendNotificationContact")
+    suspend fun sendNotificationContact(
         @Query("phoneOther") phoneOther: String,
         @Query("chatId") chatId: UUID,
         @Query("message") message: String,
+    ): Response<ResponseBody>
+
+    @POST("ChatHub/SendNotificationGroup")
+    suspend fun sendNotificationGroup(
+        @Query("phoneOther") phoneOther: String,
+        @Query("chatId") chatId: UUID,
+        @Query("messageId") messageId: UUID,
     ): Response<ResponseBody>
 
     @POST("ChatHub/UpdateChat")
@@ -48,8 +55,25 @@ interface IHubService {
         @Query("phoneOther") phoneOther: String,
     ): Response<ResponseBody>
 
-    @POST("ChatHub/UpdateMessage")
-    suspend fun updateMessage(
+    @POST("ChatHub/UpdateChatInfo")
+    suspend fun updateChatInfo(
+        @Query("phoneOther") phoneOther: String,
+        @Query("chatId") chatId: UUID,
+    ): Response<ResponseBody>
+
+    @POST("ChatHub/UpdateMessageContact")
+    suspend fun updateMessageContact(
         @Query("phoneOther") phoneOther: String,
     ): Response<ResponseBody>
+
+    @POST("ChatHub/UpdateMessageGroup")
+    suspend fun updateMessageGroup(
+        @Query("phoneOther") phoneOther: String
+    ): Response<ResponseBody>
+
+    @POST("ChatHub/ExitChat")
+    suspend fun exitChat(
+        @Query("phoneOther") phoneOther: String,
+    ): Response<ResponseBody>
+
 }

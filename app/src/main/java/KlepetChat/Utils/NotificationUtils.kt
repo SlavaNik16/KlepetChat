@@ -56,6 +56,7 @@ class NotificationUtils {
             .setSmallIcon(R.drawable.ic_notifications_active)
             .setContentTitle(title)
             .setContentText(text)
+            .setWhen(System.currentTimeMillis())
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 

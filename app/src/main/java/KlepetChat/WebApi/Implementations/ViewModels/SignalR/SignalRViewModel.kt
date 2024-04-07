@@ -61,7 +61,7 @@ class SignalRViewModel @Inject constructor(
         hubRepository.sendRegister(connectionId)
     }
 
-    private fun sendNotificationGroupContact(
+    private fun sendNotificationContact(
         phoneOther: String,
         chatId: UUID,
         message: String,
@@ -70,7 +70,19 @@ class SignalRViewModel @Inject constructor(
         hubResponse,
         coroutineErrorHandler
     ) {
-        hubRepository.sendNotificationGroupContact(phoneOther, chatId, message)
+        hubRepository.sendNotificationContact(phoneOther, chatId, message)
+    }
+
+    private fun sendNotificationGroup(
+        phoneOther: String,
+        chatId: UUID,
+        messageId: UUID,
+        coroutineErrorHandler: ICoroutinesErrorHandler,
+    ) = BaseRequest(
+        hubResponse,
+        coroutineErrorHandler
+    ) {
+        hubRepository.sendNotificationGroup(phoneOther, chatId, messageId)
     }
 
     private fun printGroup(
@@ -93,15 +105,48 @@ class SignalRViewModel @Inject constructor(
         hubRepository.updateChat(phoneOther)
     }
 
-    private fun updateMessage(
+    private fun updateChatInfo(
+        phoneOther: String,
+        chatId: UUID,
+        coroutineErrorHandler: ICoroutinesErrorHandler,
+    ) = BaseRequest(
+        hubResponse,
+        coroutineErrorHandler
+    ) {
+        hubRepository.updateChatInfo(phoneOther, chatId)
+    }
+
+    private fun updateMessageContact(
         phoneOther: String,
         coroutineErrorHandler: ICoroutinesErrorHandler,
     ) = BaseRequest(
         hubResponse,
         coroutineErrorHandler
     ) {
-        hubRepository.updateMessage(phoneOther)
+        hubRepository.updateMessageContact(phoneOther)
     }
+
+    private fun updateMessageGroup(
+        phoneOther: String,
+        coroutineErrorHandler: ICoroutinesErrorHandler,
+    ) = BaseRequest(
+        hubResponse,
+        coroutineErrorHandler
+    ) {
+        hubRepository.updateMessageGroup(phoneOther)
+    }
+
+    private fun exitChat(
+        phoneOther: String,
+        coroutineErrorHandler: ICoroutinesErrorHandler,
+    ) = BaseRequest(
+        hubResponse,
+        coroutineErrorHandler
+    ) {
+        hubRepository.exitChat(phoneOther)
+    }
+
+
 
     fun joinGroup(groupName: String) {
         joinGroup(
@@ -114,11 +159,23 @@ class SignalRViewModel @Inject constructor(
             })
     }
 
-    fun sendNotificationGroupContact(phoneOther: String, chatId: UUID, message: String,) {
-        sendNotificationGroupContact(
+    fun sendNotificationContact(phoneOther: String, chatId: UUID, message: String) {
+        sendNotificationContact(
             phoneOther,
             chatId,
             message,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+    }
+
+    fun sendNotificationGroup(phoneOther: String, chatId: UUID, messageId: UUID) {
+        sendNotificationGroup(
+            phoneOther,
+            chatId,
+            messageId,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
 
@@ -171,8 +228,19 @@ class SignalRViewModel @Inject constructor(
             })
     }
 
-    fun updateMessage(phoneOther: String) {
-        updateMessage(
+    fun updateChatInfo(phoneOther: String, chatId: UUID) {
+        updateChatInfo(
+            phoneOther,
+            chatId,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+    }
+
+    fun updateMessageContact(phoneOther: String) {
+        updateMessageContact(
             phoneOther,
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
@@ -180,6 +248,27 @@ class SignalRViewModel @Inject constructor(
                 }
             })
     }
+
+    fun updateMessageGroup(phoneOther: String) {
+        updateMessageGroup(
+            phoneOther,
+            object : ICoroutinesErrorHandler {
+                override fun onError(message: String) {
+
+                }
+            })
+    }
+
+    fun exitChat(phoneOther: String) {
+        exitChat(
+            phoneOther,
+            object : ICoroutinesErrorHandler{
+                override fun onError(message: String) {
+
+                }
+            })
+    }
+
 
 
     fun start() {

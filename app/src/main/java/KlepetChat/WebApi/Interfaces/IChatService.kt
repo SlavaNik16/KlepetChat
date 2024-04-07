@@ -16,6 +16,9 @@ interface IChatService {
     @GET("chat")
     suspend fun getChats(): Response<MutableList<Chat>>
 
+    @GET("chat/get/{id}")
+    suspend fun getChatById(@Path("id") id: UUID): Response<Chat>
+
     @GET("chat/{name}")
     suspend fun getChatsByName(@Path("name") name: String): Response<MutableList<Chat>>
 
