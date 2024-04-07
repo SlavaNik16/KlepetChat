@@ -21,7 +21,7 @@
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#eef2e9"
+            android:background="#C6D6E6"
             android:orientation="horizontal"
             android:theme="@style/ThemeOverlay.AppCompat.Light"
             app:layout_constraintEnd_toEndOf="parent"

@@ -8,11 +8,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
-        android:layout_width="0dp"
+        android:layout_width="421dp"
+        android:layout_height="63dp"
         android:background="@color/white"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
         android:backgroundTint="#689ECB"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -60,8 +60,8 @@
             android:paddingEnd="1dp"
             android:textAlignment="gravity"
             android:textColor="@color/black"
-            android:visibility="gone"
             android:textSize="24sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/butSearch"
             app:layout_constraintStart_toEndOf="@+id/back"
@@ -72,8 +72,8 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginEnd="10dp"
-            android:tag="search"
             android:src="@drawable/ic_search"
+            android:tag="search"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
