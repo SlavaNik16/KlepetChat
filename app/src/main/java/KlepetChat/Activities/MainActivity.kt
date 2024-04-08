@@ -34,7 +34,6 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.RecyclerView
@@ -55,7 +54,6 @@ class MainActivity : AppCompatActivity() {
     private val userViewModel: UserViewModel by viewModels()
     private val userDataViewModel: UserDataViewModel by viewModels()
     private val chatViewModel: ChatViewModel by viewModels()
-    private var actionBarDrawerToggle: ActionBarDrawerToggle? = null
     private lateinit var adapter: RecyclerView.Adapter<ChatViewItemAdapter.ChatViewItemHolder>
     private var isEdit = false
     private lateinit var chats: MutableList<Chat>
@@ -65,7 +63,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        var viewHeader = binding?.navigationView!!.inflateHeaderView(R.layout.nav_header)
+        val viewHeader = binding?.navigationView!!.inflateHeaderView(R.layout.nav_header)
         bindingHeader = NavHeaderBinding.bind(viewHeader)
         setContentView(binding?.root)
 
@@ -170,13 +168,13 @@ class MainActivity : AppCompatActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 Toast.makeText(this@MainActivity, "Чат успешно создан!", Toast.LENGTH_SHORT).show()
-                var intent = intent
+                val intent = intent
                 finish()
                 startActivity(intent)
             }
 
             is ApiResponse.Failure -> {
-                var chat = chats.firstOrNull { x -> x.name == "Избранное" } ?: return
+                val chat = chats.firstOrNull { x -> x.name == "Избранное" } ?: return
                 navigateToFavorites(chat)
             }
 
@@ -359,7 +357,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setSearchChat() {
-        var modeTag = binding?.imageSearch?.tag.toString()
+        val modeTag = binding?.imageSearch?.tag.toString()
         if (modeTag == Constants.KEY_TAG_SEARCH) {
             isEdit = false
             binding?.imageSearch?.tag = Constants.KEY_TAG_SEARCHOFF
@@ -380,11 +378,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setMode() {
-        var newMode: Int
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-            newMode = AppCompatDelegate.MODE_NIGHT_NO
+        val newMode = if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            AppCompatDelegate.MODE_NIGHT_NO
         } else {
-            newMode = AppCompatDelegate.MODE_NIGHT_YES
+            AppCompatDelegate.MODE_NIGHT_YES
         }
         AppCompatDelegate.setDefaultNightMode(newMode)
     }
@@ -442,10 +439,10 @@ class MainActivity : AppCompatActivity() {
         return object : RecyclerView.OnChildAttachStateChangeListener {
 
             override fun onChildViewAttachedToWindow(view: View) {
-                var position =
+                val position =
                     binding?.recyclerChat?.findContainingViewHolder(view)!!.adapterPosition
                 view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
-                    var chat = this@MainActivity.chats[position]
+                    val chat = this@MainActivity.chats[position]
                     when (chat.chatType) {
                         ChatTypes.Contact -> {
                             navigateToContact(chat)
@@ -505,7 +502,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun exitAuth() {
         putStatusOffline()
-        var intent = Intent(this, AuthorizationActivity::class.java)
+        val intent = Intent(this, AuthorizationActivity::class.java)
         startActivity(intent)
         finish()
         userDataViewModel.ClearUserData()

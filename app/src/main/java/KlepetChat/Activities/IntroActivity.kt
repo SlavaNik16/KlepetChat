@@ -98,10 +98,10 @@ class IntroActivity : AppCompatActivity() {
     }
 
     private fun notificationPage() {
-        var view =
+        val view =
             LayoutInflater.from(this)
                 .inflate(R.layout.activity_intro_notification_page, null)
-        var bindingNotification = ActivityIntroNotificationPageBinding.bind(view)
+        val bindingNotification = ActivityIntroNotificationPageBinding.bind(view)
         setContentView(bindingNotification.root)
 
         bindingNotification.butOn.setOnClickListener {
@@ -149,7 +149,7 @@ class IntroActivity : AppCompatActivity() {
         }
     }
     private fun navigateToAuthorization(){
-        var intent = Intent(this, AuthorizationActivity::class.java)
+        val intent = Intent(this, AuthorizationActivity::class.java)
         startActivity(intent)
         finish()
     }

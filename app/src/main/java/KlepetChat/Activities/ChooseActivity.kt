@@ -75,7 +75,7 @@ class ChooseActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        var isOpenGroup = intent?.extras?.getBoolean(Constants.KEY_IS_OPEN_GROUP) ?: false
+        val isOpenGroup = intent?.extras?.getBoolean(Constants.KEY_IS_OPEN_GROUP) ?: false
         phone = intent?.extras?.getString(Constants.KEY_USER_PHONE) ?: ""
         if (isOpenGroup) {
             onAddGroup()
@@ -104,7 +104,7 @@ class ChooseActivity : AppCompatActivity() {
         when (api) {
             is ApiResponse.Success -> {
                 dialogBinding?.textHelpLoadImage?.text = "Фото загружено!"
-                var imageHttp = api.data.string()
+                val imageHttp = api.data.string()
                 iamgeURL = imageHttp
                 if (file.exists()) {
                     file.delete()
@@ -223,7 +223,7 @@ class ChooseActivity : AppCompatActivity() {
     }
 
     private fun setSearchUsers() {
-        var modeTag = binding?.butSearch?.tag.toString()
+        val modeTag = binding?.butSearch?.tag.toString()
         if (modeTag == Constants.KEY_TAG_SEARCH) {
             isEdit = false
             binding?.butSearch?.tag = Constants.KEY_TAG_SEARCHOFF
@@ -246,10 +246,10 @@ class ChooseActivity : AppCompatActivity() {
     private fun onContactRecyclerAttach(): RecyclerView.OnChildAttachStateChangeListener {
         return object : RecyclerView.OnChildAttachStateChangeListener {
             override fun onChildViewAttachedToWindow(view: View) {
-                var position =
+                val position =
                     binding?.contactRecycler?.findContainingViewHolder(view)!!.adapterPosition
                 view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
-                    var user = this@ChooseActivity.users[position]
+                    val user = this@ChooseActivity.users[position]
                     navigateToContact(user)
                 }
             }
@@ -279,8 +279,8 @@ class ChooseActivity : AppCompatActivity() {
     }
 
     private fun onAddGroup() {
-        var dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        var view =
+        val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+        val view =
             LayoutInflater.from(dialog.context).inflate(R.layout.alert_dialog_create_group, null)
         dialogBinding = AlertDialogCreateGroupBinding.bind(view)
         dialog.setView(view)
@@ -301,7 +301,7 @@ class ChooseActivity : AppCompatActivity() {
             })
 
         dialogBinding?.imageChat?.setOnClickListener {
-            var photoPickerIntent =
+            val photoPickerIntent =
                 Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             photoPickerIntent.setType("image/*")
             getAction.launch(photoPickerIntent)
