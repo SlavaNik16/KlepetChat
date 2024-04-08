@@ -220,7 +220,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         android:backgroundTint="@color/back_gray"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView10">>
+        app:layout_constraintTop_toBottomOf="@+id/cardView10">
 
         <ImageView
             android:id="@+id/imageViewUserAvatar"
