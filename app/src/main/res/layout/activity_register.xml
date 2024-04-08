@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/back_gray"
+    android:background="@color/Regist"
     android:theme="@style/Theme.KlepetChat"
 
     tools:context="KlepetChat.Activities.RegisterActivity">
@@ -14,7 +14,7 @@
         android:layout_width="286dp"
         android:layout_height="73dp"
         android:layout_marginTop="16dp"
-
+        android:backgroundTint="@color/back_gray"
         android:rotation="0"
         android:scrollbarSize="5dp"
         android:visibility="visible"
@@ -31,7 +31,7 @@
             android:layout_gravity="center"
             android:rotation="0"
             android:text="@string/Register"
-            android:textColor="#74726D"
+            android:textColor="@color/textprof"
             android:textSize="24sp" />
 
     </androidx.cardview.widget.CardView>
@@ -43,6 +43,8 @@
         android:layout_marginBottom="80dp"
         android:orientation="vertical"
         android:padding="20dp"
+        android:background="@color/Regist"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -57,6 +59,7 @@
             app:counterEnabled="true"
             app:counterMaxLength="60"
             app:helperText="Обязательно*"
+            android:textColorHint="@color/regteext"
             app:helperTextTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
 
@@ -70,6 +73,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:hint="@string/Surname"
+                android:textColor="@color/textprof"
                 android:inputType="textEmailAddress"
                 android:maxLength="60"
                 android:text="" />
@@ -85,7 +89,7 @@
             app:counterEnabled="true"
             app:counterMaxLength="60"
             app:endIconMode="clear_text"
-
+            android:textColorHint="@color/regteext"
             app:helperText="Обязательно*"
             app:helperTextTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
@@ -99,6 +103,7 @@
                 android:background="@color/white"
                 android:hint="@string/Name"
                 android:inputType="text"
+                android:textColor="@color/textprof"
 
                 android:maxLength="60"
                 android:text="" />
@@ -111,7 +116,7 @@
             android:layout_height="wrap_content"
             app:counterEnabled="true"
             app:counterMaxLength="11"
-
+            android:textColorHint="@color/regteext"
             app:endIconMode="custom"
             app:helperText="Обязательно 11 символов*"
             app:helperTextTextColor="@color/red"
@@ -126,9 +131,10 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:hint="@string/Phone"
                 android:inputType="phone"
+                android:background="@color/white"
+                android:textColor="@color/textprof"
 
                 android:maxLength="11"
                 android:text="" />
@@ -142,7 +148,7 @@
             app:counterEnabled="true"
             app:counterMaxLength="15"
             app:endIconMode="password_toggle"
-
+            android:textColorHint="@color/regteext"
             app:helperText="Обязательно*"
             app:helperTextTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
@@ -154,9 +160,11 @@
                 android:id="@+id/passwordField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:hint="@string/Password"
                 android:inputType="textPassword"
+                android:textColor="@color/textprof"
+
+                android:background="@color/white"
                 android:maxLength="15"
                 android:text="" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -188,7 +196,7 @@
             android:backgroundTint="#A12998"
             android:gravity="center"
             android:text="@string/RegisterMe"
-            android:textColor="#A12998"
+            android:textColor="@color/btnColorText"
             android:textSize="20sp"
             android:textStyle="bold"
             app:cornerRadius="20dp"
@@ -210,6 +218,7 @@
         app:cardCornerRadius="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
+        android:backgroundTint="@color/back_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView10">>
 

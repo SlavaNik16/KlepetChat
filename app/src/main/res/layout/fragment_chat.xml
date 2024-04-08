@@ -38,7 +38,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout5"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="60dp"
+
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
@@ -48,8 +49,7 @@
             android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
-            android:background="#eef2e9">
-
+            android:background="@color/back_gray">
 
             <androidx.cardview.widget.CardView
 
@@ -58,7 +58,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="12dp"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="@color/Regist"
                 android:rotation="0"
                 android:scrollbarSize="5dp"
                 android:visibility="visible"
@@ -66,8 +66,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/sendMessage"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/sendEmoticon">
-
+                app:layout_constraintStart_toEndOf="@+id/sendEmoticon">>
                 <EditText
                     android:id="@+id/inputMessage"
                     android:layout_width="match_parent"
@@ -80,23 +79,18 @@
                     android:imeOptions="actionDone"
                     android:importantForAutofill="no"
                     android:inputType="textShortMessage"
-
+                    android:textColor="@color/textprof"
                     android:paddingStart="20dp"
                     android:textAlignment="gravity"
-                    android:textColor="@color/black"
-                    app:cardCornerRadius="20dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/sendMessage"
-                    app:layout_constraintStart_toEndOf="@+id/sendEmoticon"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:textColorHint="@color/messText"
+                    app:cardCornerRadius="20dp" />
             </androidx.cardview.widget.CardView>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/sendMessage"
                 android:layout_width="44dp"
                 android:layout_height="36dp"
-                android:layout_margin="5dp"
-                android:layout_marginEnd="4dp"
+                android:layout_margin="3dp"
                 android:background="@drawable/ic_send"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

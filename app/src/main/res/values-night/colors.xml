@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="red">#7E92BA</color>
+    <color name="white">#393939</color>
+    <color name="back_gray">#2B2B2B</color>
+    <color name="black">#B3B2B2</color>
+    <color name="blue_2">#022E5C</color>
+    <color name="textCol">#FFFFFF</color>
+    <color name="regteext">#888888</color>
+    <color name="Regist">#202020</color>
+    <color name="Fon">#FFB1B8B8</color>
+    <color name="White">#F4F4F4</color>
+    <color name="Gray">#FFCCCACA</color>
+    <color name="btnColorText">#2FA7F6</color>
+    <color name="textNavBAr">#FFFFFF</color>
+    <color name="colorBarChat">#393939</color>
+    <color name="messText">#FFB1B0B0</color>
+    <color name="textprof">#FFB1B0B0</color>
+    <color name="mainChat">#393939</color>
+
+</resources>

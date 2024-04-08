@@ -14,14 +14,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/Regist">
 
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#C6D6E6"
+            android:background="@color/mainChat"
             android:orientation="horizontal"
             android:theme="@style/ThemeOverlay.AppCompat.Light"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,11 +60,12 @@
                 android:paddingStart="1dp"
                 android:paddingEnd="1dp"
                 android:textAlignment="gravity"
-                android:textColor="@color/black"
+                android:textColor="@color/textprof"
                 android:visibility="invisible"
                 app:cardCornerRadius="20dp"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="16dp" />
+
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -122,6 +123,8 @@
         android:id="@+id/navigationView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/back_gray"
+        app:itemTextColor="@color/textprof"
         android:layout_gravity="start"
         android:layout_marginTop="20dp"
         android:visibility="visible"

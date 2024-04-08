@@ -13,7 +13,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/Regist">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayoutPhone"
@@ -22,23 +23,29 @@
             android:layout_height="wrap_content"
             app:counterEnabled="true"
             app:counterMaxLength="11"
-
+            android:textColorHint="@color/textprof"
             app:endIconMode="custom"
+            app:counterTextColor="@color/red"
             app:helperText="Обязательно*"
             app:helperTextTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:startIconDrawable="@drawable/ic_phone">
+            app:startIconDrawable="@drawable/ic_phone"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/phoneField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/back_gray"
                 android:hint="@string/NewPhone"
+
                 android:inputType="phone"
                 android:maxLength="11"
-                android:text="" />
+                android:text=""
+                android:textColor="@color/textCol"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -49,7 +56,8 @@
             app:counterEnabled="true"
             app:counterMaxLength="15"
             app:endIconMode="password_toggle"
-
+android:textColorHint="@color/textprof"
+            app:counterTextColor="@color/red"
             app:helperText="Обязательно*"
             app:helperTextTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
@@ -61,10 +69,13 @@
                 android:id="@+id/passwordField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/back_gray"
                 android:hint="@string/ValidatePassword"
                 android:inputType="textPassword"
                 android:maxLength="15"
-                android:text="" />
+                android:text=""
+                android:textColor="@color/textCol"
+                android:textColorHint="@color/textCol" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 

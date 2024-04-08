@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:background="@color/back_gray"
+    android:background="@color/Regist"
 
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="KlepetChat.Activities.AuthorizationActivity">
@@ -14,7 +14,7 @@
 
         android:id="@+id/cardViewProfile"
         android:layout_width="181dp"
-
+        android:backgroundTint="@color/back_gray"
         android:layout_height="170dp"
         android:scrollbarSize="5dp"
         app:cardCornerRadius="60dp"
@@ -25,7 +25,6 @@
 
         <ImageView
             android:id="@+id/imageViewUserAvatar"
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/Empty"
@@ -44,7 +43,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
+        android:textColorHint="@color/regteext"
+        app:counterTextColor="@color/red"
         android:layout_marginBottom="1dp"
+        app:helperTextTextColor="@color/red"
         app:counterEnabled="true"
         app:counterMaxLength="11"
         app:counterOverflowTextAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -64,6 +66,8 @@
             android:background="@color/white"
             android:hint="@string/Phone"
             android:inputType="phone"
+            android:textColor="@color/textprof"
+
             android:maxLength="11"
             android:text=""
             android:textSize="20sp" />
@@ -77,10 +81,13 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="88dp"
+        android:textColorHint="@color/regteext"
         app:counterEnabled="true"
         app:counterMaxLength="15"
+        app:counterTextColor="@color/red"
         app:endIconMode="password_toggle"
         app:helperText="@string/Required"
+        app:helperTextTextColor="@color/red"
         app:layout_constraintBottom_toTopOf="@+id/butEnter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.733"
@@ -93,6 +100,8 @@
             android:background="@color/white"
             android:hint="@string/Password"
             android:inputType="textPassword"
+            android:textColor="@color/textprof"
+
             android:maxLength="15"
             android:text=""
             android:textSize="20sp" />
@@ -126,7 +135,7 @@
             android:backgroundTint="#A12998"
             android:gravity="center"
             android:text="@string/Enter"
-            android:textColor="#A12998"
+            android:textColor="@color/btnColorText"
             android:textSize="30sp"
             app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"

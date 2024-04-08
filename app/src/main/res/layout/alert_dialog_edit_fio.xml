@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@color/Regist"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -24,8 +25,9 @@
             app:counterMaxLength="60"
             app:helperText="Обязательно*"
             app:helperTextTextColor="@color/red"
+            app:counterTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
-
+            android:textColorHint="@color/textprof"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -35,7 +37,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/Surname"
+                android:textColor="@color/textCol"
                 android:inputType="textEmailAddress"
+                android:background="@color/back_gray"
                 android:maxLength="60"
                 android:text="" />
 
@@ -50,9 +54,10 @@
             app:counterEnabled="true"
             app:counterMaxLength="60"
             app:endIconMode="clear_text"
-
+            android:textColorHint="@color/textprof"
             app:helperText="Обязательно*"
             app:helperTextTextColor="@color/red"
+            app:counterTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -60,8 +65,10 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/nameField"
                 android:layout_width="match_parent"
+                android:background="@color/back_gray"
                 android:layout_height="wrap_content"
                 android:hint="@string/Name"
+                android:textColor="@color/textCol"
                 android:inputType="text"
                 android:maxLength="60"
                 android:text="" />

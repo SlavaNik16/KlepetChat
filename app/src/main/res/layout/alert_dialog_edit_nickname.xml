@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@color/Regist"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -10,10 +11,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="20dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayoutNickname"
@@ -22,24 +25,28 @@
             android:layout_height="wrap_content"
             app:counterEnabled="true"
             app:counterMaxLength="60"
+            app:counterTextColor="@color/red"
+            android:textColorHint="@color/textprof"
+            app:placeholderTextColor="@color/textprof"
             app:endIconMode="clear_text"
-
             app:helperText="Обязательно*"
             app:helperTextTextColor="@color/red"
-            app:prefixTextColor="@color/blue"
-            app:prefixText="`@`"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:prefixText="`@`"
+            app:prefixTextColor="@color/blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/nicknameField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/Nickname"
+                android:background="@color/back_gray"
                 android:inputType="text"
                 android:maxLength="60"
-                android:text="" />
+                android:text="fefww"
+                android:textColor="@color/textCol" />
 
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>

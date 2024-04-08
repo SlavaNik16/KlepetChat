@@ -5,6 +5,7 @@
     android:id="@+id/Chat"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+android:background="@color/Regist"
 
     android:orientation="horizontal">
 
@@ -15,8 +16,9 @@
         android:layout_marginLeft="10dp"
 
         android:layout_marginBottom="10dp"
+        android:background="@color/Regist"
         android:src="@drawable/ic_chat_user"
-        app:civ_border_color="@color/black" />
+        app:civ_border_color="@color/black"/>
 
     <LinearLayout
         android:layout_width="match_parent"
