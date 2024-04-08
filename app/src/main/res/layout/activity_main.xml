@@ -61,6 +61,7 @@
                 android:paddingEnd="1dp"
                 android:textAlignment="gravity"
                 android:textColor="@color/textprof"
+                android:textColorHint="@color/textprof"
                 android:visibility="invisible"
                 app:cardCornerRadius="20dp"
                 tools:layout_editor_absoluteX="16dp"

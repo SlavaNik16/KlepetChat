@@ -57,6 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:counterEnabled="true"
+            app:counterTextColor="@color/red"
             app:counterMaxLength="60"
             app:helperText="Обязательно*"
             android:textColorHint="@color/regteext"
@@ -73,10 +74,10 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:hint="@string/Surname"
-                android:textColor="@color/textprof"
+
                 android:inputType="textEmailAddress"
                 android:maxLength="60"
-                android:text="" />
+                android:textColor="@color/textprof" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,6 +91,7 @@
             app:counterMaxLength="60"
             app:endIconMode="clear_text"
             android:textColorHint="@color/regteext"
+            app:counterTextColor="@color/red"
             app:helperText="Обязательно*"
             app:helperTextTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
@@ -106,7 +108,7 @@
                 android:textColor="@color/textprof"
 
                 android:maxLength="60"
-                android:text="" />
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -123,7 +125,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
+            app:counterTextColor="@color/red"
             app:startIconDrawable="@drawable/ic_phone">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -137,7 +139,7 @@
                 android:textColor="@color/textprof"
 
                 android:maxLength="11"
-                android:text="" />
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -151,6 +153,7 @@
             android:textColorHint="@color/regteext"
             app:helperText="Обязательно*"
             app:helperTextTextColor="@color/red"
+            app:counterTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -166,7 +169,7 @@
 
                 android:background="@color/white"
                 android:maxLength="15"
-                android:text="" />
+               />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 

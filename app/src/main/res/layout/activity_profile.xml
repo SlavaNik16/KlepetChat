@@ -84,6 +84,7 @@
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="text"
+        android:textColor="@color/textprof"
 
         android:textAlignment="gravity"
         android:textColorHint="@color/textprof"
