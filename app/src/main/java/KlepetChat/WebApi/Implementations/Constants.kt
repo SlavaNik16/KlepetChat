@@ -36,7 +36,7 @@ fun <T> ApiRequestFlowResponse(call: suspend () -> Response<T>): Flow<ApiRespons
                     error.close()
                     when (response.code()) {
                         409 -> {
-                            var invalidate = Gson().fromJson(
+                            val invalidate = Gson().fromJson(
                                 error.charStream(),
                                 ApiValidationExceptionDetail::class.java
                             )

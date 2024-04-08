@@ -51,7 +51,7 @@ class NotificationUtils {
         text: String,
         pendingIntent: PendingIntent? = null,
     ): Int {
-        var context = context!!
+        val context = context!!
         val builder = NotificationCompat.Builder(context, Constants.CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notifications_active)
             .setContentTitle(title)
@@ -71,7 +71,7 @@ class NotificationUtils {
         ) {
             return -1
         }
-        var notification = builder.build()
+        val notification = builder.build()
         manager?.notify(lastId, notification)
         notifications?.put(lastId, notification)
         return lastId++

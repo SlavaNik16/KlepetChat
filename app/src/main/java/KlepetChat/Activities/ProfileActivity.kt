@@ -113,7 +113,7 @@ class ProfileActivity : AppCompatActivity() {
     private fun getHttpImage(api: ApiResponse<ResponseBody>) {
         when (api) {
             is ApiResponse.Success -> {
-                var imageHttp = api.data.string()
+                val imageHttp = api.data.string()
                 user.photo = imageHttp
                 initProfile(user)
                 if (file.exists()) {
@@ -204,7 +204,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun getView() {
-        var isView = intent.extras?.getBoolean(Constants.KEY_PROFILE_VIEW)
+        val isView = intent.extras?.getBoolean(Constants.KEY_PROFILE_VIEW)
         viewProfile(isView!!)
     }
 
@@ -220,7 +220,7 @@ class ProfileActivity : AppCompatActivity() {
 
 
     private fun getUser() {
-        var phone = intent.extras?.getString(Constants.KEY_USER_PHONE)
+        val phone = intent.extras?.getString(Constants.KEY_USER_PHONE)
         onUserSend(phone!!)
     }
 
@@ -294,11 +294,11 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun onDeleteAcc() {
-        var dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        var view =
+        val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+        val view =
             LayoutInflater.from(dialog.context)
                 .inflate(R.layout.alert_dialog_password_validate, null)
-        var bindingPassword = AlertDialogPasswordValidateBinding.bind(view)
+        val bindingPassword = AlertDialogPasswordValidateBinding.bind(view)
         dialog.setView(view)
         dialog.setNegativeButton("Отменить",
             DialogInterface.OnClickListener { dialog: DialogInterface?, _ ->
@@ -434,8 +434,8 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun onEditNickname() {
-        var dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        var view =
+        val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+        val view =
             LayoutInflater.from(dialog.context).inflate(R.layout.alert_dialog_edit_nickname, null)
         bindingEditNickname = AlertDialogEditNicknameBinding.bind(view)
         bindingEditNickname?.nicknameField?.setText(binding?.textNickname?.text.toString())
@@ -445,7 +445,7 @@ class ProfileActivity : AppCompatActivity() {
                 dialog?.dismiss()
             })
         dialog.setPositiveButton("Сохранить",
-            DialogInterface.OnClickListener { dialog: DialogInterface?, _ ->
+            DialogInterface.OnClickListener { _: DialogInterface?, _ ->
                 if (bindingEditNickname?.nicknameField?.text.isNullOrBlank()) {
                     Toast.makeText(
                         this@ProfileActivity, "Имя пользователя не дожно быть пустым!!!",
@@ -459,8 +459,8 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun onEditPhone() {
-        var dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        var view =
+        val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+        val view =
             LayoutInflater.from(dialog.context).inflate(R.layout.alert_dialog_edit_phone, null)
         bindingEditPhone = AlertDialogEditPhoneBinding.bind(view)
         dialog.setView(view)
@@ -469,9 +469,9 @@ class ProfileActivity : AppCompatActivity() {
                 dialog?.dismiss()
             })
         dialog.setPositiveButton("Сохранить",
-            DialogInterface.OnClickListener { dialog: DialogInterface?, _ ->
-                var password = bindingEditPhone!!.passwordField
-                var phone = bindingEditPhone!!.phoneField;
+            DialogInterface.OnClickListener { _: DialogInterface?, _ ->
+                val password = bindingEditPhone!!.passwordField
+                val phone = bindingEditPhone!!.phoneField;
                 if (password.length() < 8) {
                     Toast.makeText(
                         applicationContext, "Слишком маленький пароль (не меньше 8)",
@@ -509,11 +509,11 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun onEditName() {
-        var dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        var view =
+        val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+        val view =
             LayoutInflater.from(dialog.context).inflate(R.layout.alert_dialog_edit_fio, null)
         bindingEditFIO = AlertDialogEditFioBinding.bind(view)
-        var fio = binding?.textFIO?.text.toString().split(" ")
+        val fio = binding?.textFIO?.text.toString().split(" ")
         bindingEditFIO?.surnameField?.setText(fio[0])
         bindingEditFIO?.nameField?.setText(fio[1])
         dialog.setView(view)
@@ -522,7 +522,7 @@ class ProfileActivity : AppCompatActivity() {
                 dialog?.dismiss()
             })
         dialog.setPositiveButton("Сохранить",
-            DialogInterface.OnClickListener { dialog: DialogInterface?, _ ->
+            DialogInterface.OnClickListener { _: DialogInterface?, _ ->
                 if (bindingEditFIO?.nameField?.text.isNullOrBlank() ||
                     bindingEditFIO?.surnameField?.text.isNullOrBlank()
                 ) {
@@ -581,7 +581,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun onUserPress() {
-        var photoPickerIntent =
+        val photoPickerIntent =
             Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         photoPickerIntent.setType("image/*")
         getAction.launch(photoPickerIntent)
@@ -622,13 +622,13 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun exitAuth() {
         userDataViewModel.ClearUserData()
-        var intent = Intent(this, AuthorizationActivity::class.java)
+        val intent = Intent(this, AuthorizationActivity::class.java)
         startActivity(intent)
         finish()
     }
 
     private fun initProfile(user: User) {
-        var fio = "${user.surname} ${user.name}"
+        val fio = "${user.surname} ${user.name}"
         binding?.textFIO?.text = fio
         binding?.textFIOEdit?.text = fio.cropLength(Constants.TEXT_SIZE_CROP_SHORT)
         binding?.textPhone?.text = user.phone

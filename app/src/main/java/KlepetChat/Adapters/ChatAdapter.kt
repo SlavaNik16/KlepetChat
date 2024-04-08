@@ -18,8 +18,8 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private lateinit var messageViewItems: MutableList<Message>
     private lateinit var phone: String
 
-    var VIEW_TYPE_SENT = 1
-    var VIEW_TYPE_RECEIVED = 2
+    private var VIEW_TYPE_SENT = 1
+    private var VIEW_TYPE_RECEIVED = 2
 
     constructor(messageViewItems: MutableList<Message>, phone: String) : this() {
         this.messageViewItems = messageViewItems;
@@ -29,14 +29,14 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == VIEW_TYPE_SENT) {
-            var sendMessageView: View =
+            val sendMessageView: View =
                 LayoutInflater.from(parent.context).inflate(
                     R.layout.item_container_send_message,
                     parent, false
                 )
             return SentMessageViewHolder(sendMessageView)
         } else {
-            var receivedMessageView: View =
+            val receivedMessageView: View =
                 LayoutInflater.from(parent.context).inflate(
                     R.layout.item_container_received_message,
                     parent, false
@@ -62,10 +62,10 @@ class ChatAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (messageViewItems[position].phone.equals(phone)) {
-            return VIEW_TYPE_SENT
+        return if (messageViewItems[position].phone.equals(phone)) {
+            VIEW_TYPE_SENT
         } else {
-            return VIEW_TYPE_RECEIVED
+            VIEW_TYPE_RECEIVED
         }
     }
 
