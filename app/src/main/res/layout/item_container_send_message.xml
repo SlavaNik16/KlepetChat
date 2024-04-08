@@ -16,7 +16,7 @@
         android:textColor="#202020"
         android:maxWidth="200dp"
         android:minHeight="38dp"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

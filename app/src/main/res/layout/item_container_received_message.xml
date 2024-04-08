@@ -26,7 +26,7 @@
         android:textColor="@color/white"
         android:maxWidth="200dp"
         android:minHeight="38dp"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/imageProfile"
         app:layout_constraintTop_toTopOf="parent"
