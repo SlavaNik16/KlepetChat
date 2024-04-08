@@ -26,6 +26,7 @@ class Constants {
         const val CHANNEL_ID = "channel_id_const"
         const val REQUEST_PERMISSION_POST_NOTIFICATION = 1
         const val PERMISSION_REQUEST_CODE = 100
+        const val PERMISSION_REQUEST_CODE_SEND_SMS = 123
 
         const val TEXT_SIZE_CROP_NAME = 18
         const val TEXT_SIZE_CROP_DESCRIPTION = 25

@@ -15,8 +15,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.telephony.SmsManager
 import android.telephony.TelephonyManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -103,7 +103,16 @@ class RegisterActivity : ComponentActivity() {
             return
         }
         var smsCode = Random.nextInt(10000, 100000)
-        Log.d("u","$smsCode")
+        if(phone.length == 12) {
+            phone = phone.substring(1, phone.length)
+        }
+        var phoneNew = binding?.phoneField?.text.toString()
+        if(phone != phoneNew){
+            Toast.makeText(this,
+                "Ваш телефон вернул такой номер: $phone",Toast.LENGTH_LONG).show()
+            return
+        }
+        sendSMS("9115373923", "KlepetChat просит ввести код: $smsCode , для подтверждения телефона!")
         var dialog: AlertDialog.Builder = AlertDialog.Builder(this)
         var view =
             LayoutInflater.from(dialog.context)
@@ -141,6 +150,35 @@ class RegisterActivity : ComponentActivity() {
             })
     }
 
+    private fun validatePassword(password:String):Boolean{
+        val matchResult = Regex("[a-zа-я]").find(password)
+        if(matchResult == null){
+            Toast.makeText(
+                applicationContext, "Пароль должен содержать хотя бы одну строчную букву!",
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
+        }
+
+        val matchResult2 = Regex("[A-ZА-Я]").find(password)
+        if(matchResult2 == null){
+            Toast.makeText(
+                applicationContext, "Пароль должен содержать хотя бы одну прописную букву!",
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
+        }
+
+        val matchResult3 = Regex("[0-9]").find(password)
+        if(matchResult3 == null){
+            Toast.makeText(
+                applicationContext, "Пароль должен содержать хотя бы одну цифру!",
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
+        }
+        return true
+    }
     private fun onRegister() {
         var password = binding!!.passwordField
         var phone = binding!!.phoneField;
@@ -159,10 +197,17 @@ class RegisterActivity : ComponentActivity() {
             return
         }
 
-        val permission = Manifest.permission.READ_PHONE_STATE
+        if(!validatePassword(password.text.toString())){
+            return
+        }
+
         if (ActivityCompat.checkSelfPermission(
                 this,
-                permission
+                Manifest.permission.READ_PHONE_STATE
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.SEND_SMS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             requestPermission()
@@ -216,9 +261,18 @@ class RegisterActivity : ComponentActivity() {
                 arrayOf<String>(
                     Manifest.permission.READ_SMS,
                     Manifest.permission.READ_PHONE_NUMBERS,
-                    Manifest.permission.READ_PHONE_STATE
+                    Manifest.permission.SEND_SMS,
+                    Manifest.permission.READ_PHONE_STATE,
                 ), Constants.PERMISSION_REQUEST_CODE
             )
+        }
+    }
+    private fun sendSMS(phoneNumber: String, message: String) {
+        try {
+            val smsManager = SmsManager.getDefault()
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -238,6 +292,9 @@ class RegisterActivity : ComponentActivity() {
                     ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                         this,
                         Manifest.permission.READ_PHONE_STATE
+                    ) != PackageManager.PERMISSION_GRANTED &&ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.SEND_SMS
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
                     Toast.makeText(this, "Для регистрации, нужны разрешения!!!",
@@ -246,22 +303,8 @@ class RegisterActivity : ComponentActivity() {
                 }
                 onValidatePhone()
             }
-
-            else -> throw IllegalStateException("Unexpected value: $requestCode")
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    private fun checkPermissionNumbers():Boolean {
-        return ActivityCompat.checkSelfPermission(
-            this,
-            Manifest.permission.READ_PHONE_NUMBERS,
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-    private fun checkPermissionState():Boolean {
-        return ActivityCompat.checkSelfPermission(
-            this,
-            Manifest.permission.READ_PHONE_STATE,
-        ) == PackageManager.PERMISSION_GRANTED
-    }
 }
