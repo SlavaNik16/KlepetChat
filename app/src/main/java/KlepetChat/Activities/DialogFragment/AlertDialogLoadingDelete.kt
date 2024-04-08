@@ -40,15 +40,15 @@ class AlertDialogLoadingDelete : DialogFragment() {
     private var resultBar: Int = 1
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        var dialog: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
+        val dialog: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         dialog.setTitle("Удаление данных")
         dialog.setMessage("Внимание! Не выключайте экран!!!")
         dialog.setCancelable(false)
-        var view =
+        val view =
             layoutInflater.inflate(R.layout.alert_dialog_loading, null)
         binding = AlertDialogLoadingBinding.bind(view)
         dialog.setView(view)
-        var alert = dialog.create()
+        val alert = dialog.create()
         alert.setCanceledOnTouchOutside(false)
         LoadingEdit(0, "Начинается удаление аккаунта")
         setListeners()
@@ -192,7 +192,7 @@ class AlertDialogLoadingDelete : DialogFragment() {
 
             is ApiResponse.Failure -> {
                 Toast.makeText(
-                    requireActivity(), "${api.message}", Toast.LENGTH_SHORT
+                    requireActivity(), api.message, Toast.LENGTH_SHORT
                 ).show()
             }
 
@@ -211,7 +211,7 @@ class AlertDialogLoadingDelete : DialogFragment() {
 
             is ApiResponse.Failure -> {
                 Toast.makeText(
-                    requireActivity(), "${api.message}", Toast.LENGTH_SHORT
+                    requireActivity(), api.message, Toast.LENGTH_SHORT
                 ).show()
             }
 
@@ -230,7 +230,7 @@ class AlertDialogLoadingDelete : DialogFragment() {
 
             is ApiResponse.Failure -> {
                 Toast.makeText(
-                    requireActivity(), "${api.message}", Toast.LENGTH_SHORT
+                    requireActivity(), api.message, Toast.LENGTH_SHORT
                 ).show()
             }
 
@@ -243,19 +243,19 @@ class AlertDialogLoadingDelete : DialogFragment() {
     private fun deleteChatApi(api: ApiResponse<ResponseBody>) {
         when (api) {
             is ApiResponse.Success -> {
-                var i = binding?.loadingBar?.progress!!
+                val i = binding?.loadingBar?.progress!!
                 LoadingEdit(i + resultBar, "Чат успешно удален!!!")
                 deleteUser()
             }
 
             is ApiResponse.Failure -> {
                 Toast.makeText(
-                    requireActivity(), "${api.message}", Toast.LENGTH_SHORT
+                    requireActivity(), api.message, Toast.LENGTH_SHORT
                 ).show()
             }
 
             is ApiResponse.Loading -> {
-                var chat = chats?.get(index)
+                val chat = chats?.get(index)
                 LoadingEdit(binding?.loadingBar?.progress!!, "Удаление чата ${chat!!.name}...")
             }
         }
@@ -270,26 +270,26 @@ class AlertDialogLoadingDelete : DialogFragment() {
             visibleButYesNo(true)
             return
         }
-        var chat = chats?.get(index)
+        val chat = chats?.get(index)
         deleteMessage(chat!!.id)
     }
 
     private fun leaveGroupApi(api: ApiResponse<Boolean>) {
         when (api) {
             is ApiResponse.Success -> {
-                var i = binding?.loadingBar?.progress!!
+                val i = binding?.loadingBar?.progress!!
                 LoadingEdit(i + resultBar, "Успешный выход из чата!!!")
                 deleteUser()
             }
 
             is ApiResponse.Failure -> {
                 Toast.makeText(
-                    requireActivity(), "${api.message}", Toast.LENGTH_SHORT
+                    requireActivity(), api.message, Toast.LENGTH_SHORT
                 ).show()
             }
 
             is ApiResponse.Loading -> {
-                var chat = chats?.get(index)
+                val chat = chats?.get(index)
                 LoadingEdit(binding?.loadingBar?.progress!!, "Выход из чата ${chat!!.name}...")
             }
         }
@@ -298,8 +298,8 @@ class AlertDialogLoadingDelete : DialogFragment() {
     private fun deleteMessageApi(api: ApiResponse<ResponseBody>) {
         when (api) {
             is ApiResponse.Success -> {
-                var i = binding?.loadingBar?.progress!!
-                var chat = chats?.get(index)
+                val i = binding?.loadingBar?.progress!!
+                val chat = chats?.get(index)
                 LoadingEdit(i + resultBar, "Все сообщения удалены!!!")
                 if (chat?.roleType == RoleTypes.Admin) {
                     deleteChat(chat.id)
@@ -310,12 +310,12 @@ class AlertDialogLoadingDelete : DialogFragment() {
 
             is ApiResponse.Failure -> {
                 Toast.makeText(
-                    requireActivity(), "${api.message}", Toast.LENGTH_SHORT
+                    requireActivity(), api.message, Toast.LENGTH_SHORT
                 ).show()
             }
 
             is ApiResponse.Loading -> {
-                var chat = chats?.get(index)
+                val chat = chats?.get(index)
                 LoadingEdit(
                     binding?.loadingBar?.progress!!,
                     "Удаление сообщений чата ${chat!!.name}..."
@@ -326,14 +326,14 @@ class AlertDialogLoadingDelete : DialogFragment() {
 
     private fun deleteChats(chats: MutableList<Chat>) {
         this.chats = chats
-        var countChats = chats.count()
+        val countChats = chats.count()
         if (countChats <= 0) {
             deleteUser()
         }
-        var i = binding?.loadingBar?.progress!!;
+        val i = binding?.loadingBar?.progress!!;
         resultBar = (((75 - i) / countChats) / 2)
         index = 0
-        var chat = chats[index]
+        val chat = chats[index]
         deleteMessage(chat.id)
         return
     }
@@ -341,7 +341,7 @@ class AlertDialogLoadingDelete : DialogFragment() {
     private fun navigateToAuthorize() {
         Toast.makeText(requireActivity(), "Увидимся снова! $name", Toast.LENGTH_LONG).show()
         userDataViewModel?.ClearUserData()
-        var intent = Intent(requireActivity(), AuthorizationActivity::class.java)
+        val intent = Intent(requireActivity(), AuthorizationActivity::class.java)
         startActivity(intent)
         requireActivity().finish()
     }

@@ -96,7 +96,7 @@ class ChatContactActivity : AppCompatActivity() {
         val txtName = argument?.getString(Constants.KEY_CHAT_NAME)
         binding?.txtName?.text = txtName!!.cropLength(Constants.TEXT_SIZE_CROP_NAME)
 
-        val imageChat = argument?.getString(Constants.KEY_IMAGE_URL)
+        val imageChat = argument.getString(Constants.KEY_IMAGE_URL)
         if (!imageChat.isNullOrBlank()) {
             Picasso.get()
                 .load(imageChat)
