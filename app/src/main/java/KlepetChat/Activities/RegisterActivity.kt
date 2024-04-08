@@ -229,8 +229,10 @@ class RegisterActivity : ComponentActivity() {
     ) {
         when (requestCode) {
             Constants.PERMISSION_REQUEST_CODE -> {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) !=
-                    PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.READ_SMS
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                         this,
                         Manifest.permission.READ_PHONE_NUMBERS
                     ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
@@ -248,5 +250,18 @@ class RegisterActivity : ComponentActivity() {
             else -> throw IllegalStateException("Unexpected value: $requestCode")
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    private fun checkPermissionNumbers():Boolean {
+        return ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_PHONE_NUMBERS,
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+    private fun checkPermissionState():Boolean {
+        return ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_PHONE_STATE,
+        ) == PackageManager.PERMISSION_GRANTED
     }
 }
