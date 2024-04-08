@@ -381,15 +381,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun setMode() {
         var newMode: Int
-        var modeTag = bindingHeader?.imageMode?.tag.toString()
-        if (modeTag == Constants.KEY_TAG_SUN) {
-            bindingHeader?.imageMode?.setImageResource(R.drawable.ic_sun)
-            bindingHeader?.imageMode?.tag = Constants.KEY_TAG_MOON
-            newMode = AppCompatDelegate.MODE_NIGHT_YES
-        } else {
-            bindingHeader?.imageMode?.setImageResource(R.drawable.ic_moon)
-            bindingHeader?.imageMode?.tag = Constants.KEY_TAG_SUN
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             newMode = AppCompatDelegate.MODE_NIGHT_NO
+        } else {
+            newMode = AppCompatDelegate.MODE_NIGHT_YES
         }
         AppCompatDelegate.setDefaultNightMode(newMode)
     }
