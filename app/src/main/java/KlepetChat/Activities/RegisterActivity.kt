@@ -9,7 +9,7 @@ import KlepetChat.WebApi.Models.Exceptions.ICoroutinesErrorHandler
 import KlepetChat.WebApi.Models.Request.UserRegister
 import KlepetChat.WebApi.Models.Response.User
 import android.Manifest
-import kotlin.random.Random
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,7 +18,6 @@ import android.os.Bundle
 import android.telephony.TelephonyManager
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
@@ -27,9 +26,9 @@ import androidx.core.app.ActivityCompat
 import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityRegisterBinding
 import com.example.klepetchat.databinding.AlertDialogValidateCodePhoneBinding
-
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.UUID
+import kotlin.random.Random
 
 @AndroidEntryPoint
 class RegisterActivity : ComponentActivity() {
@@ -37,8 +36,6 @@ class RegisterActivity : ComponentActivity() {
     private val userViewModel: UserViewModel by viewModels()
     private val tokenViewModel: TokenViewModel by viewModels()
     private val chatViewModel: ChatViewModel by viewModels()
-    private var phone: String? = null
-    private var id: UUID? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -80,55 +77,29 @@ class RegisterActivity : ComponentActivity() {
 
 
             is ApiResponse.Success -> {
-                phone = api.data.phone
-                id = api.data.id
-                val permission = Manifest.permission.READ_PHONE_STATE
-                if (ActivityCompat.checkSelfPermission(
-                        this,
-                        permission
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    requestPermission()
-                    return
-                }
-                onValidatePhone()
+                Toast.makeText(
+                    this,
+                    "Регистрация прошла успешно!", Toast.LENGTH_SHORT
+                ).show()
+                postToken(api.data.phone)
+                postFavorites(api.data.id)
+                navigateToAuthorization()
             }
         }
     }
 
-    private fun posAuthentication() {
-        Toast.makeText(
-            this,
-            "Регистрация прошла успешно!", Toast.LENGTH_SHORT
-        ).show()
-        postToken(phone!!)
-        postFavorites(id!!)
-        navigateToAuthorization()
-    }
 
+    @SuppressLint("MissingPermission")
     private fun onValidatePhone() {
         val telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_SMS
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_PHONE_NUMBERS
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_PHONE_STATE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
         var phone = telephonyManager.line1Number
         if (phone.isNullOrEmpty()) {
             Toast.makeText(
                 this,
-                "Не удалось получить номер телефона функция сброса пароля заблокирована",
+                "Не удалось получить номер телефона! Функция сброса пароля заблокирована",
                 Toast.LENGTH_SHORT
             ).show()
-            posAuthentication()
+            postCreate()
             return
         }
         var smsCode = Random.nextInt(10000, 100000)
@@ -149,7 +120,7 @@ class RegisterActivity : ComponentActivity() {
         bindingSMS.butConfirm.setOnClickListener {
             val enteredCode = bindingSMS.editTextCode.text.toString()
             if (enteredCode == smsCode.toString()) {
-                posAuthentication()
+                postCreate()
             } else {
                 Toast.makeText(this, "Неверный код", Toast.LENGTH_SHORT).show()
             }
@@ -187,12 +158,28 @@ class RegisterActivity : ComponentActivity() {
             ).show()
             return
         }
+
+        val permission = Manifest.permission.READ_PHONE_STATE
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                permission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermission()
+            return
+        }
+
+        onValidatePhone()
+
+    }
+
+    private fun postCreate(){
         userViewModel.postCreate(
             UserRegister(
                 binding?.surnameField?.text.toString(),
                 binding?.nameField?.text.toString(),
                 binding?.phoneField?.text.toString(),
-                password.text.toString()
+                binding!!.passwordField.text.toString()
             ),
             object : ICoroutinesErrorHandler {
                 override fun onError(message: String) {
@@ -251,6 +238,8 @@ class RegisterActivity : ComponentActivity() {
                         Manifest.permission.READ_PHONE_STATE
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
+                    Toast.makeText(this, "Для регистрации, нужны разрешения!!!",
+                        Toast.LENGTH_SHORT).show()
                     return
                 }
                 onValidatePhone()
