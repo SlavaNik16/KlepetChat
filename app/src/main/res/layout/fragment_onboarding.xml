@@ -7,14 +7,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@color/Regist"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/Regist">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
-            android:layout_width="228dp"
-            android:layout_height="447dp"
-            android:layout_margin="80dp"
+            android:layout_width="220dp"
+            android:layout_height="372dp"
+
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
             android:backgroundTint="@color/back_gray"
@@ -75,5 +75,5 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-       </FrameLayout>
+</FrameLayout>
 
