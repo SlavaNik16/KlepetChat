@@ -105,7 +105,6 @@ class ChatContactActivity : AppCompatActivity() {
                 .into(binding?.butMenu)
         }
         binding?.textDesc?.text = "Не в сети"
-
     }
 
     override fun onStart() {
@@ -151,9 +150,9 @@ class ChatContactActivity : AppCompatActivity() {
                 binding?.textDesc?.text = "В сети"
                 return@runOnUiThread
             }
-            var timer = Timer()
-            var Delay: Long = 230
-            var DelayThirst: Long = 700
+            val timer = Timer()
+            val Delay: Long = 230
+            val DelayThirst: Long = 700
             timer.schedule(
                 object : TimerTask() {
                     override fun run() {
