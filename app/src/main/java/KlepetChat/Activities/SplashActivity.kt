@@ -22,15 +22,15 @@ class SplashActivity : ComponentActivity() {
     }
     private fun validateToken(userData: UserData?) {
         if (!userData?.accessToken.isNullOrBlank()) {
-            var intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         } else if (userData!!.isFirst) {
-            var intent = Intent(this, IntroActivity::class.java)
+            val intent = Intent(this, IntroActivity::class.java)
             startActivity(intent)
             finish()
         }else{
-            var intent = Intent(this, AuthorizationActivity::class.java)
+            val intent = Intent(this, AuthorizationActivity::class.java)
             startActivity(intent)
             finish()
         }

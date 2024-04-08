@@ -59,9 +59,6 @@ class ChatFavoritesActivity : AppCompatActivity() {
 
         val txtName = argument?.getString(Constants.KEY_CHAT_NAME)
         binding?.txtName?.text = txtName
-
-
-
     }
 
     private fun setListeners() {
@@ -134,8 +131,6 @@ class ChatFavoritesActivity : AppCompatActivity() {
     }
 
     private fun onBackPress() {
-//        var intent = Intent(this@ChatFavoritesActivity, MainActivity::class.java)
-//        startActivity(intent)
         finish()
     }
 

@@ -96,7 +96,7 @@ class ChatContactActivity : AppCompatActivity() {
         val txtName = argument?.getString(Constants.KEY_CHAT_NAME)
         binding?.txtName?.text = txtName!!.cropLength(Constants.TEXT_SIZE_CROP_NAME)
 
-        val imageChat = argument?.getString(Constants.KEY_IMAGE_URL)
+        val imageChat = argument.getString(Constants.KEY_IMAGE_URL)
         if (!imageChat.isNullOrBlank()) {
             Picasso.get()
                 .load(imageChat)
@@ -105,7 +105,6 @@ class ChatContactActivity : AppCompatActivity() {
                 .into(binding?.butMenu)
         }
         binding?.textDesc?.text = "Не в сети"
-
     }
 
     override fun onStart() {
@@ -151,9 +150,9 @@ class ChatContactActivity : AppCompatActivity() {
                 binding?.textDesc?.text = "В сети"
                 return@runOnUiThread
             }
-            var timer = Timer()
-            var Delay: Long = 230
-            var DelayThirst: Long = 700
+            val timer = Timer()
+            val Delay: Long = 230
+            val DelayThirst: Long = 700
             timer.schedule(
                 object : TimerTask() {
                     override fun run() {

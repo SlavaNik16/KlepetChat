@@ -20,14 +20,14 @@ import java.util.Locale
 
 class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewItemHolder>() {
 
-    lateinit var chatViewItems: MutableList<Chat>
+    private lateinit var chatViewItems: MutableList<Chat>
 
     constructor(chatViewItems: MutableList<Chat>) : this() {
         this.chatViewItems = chatViewItems;
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewItemHolder {
-        var chatView: View =
+        val chatView: View =
             LayoutInflater.from(parent.context).inflate(R.layout.chat_view_item, parent,
                 false)
         return ChatViewItemHolder(chatView)
@@ -42,12 +42,12 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
         holder.binding?.textName?.text = name.cropLength(Constants.TEXT_SIZE_CROP_NAME)
         holder.binding?.textDesc?.text = String()
         if (!chatViewItems[position].lastMessage.isNullOrBlank()) {
-            var lastMessage = chatViewItems[position].lastMessage ?: " "
+            val lastMessage = chatViewItems[position].lastMessage ?: " "
             holder.binding?.textDesc?.text =
                 lastMessage.cropLength(Constants.TEXT_SIZE_CROP_DESCRIPTION)
-            var date = chatViewItems[position].lastDate
-            var dateLocal = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-            var period: Period = Period.between(dateLocal, LocalDate.now())
+            val date = chatViewItems[position].lastDate
+            val dateLocal = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+            val period: Period = Period.between(dateLocal, LocalDate.now())
             if (period.days <= 0 && period.months == 0 && period.years == 0) {
                 holder.binding?.textDate?.text =
                     getReadableDateTimeNow(chatViewItems[position].lastDate)
@@ -65,7 +65,7 @@ class ChatViewItemAdapter() : RecyclerView.Adapter<ChatViewItemAdapter.ChatViewI
         }
         val path = if(chatViewItems[position].photo.isNullOrBlank()) "empty" else
             chatViewItems[position].photo
-        var resourceTypeChat =
+        val resourceTypeChat =
             when (chatViewItems[position].chatType) {
                 ChatTypes.Favorites -> {
                     holder.binding?.imageChat?.setImageResource(R.drawable.ic_favorite)

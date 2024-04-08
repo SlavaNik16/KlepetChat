@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 class MyActivityLifecycleCallbacks : ActivityLifecycleCallbacks {
 
     private var countActivity = 0
-    var userViewModel: UserViewModel? = null
+    private var userViewModel: UserViewModel? = null
     private var status: StatusTypes = StatusTypes.Offline
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         Log.e("Activity", "onActivityCreated:" + activity.getLocalClassName());

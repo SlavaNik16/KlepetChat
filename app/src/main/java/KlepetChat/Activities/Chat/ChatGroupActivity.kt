@@ -47,7 +47,7 @@ class ChatGroupActivity : AppCompatActivity() {
     private var fragment: ChatFragment? = null
     private var popupMenu: PopupMenu? = null
 
-    private var persons:MutableList<String>? = null
+    private var phones:MutableList<String>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatGroupBinding.inflate(layoutInflater)
@@ -60,12 +60,12 @@ class ChatGroupActivity : AppCompatActivity() {
         if (message.phone != phone) {
             return
         }
-        for(person in persons!!){
-            if(person == message.phone){
+        for(phone in phones!!){
+            if(phone == message.phone){
                 continue
             }
-            signalRViewModel.sendNotificationGroup(person, chatId!!, message.id)
-            signalRViewModel.updateChat(person)
+            signalRViewModel.sendNotificationGroup(phone, chatId!!, message.id)
+            signalRViewModel.updateChat(phone)
         }
     }
 
@@ -101,7 +101,7 @@ class ChatGroupActivity : AppCompatActivity() {
     private fun animationUpload(user: User) {
         runOnUiThread {
             if (!statusPrint) {
-                binding?.textDesc?.text = "${persons!!.count()} подписчиков"
+                binding?.textDesc?.text = "${phones!!.count()} подписчиков"
                 return@runOnUiThread
             }
             var timer = Timer()
@@ -136,7 +136,7 @@ class ChatGroupActivity : AppCompatActivity() {
                 object : TimerTask() {
                     override fun run() {
                         if (!statusPrint) {
-                            binding?.textDesc?.text ="${persons!!.count()} подписчиков"
+                            binding?.textDesc?.text ="${phones!!.count()} подписчиков"
                             return
                         }
                         animationUpload(user)
@@ -186,7 +186,7 @@ class ChatGroupActivity : AppCompatActivity() {
     }
     private fun initChat(chat: Chat){
         getChatUpdate(chat)
-        if (persons!!.contains(phone)) {
+        if (phones!!.contains(phone)) {
             fragment = ChatFragment.newInstance(chatId!!, ChatTypes.Group)
             fragmentInstance(fragment!!)
             binding?.imageChat?.visibility = View.VISIBLE
@@ -213,8 +213,8 @@ class ChatGroupActivity : AppCompatActivity() {
                 .into(binding?.imageChat)
         }
         roleType = chat.roleType
-        persons = chat.phones
-        binding?.textDesc?.text = "${persons?.count()} подписчик(-a)"
+        phones = chat.phones
+        binding?.textDesc?.text = "${phones?.count()} подписчик(-a)"
     }
 
     private fun setListeners() {
@@ -368,14 +368,12 @@ class ChatGroupActivity : AppCompatActivity() {
                 chatId = api.data.id
                 fragment?.chatId = chatId!!
                 fragment?.joinGroup(ChatTypes.Group)
-                persons?.add(phone!!)
+                phones?.add(phone!!)
                 binding?.imageChat?.visibility = View.VISIBLE
-                for (person in persons!!){
-                    fragment?.signalRViewModel?.updateChat(person)
-                    getUpdateChat(person, chatId!!)
+                for (phone in phones!!){
+                    fragment?.signalRViewModel?.updateChat(phone)
+                    getUpdateChat(phone, chatId!!)
                 }
-
-
             }
 
             is ApiResponse.Failure -> {
@@ -412,8 +410,8 @@ class ChatGroupActivity : AppCompatActivity() {
     private fun getLeaveChat(api: ApiResponse<Boolean>) {
         when (api) {
             is ApiResponse.Success -> {
-                for (person in persons!!){
-                    getUpdateChat(person, chatId!!)
+                for (phone in phones!!){
+                    getUpdateChat(phone, chatId!!)
                 }
                 fragment?.signalRViewModel?.exitChat(phone!!)
             }
@@ -433,8 +431,8 @@ class ChatGroupActivity : AppCompatActivity() {
     private fun getDeletedChat(api: ApiResponse<ResponseBody>) {
         when (api) {
             is ApiResponse.Success -> {
-                for (person in persons!!){
-                    fragment?.signalRViewModel?.exitChat(person)
+                for (phone in phones!!){
+                    fragment?.signalRViewModel?.exitChat(phone)
                 }
             }
 

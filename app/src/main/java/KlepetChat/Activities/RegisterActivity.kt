@@ -9,15 +9,10 @@ import KlepetChat.WebApi.Models.Request.UserRegister
 import KlepetChat.WebApi.Models.Response.User
 import android.content.Intent
 import android.os.Bundle
-import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
-import com.example.klepetchat.R
 import com.example.klepetchat.databinding.ActivityRegisterBinding
-
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.UUID
 
@@ -91,8 +86,8 @@ class RegisterActivity : ComponentActivity() {
     }
 
     private fun onRegister() {
-        var password = binding!!.passwordField
-        var phone = binding!!.phoneField;
+        val password = binding!!.passwordField
+        val phone = binding!!.phoneField;
         if (password.length() < 8) {
             Toast.makeText(
                 applicationContext, "Слишком маленький пароль (не меньше 8)",
@@ -138,7 +133,7 @@ class RegisterActivity : ComponentActivity() {
     }
 
     private fun navigateToAuthorization() {
-        var intent = Intent(this, AuthorizationActivity::class.java)
+        val intent = Intent(this, AuthorizationActivity::class.java)
         startActivity(intent)
         finish()
     }

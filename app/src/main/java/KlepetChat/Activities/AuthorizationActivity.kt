@@ -77,8 +77,8 @@ class AuthorizationActivity : ComponentActivity() {
     }
 
     private fun login() {
-        var password = binding!!.passField
-        var phone = binding!!.phoneField;
+        val password = binding!!.passField
+        val phone = binding!!.phoneField;
         if (password.length() < 8) {
             Toast.makeText(
                 applicationContext, "Слишком маленький пароль (не меньше 8)", Toast.LENGTH_SHORT
@@ -101,12 +101,12 @@ class AuthorizationActivity : ComponentActivity() {
     }
 
     private fun navigateToRegister() {
-        var intent = Intent(this, RegisterActivity::class.java)
+        val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
         finish()
     }
     private fun navigateToMain() {
-        var intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }

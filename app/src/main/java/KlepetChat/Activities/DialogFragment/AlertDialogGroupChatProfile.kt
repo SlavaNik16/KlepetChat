@@ -56,8 +56,8 @@ class AlertDialogGroupChatProfile : DialogFragment() {
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        var alertDialog = AlertDialog.Builder(requireActivity())
-        var view =
+        val alertDialog = AlertDialog.Builder(requireActivity())
+        val view =
             layoutInflater.inflate(R.layout.alert_dialog_group_chat_profile, null)
         binding = AlertDialogGroupChatProfileBinding.bind(view)
         alertDialog.setView(view)
@@ -100,7 +100,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
         when (api) {
             is ApiResponse.Success -> {
                 if (requireActivity() is ChatGroupActivity) {
-                    var chatGroupActivity = activity as ChatGroupActivity
+                    val chatGroupActivity = activity as ChatGroupActivity
                     for(phone in users!!.map { it.phone }){
                         chatGroupActivity.getUpdateChat(phone, chatId!!)
                     }
@@ -126,7 +126,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
     private fun getHttpImage(api: ApiResponse<ResponseBody>) {
         when (api) {
             is ApiResponse.Success -> {
-                var imageHttp = api.data.string()
+                val imageHttp = api.data.string()
                 putEditPhotoChat(imageHttp)
                 if (file?.exists() == true) {
                     file?.delete()
@@ -184,7 +184,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
         return object : RecyclerView.OnChildAttachStateChangeListener {
 
             override fun onChildViewAttachedToWindow(view: View) {
-                var position =
+                val position =
                     binding?.contactRecycler?.findContainingViewHolder(view)!!.adapterPosition
                 view.findViewById<LinearLayout>(R.id.Chat).setOnClickListener {
                     navigateToProfile(users!!.get(position))
@@ -202,7 +202,7 @@ class AlertDialogGroupChatProfile : DialogFragment() {
             Toast.makeText(requireActivity(), "Недостаточно прав!!!", Toast.LENGTH_SHORT).show()
             return
         }
-        var photoPickerIntent =
+        val photoPickerIntent =
             Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         photoPickerIntent.setType("image/*")
         getAction.launch(photoPickerIntent)
@@ -229,7 +229,6 @@ class AlertDialogGroupChatProfile : DialogFragment() {
         userViewModel = null
         imageViewModel = null
         chatViewModel = null
-        //signalRViewModel = null
         this.viewModelStore.clear()
     }
 
@@ -265,9 +264,9 @@ class AlertDialogGroupChatProfile : DialogFragment() {
                     e.printStackTrace()
                 }
                 binding?.imageUser?.setImageBitmap(bitmap)
-                var activity = requireActivity()
+                val activity = requireActivity()
                 if (activity is ChatGroupActivity) {
-                    var chatGroupActivity = activity as ChatGroupActivity
+                    val chatGroupActivity = activity as ChatGroupActivity
                     chatGroupActivity.binding?.imageChat?.setImageBitmap(bitmap)
                 }
 

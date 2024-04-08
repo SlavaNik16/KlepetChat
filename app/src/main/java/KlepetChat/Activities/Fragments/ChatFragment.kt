@@ -66,7 +66,7 @@ class ChatFragment : Fragment() {
         signalRViewModel.getConnection().on("ChatInfoUpdate", { chat->
             requireActivity().runOnUiThread(Runnable {
                 if(requireActivity() is ChatGroupActivity){
-                    var act = requireActivity() as ChatGroupActivity
+                    val act = requireActivity() as ChatGroupActivity
                     act.getChatUpdate(chat)
                 }
             })
@@ -126,12 +126,12 @@ class ChatFragment : Fragment() {
                 EventUpdateMessages(it)
                 if (chatType == ChatTypes.Contact) {
                     if (requireActivity() is ChatContactActivity) {
-                        var chatContact = requireActivity() as ChatContactActivity
+                        val chatContact = requireActivity() as ChatContactActivity
                         chatContact.signalNotification(signalRViewModel, it.text, it.phone == phone)
                     }
                 }else if(chatType == ChatTypes.Group){
                     if (requireActivity() is ChatGroupActivity) {
-                        var chatContact = requireActivity() as ChatGroupActivity
+                        val chatContact = requireActivity() as ChatGroupActivity
                         chatContact.signalNotification(signalRViewModel, it)
                     }
                 }
