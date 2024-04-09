@@ -23,7 +23,6 @@ android:background="@color/Regist"
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:orientation="vertical">
 
         <LinearLayout
@@ -36,7 +35,6 @@ android:background="@color/Regist"
             <ImageView
                 android:id="@+id/imageTypeChat"
                 android:layout_width="16dp"
-
                 android:layout_height="16dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="4dp"
@@ -48,7 +46,6 @@ android:background="@color/Regist"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="TextView"
-
                 android:textColor="@color/icColor"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -69,7 +66,6 @@ android:background="@color/Regist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-
             android:layout_weight="1"
             android:text="TextView"
             android:textColor="@color/chatcolor"

@@ -37,7 +37,7 @@
         <LinearLayout
             android:id="@+id/groupProfile"
             android:layout_width="0dp"
-            android:layout_height="54dp"
+            android:layout_height="0dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -49,7 +49,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
                 android:orientation="vertical">
 
                 <TextView
