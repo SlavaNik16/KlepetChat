@@ -108,89 +108,10 @@
         app:layout_constraintTop_toBottomOf="@+id/inputMessageAboutMe" />
 
 
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/butDeleteAcc"
-        android:layout_width="321dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="110dp"
-        android:layout_marginEnd="110dp"
-        android:layout_marginBottom="24dp"
-        android:backgroundTint="@color/white"
-        android:rotation="0"
-        android:scrollbarSize="5dp"
-        android:visibility="visible"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:layout_width="230dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:backgroundTint="#A12998"
-            android:gravity="center"
-            android:text="@string/delete_akkaunt"
-            android:textColor="#FF0000"
-            android:textSize="20dp"
-            app:cornerRadius="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.543"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-            app:layout_constraintVertical_bias="0.429" />
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/butSend"
-        android:layout_width="321dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="110dp"
-        android:layout_marginEnd="110dp"
-        android:layout_marginBottom="24dp"
-        android:backgroundTint="@color/white"
-        android:rotation="0"
-        android:scrollbarSize="5dp"
-        android:visibility="visible"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:layout_width="230dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:backgroundTint="#A12998"
-            android:gravity="center"
-            android:text="Написать"
-            android:textColor="#2FA7F6"
-            android:textSize="20dp"
-            app:cornerRadius="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.543"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-            app:layout_constraintVertical_bias="0.429" />
-    </androidx.cardview.widget.CardView>
-
-
-
-
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/butDeleteAcc"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7">
@@ -231,9 +152,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:textColor="@color/textprof"
                         android:gravity="center|left"
                         android:text="@string/Name"
+                        android:textColor="@color/textprof"
                         android:textSize="18dp" />
 
                     <TextView
@@ -241,9 +162,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:textColor="@color/textprof"
                         android:gravity="center"
                         android:text="@string/Name"
+                        android:textColor="@color/textprof"
                         android:textSize="18dp" />
 
                 </LinearLayout>
@@ -266,9 +187,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:textColor="@color/textprof"
                         android:gravity="center|left"
                         android:text="@string/Phone"
+                        android:textColor="@color/textprof"
                         android:textSize="18dp" />
 
                     <TextView
@@ -276,9 +197,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:textColor="@color/textprof"
                         android:gravity="center"
                         android:text="@string/Phone"
+                        android:textColor="@color/textprof"
                         android:textSize="18dp" />
 
                 </LinearLayout>
@@ -302,9 +223,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:textColor="@color/textprof"
                         android:gravity="center|left"
                         android:text="@string/Nickname"
+                        android:textColor="@color/textprof"
                         android:textSize="18dp" />
 
                     <TextView
@@ -312,9 +233,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:textColor="@color/textprof"
                         android:gravity="center|left"
                         android:text="@string/Nickname"
+                        android:textColor="@color/textprof"
                         android:textSize="18dp" />
 
                 </LinearLayout>
@@ -341,8 +262,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
                 android:gravity="center"
-                android:textColor="@color/textprof"
                 android:text="Настройка"
+                android:textColor="@color/textprof"
                 android:textSize="23dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -352,11 +273,11 @@
                 android:id="@+id/linearLayout7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="30dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
+                android:padding="10dp"
                 app:layout_constraintBottom_toTopOf="@+id/butDeleteAcc"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -366,12 +287,12 @@
                     android:id="@+id/textView6"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="@color/textprof"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:text="Отображение уведомлений"
-                    android:textSize="18sp"
                     android:gravity="left"
+                    android:text="Отображение уведомлений"
+                    android:textColor="@color/textprof"
+                    android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -379,10 +300,85 @@
                     android:id="@+id/switchNotification"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="4"
                     android:layout_marginEnd="5dp"
+                    android:layout_weight="4"
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
             </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/butDeleteAcc"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginBottom="24dp"
+                android:backgroundTint="@color/white"
+                android:rotation="0"
+                android:scrollbarSize="5dp"
+                android:visibility="visible"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.505"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:layout_width="230dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:backgroundTint="#A12998"
+                    android:gravity="center"
+                    android:text="@string/delete_akkaunt"
+                    android:textColor="#FF0000"
+                    android:textSize="20dp"
+                    app:cornerRadius="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.543"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+                    app:layout_constraintVertical_bias="0.429" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/butSend"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginBottom="24dp"
+                android:backgroundTint="@color/white"
+                android:rotation="0"
+                android:scrollbarSize="5dp"
+                android:visibility="invisible"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.505"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:layout_width="230dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:backgroundTint="#A12998"
+                    android:gravity="center"
+                    android:text="Написать"
+                    android:textColor="#2FA7F6"
+                    android:textSize="20dp"
+                    app:cornerRadius="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.543"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+                    app:layout_constraintVertical_bias="0.429" />
+            </androidx.cardview.widget.CardView>
+
         </LinearLayout>
     </ScrollView>
 
