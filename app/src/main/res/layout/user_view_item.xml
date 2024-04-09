@@ -43,7 +43,7 @@
             android:textColor="@color/black" />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="12dp"
+            android:layout_height="5dp"
             android:background="@drawable/back_chat_view_item"
             android:orientation="horizontal" />
     </LinearLayout>

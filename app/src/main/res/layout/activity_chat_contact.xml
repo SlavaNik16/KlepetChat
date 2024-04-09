@@ -84,7 +84,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginEnd="2dp"
-            android:background="@drawable/ic_calling"
+            android:background="@drawable/ic_phone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/butMenu"
             app:layout_constraintStart_toEndOf="@+id/linearLayout4"
