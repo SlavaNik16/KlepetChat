@@ -80,7 +80,7 @@
         android:layout_marginTop="28dp"
         android:background="@color/white"
         android:gravity="center"
-        android:hint="@string/sendMessage"
+        android:hint="@string/aboutMe"
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="text"

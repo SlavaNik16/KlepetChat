@@ -227,12 +227,12 @@ class ChooseActivity : AppCompatActivity() {
         if (modeTag == Constants.KEY_TAG_SEARCH) {
             isEdit = false
             binding?.butSearch?.tag = Constants.KEY_TAG_SEARCHOFF
-            binding?.butSearch?.setImageResource(R.drawable.ic_close_white)
+            binding?.butSearch?.setImageResource(R.drawable.ic_close)
             binding?.inputSearch?.visibility = View.VISIBLE
             binding?.addGroup?.visibility = View.GONE
         } else {
             binding?.butSearch?.tag = Constants.KEY_TAG_SEARCH
-            binding?.butSearch?.setImageResource(R.drawable.ic_search)
+            binding?.butSearch?.setImageResource(R.drawable.ic_poisk)
             binding?.inputSearch?.visibility = View.GONE
             binding?.inputSearch?.setText(String())
             binding?.addGroup?.visibility = View.VISIBLE
