@@ -11,11 +11,11 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView10"
-        android:layout_width="0dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="53dp"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="25dp"
         android:backgroundTint="@color/back_gray"
         android:rotation="0"
         android:scrollbarSize="5dp"
@@ -26,22 +26,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/butBack"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/ic_back"
-            app:civ_border_color="@color/white" />
-
         <TextView
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
             android:rotation="0"
             android:text="@string/Register"
             android:textColor="@color/textprof"
@@ -245,5 +236,17 @@
             android:src="@drawable/ic_logo"
             android:visibility="visible" />
     </androidx.cardview.widget.CardView>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/butBack"
+        android:layout_width="47dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_back"
+        app:civ_border_color="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/cardView10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
