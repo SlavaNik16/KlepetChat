@@ -78,7 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_marginTop="28dp"
-        android:background="@drawable/background_chat_input"
+        android:background="@color/white"
         android:gravity="center"
         android:hint="@string/sendMessage"
         android:imeOptions="actionDone"
