@@ -12,7 +12,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView10"
         android:layout_width="286dp"
-        android:layout_height="73dp"
+        android:layout_height="54dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/back_gray"
         android:rotation="0"
@@ -238,16 +238,14 @@
         android:layout_width="0dp"
         android:layout_height="54dp"
         android:layout_margin="10dp"
-        android:layout_marginBottom="187dp"
         android:src="@drawable/ic_back"
-        app:civ_border_color="@color/white"
 
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:civ_border_color="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/cardViewProfile"
         app:layout_constraintEnd_toStartOf="@+id/cardView10"
         app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.054" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
