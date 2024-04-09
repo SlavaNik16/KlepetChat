@@ -2,7 +2,7 @@
 <resources>
 
     <style name="Theme.KlepetChat" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:statusBarColor">@color/mainChat</item>
     </style>
 
 </resources>

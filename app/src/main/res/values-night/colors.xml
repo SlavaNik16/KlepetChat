@@ -19,4 +19,6 @@
     <color name="mainChat">#393939</color>
     <color name="icColor">#F4F4F4</color>
     <color name="chatcolor">#9A9A9A</color>
+    <color name="navbar">#132940</color>
+
 </resources>
