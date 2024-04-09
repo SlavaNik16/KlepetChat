@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:backgroundTint="@color/back_gray"
+        android:backgroundTint="@color/navChoose"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -86,7 +86,7 @@
         android:id="@+id/addGroup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/back_gray"
+        android:background="@color/btnChoose"
         android:orientation="horizontal"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
