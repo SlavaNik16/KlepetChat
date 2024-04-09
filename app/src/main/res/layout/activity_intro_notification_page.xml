@@ -43,9 +43,11 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="409dp"
-        android:layout_height="62dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,22 +55,22 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/butOn"
-            android:layout_width="158dp"
-            android:layout_height="51dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginBottom="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
             android:backgroundTint="@color/white"
             android:rotation="0"
+            android:layout_marginEnd="5dp"
             android:scrollbarSize="5dp"
             android:visibility="visible"
             app:cardCornerRadius="20dp"
+            android:layout_weight="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.505"
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
-                android:layout_width="109dp"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
@@ -89,21 +91,22 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/butOff"
-            android:layout_width="157dp"
+            android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginStart="10dp"
             android:backgroundTint="@color/white"
             android:rotation="0"
+            android:layout_marginStart="5dp"
             android:scrollbarSize="5dp"
             android:visibility="visible"
             app:cardCornerRadius="20dp"
+            android:layout_weight="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.505"
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
-                android:layout_width="146dp"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
