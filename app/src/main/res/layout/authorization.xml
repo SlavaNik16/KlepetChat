@@ -127,8 +127,8 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:layout_width="96dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
@@ -163,13 +163,13 @@
 
     <TextView
         android:id="@+id/txtButRegister"
-        android:layout_width="171dp"
+        android:layout_width="wrap_content"
         android:layout_height="54dp"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"
         android:layout_weight="1"
-        android:ems="1"
         android:gravity="center"
+        android:minWidth="171dp"
         android:text="@string/Register"
         android:textColor="#2196F3"
         android:textSize="24sp"
