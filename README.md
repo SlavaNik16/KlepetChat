@@ -36,7 +36,7 @@ KlepetChat - это мобильное приложение предназнач
   
 **Участники:**  
 
-- [SlavaNik16](https://github.com/SlavaNik16)  - Вячеслав Николаев
+- [SlavaNik16](https://github.com/SlavaNik16)  - Николаев Вячеслав
 - [LaNs992](https://github.com/LaNs992)   - Бажин Кирилл
 - [Leks2000](https://github.com/Leks2000)  - Халле Александр
 
