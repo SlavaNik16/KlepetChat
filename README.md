@@ -42,7 +42,7 @@ KlepetChat - это мобильное приложение предназнач
 
 ## Предварительный просмотр
 
-<br>[![Watch the video](http://img.youtube.com/vi/1SCAfM5g6vA/0.jpg)](https://www.youtube.com/watch?v=1SCAfM5g6vA&ab_channel=Xedanler)
+<br>[![Watch the video](http://img.youtube.com/vi/1SCAfM5g6vA/0.jpg)](https://www.youtube.com/watch?v=1SCAfM5g6vA&ab_channel=Xedanler){:target="_blank"}
 </br>
 
 ## Как начать использовать:
