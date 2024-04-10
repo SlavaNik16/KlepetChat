@@ -40,8 +40,12 @@ KlepetChat - это мобильное приложение предназнач
 - [LaNs992](https://github.com/LaNs992)   - Бажин Кирилл
 - [Leks2000](https://github.com/Leks2000)  - Халле Александр
 
-## Как начать использовать:
+## Предварительный просмотр
 
+<br>[![Watch the video](http://img.youtube.com/vi/1SCAfM5g6vA/0.jpg)](https://www.youtube.com/watch?v=1SCAfM5g6vA&ab_channel=Xedanler)
+</br>
+
+## Как начать использовать:
 
 1. Пейредите по ссылке ниже и скачайте файл app-debug.apk
 2. https://github.com/SlavaNik16/KlepetChat/releases/tag/V1.0
